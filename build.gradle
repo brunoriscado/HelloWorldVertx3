@@ -1,39 +1,26 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
-
-sourceCompatibility = 1.8
-version = '1.0'
-jar {
-    manifest {
-        attributes 'Implementation-Title': 'Gradle Quickstart',
-                   'Implementation-Version': version
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
     }
 }
 
-repositories {
-    mavenCentral()
+plugins{
+    id "java"
+    id "idea"
+    id "maven"
 }
 
-dependencies {
-    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
-    testCompile group: 'junit', name: 'junit', version: '4.+'
-
-  
- 
-    compile group: 'com.github.spullara.mustache.java', name: 'compiler', version:'0.8.15'
-    compile group: 'org.apache.tika', name: 'tika-core', version:'1.0'
-    compile group: 'org.elasticsearch', name: 'elasticsearch', version:'1.7.2'
-    compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
-
-    compile 'org.slf4j:slf4j-api:1.7.21'
-    compile "com.typesafe:config:1.2.1"
-    compile "ch.qos.logback:logback-classic:1.1.2"
-    compile "io.vertx:vertx-core:3.2.1'"
-    compile "io.vertx:vertx-web:3.2.1"
-    
-    
-    
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+        excludeDirs = [file('.gradle'), file('.idea'), file('build')]
+    }
 }
+
+group = 'com.tesco.disco.browse'
+version = this.properties['version']
 
 test {
     systemProperties 'property': 'value'
@@ -46,3 +33,5 @@ uploadArchives {
        }
     }
 }
+
+apply from: 'gradle/dependencies.gradle'
