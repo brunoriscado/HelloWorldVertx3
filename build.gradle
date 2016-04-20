@@ -18,18 +18,22 @@ dependencies {
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
     testCompile group: 'junit', name: 'junit', version: '4.+'
 
-    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
-    compile "io.vertx:lang-groovy:$groovyLangModVersion@jar"
-
+  
+ 
     compile group: 'com.github.spullara.mustache.java', name: 'compiler', version:'0.8.15'
     compile group: 'org.apache.tika', name: 'tika-core', version:'1.0'
     compile group: 'org.elasticsearch', name: 'elasticsearch', version:'1.7.2'
     compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
-    compile "org.mockito:mockito-all:$mockitoAllVersion"
+   
 
-    compile "org.jacpfx.vertx.spring:vertx-spring-mod:1.1"
+   
     compile "com.typesafe:config:1.2.1"
     compile "ch.qos.logback:logback-classic:1.1.2"
+    compile "io.vertx:vertx-core:3.2.1'"
+    compile "io.vertx:vertx-web:3.2.1"
+    
+    
+    
 }
 
 test {
