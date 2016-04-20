@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.8
 version = '1.0'
 jar {
     manifest {
@@ -24,9 +24,8 @@ dependencies {
     compile group: 'org.apache.tika', name: 'tika-core', version:'1.0'
     compile group: 'org.elasticsearch', name: 'elasticsearch', version:'1.7.2'
     compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
-   
 
-   
+    compile 'org.slf4j:slf4j-api:1.7.21'
     compile "com.typesafe:config:1.2.1"
     compile "ch.qos.logback:logback-classic:1.1.2"
     compile "io.vertx:vertx-core:3.2.1'"
