@@ -26,6 +26,7 @@ dependencies {
     //Vertx
     compile "io.vertx:vertx-core:$vertxVersion"
     compile "io.vertx:vertx-web:$vertxVersion"
+    compile "io.vertx:vertx-rx-java:$vertxVersion"
 
     //RX
     compile "io.reactivex:rxjava:$rxJavaVersion"
