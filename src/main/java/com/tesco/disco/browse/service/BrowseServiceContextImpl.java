@@ -12,7 +12,8 @@ public class BrowseServiceContextImpl implements BrowseServiceContext {
     BrowseService browseService;
 
     public BrowseServiceContextImpl(Vertx vertx) {
-        vertx = vertx;
+        this.vertx = vertx;
+        init();
     }
 
     public void init() {

@@ -76,6 +76,7 @@ public class BrowseControllerImpl implements BrowseController {
         //Call the Browse service and responde
         ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
         browseService.getBrowseResults(payload, handler.toHandler());
+        response.setChunked(true);
         handler.flatMap(esResponse -> {
                     if (esResponse.succeeded()) {
                         return Observable.just(esResponse.result());
@@ -84,11 +85,13 @@ public class BrowseControllerImpl implements BrowseController {
                     }
                 })
                 .subscribe(
-                      next -> {},
+                        next -> {
+                            response.write(next.encode());
+                        },
                         error -> {},
                         () -> {
                             response.setStatusCode(200);
-                            response.end("Pong");
+                            response.end();
                         });
     }
 
