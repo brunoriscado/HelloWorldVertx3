@@ -2,24 +2,23 @@
   "verticles":
   [
     {
-      "main": "maven:com.tesco:disco-browse-api:0.1-SNAPSHOT::com.tesco.disco.browse.service.vertx.BrowseServiceVerticle",
+      "main": "service:com.tesco:disco-browse-api:0.1-SNAPSHOT::com.tesco.disco.browse.service.vertx.BrowseServiceVerticle",
       "options": {
         "config": {
           "profile": {
-            "context": ""
+            "context": "com.tesco.disco.browse.api.BrowseAPIContextImpl"
           },
           "elasticsearch.host": ""
         }
       }
     },
     {
-      "main": "maven:com.tesco:0.1-SNAPSHOT::com.tesco.disco.browse.BrowseAPIVerticle",
+      "main": "service:com.tesco:0.1-SNAPSHOT::com.tesco.disco.browse.BrowseAPIVerticle",
       "options": {
         "config": {
           "profile": {
-            "context": ""
+            "context": "com.tesco.disco.browse.service.BrowseServiceContextImpl"
           },
-          "restBase": "browse",
           "port": 9003,
           "host": "localhost",
           "apiDocsResourcePackages": ["com.tesco.disco.browse.controller.impl"]

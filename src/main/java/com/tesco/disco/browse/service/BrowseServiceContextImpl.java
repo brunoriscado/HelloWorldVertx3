@@ -1,6 +1,5 @@
-package com.tesco.disco.browse.service.vertx;
+package com.tesco.disco.browse.service;
 
-import com.tesco.disco.browse.service.BrowseService;
 import com.tesco.disco.browse.service.impl.BrowseServiceImpl;
 import io.vertx.rxjava.core.Vertx;
 

@@ -2,6 +2,7 @@ package com.tesco.disco.browse.controller.impl;
 
 import com.tesco.disco.browse.controller.BrowseController;
 import io.vertx.rxjava.core.Vertx;
+import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.RoutingContext;
 import org.slf4j.Logger;
@@ -26,10 +27,12 @@ public class BrowseControllerImpl implements BrowseController {
     }
 
     private void browseHandler(RoutingContext context) {
-
+        browse(context.response());
     }
 
-    private void browse() {
-
+    public void browse(HttpServerResponse response) {
+        //Call the Browse service and responde
+        response.setStatusCode(200);
+        response.end("Pong");
     }
 }

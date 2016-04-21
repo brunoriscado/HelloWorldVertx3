@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
 
+import java.util.List;
+
 /**
  * Created by bruno on 21/04/16.
  */
@@ -19,7 +21,7 @@ public class Starter extends AbstractVerticle {
         ConfigurationUtils.getConfig(vertx)
                 .flatMap(config -> {
                     JsonArray verticles = config.getJsonArray("verticles");
-                    return Observable.<JsonObject>from(verticles.getList());
+                    return Observable.<JsonObject>from((List<JsonObject>)verticles.getList());
                 })
                 .flatMap(verticle -> {
                     return vertx.deployVerticleObservable(verticle.getString("name"),
