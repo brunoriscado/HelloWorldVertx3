@@ -1,4 +1,4 @@
-package com.tesco.disco.browse;
+package com.tesco.disco.browse.api.vertx;
 
 
 import io.vertx.core.http.HttpServerOptions;
