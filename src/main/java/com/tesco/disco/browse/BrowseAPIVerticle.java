@@ -2,6 +2,7 @@ package com.tesco.disco.browse;
 
 
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.http.HttpServer;
 import io.vertx.rxjava.ext.web.Router;
 import org.slf4j.Logger;
@@ -21,10 +22,10 @@ public class BrowseAPIVerticle extends io.vertx.rxjava.core.AbstractVerticle {
     @Override
     public void start() throws Exception {
         router = Router.router(vertx);
+        JsonObject config = vertx.getOrCreateContext().config();
         vertx.createHttpServer(new HttpServerOptions()
-                //change host and port to external configuration
-                .setHost("")
-                .setPort(9003))
+                .setHost(config.getString("host"))
+                .setPort(config.getInteger("port")))
                 .requestHandler(router::accept)
                 .listenObservable()
                 .subscribe(server -> {

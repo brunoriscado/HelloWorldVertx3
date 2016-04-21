@@ -3,7 +3,6 @@ package com.tesco.disco.browse.unit;
 import com.tesco.disco.browse.utis.ConfigurationUtils;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.Vertx;
-import io.vertx.rxjava.ext.unit.TestContext;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

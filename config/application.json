@@ -1,12 +1,4 @@
 {
-  "maven_repos": {
-    "remote_repos": [
-      {
-        "name": "ESS Nexus",
-        "uri": "http://ess-nexus.westeurope.cloudapp.azure.com:8080/nexus/content/repositories/"
-      }
-    ]
-  },
   "verticles":
   [
     {
