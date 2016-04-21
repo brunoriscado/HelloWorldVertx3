@@ -1,5 +1,6 @@
-package com.tesco.disco.browse.service;
+package com.tesco.disco.browse.service.context;
 
+import com.tesco.disco.browse.service.BrowseService;
 import com.tesco.disco.browse.service.elasticsearch.ElasticSearchManager;
 
 /**

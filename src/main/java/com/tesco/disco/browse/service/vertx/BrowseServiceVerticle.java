@@ -1,7 +1,7 @@
 package com.tesco.disco.browse.service.vertx;
 
-import com.tesco.disco.browse.service.BrowseServiceContext;
-import com.tesco.disco.browse.service.BrowseServiceContextImpl;
+import com.tesco.disco.browse.service.context.BrowseServiceContext;
+import com.tesco.disco.browse.service.context.BrowseServiceContextImpl;
 import io.vertx.rxjava.core.AbstractVerticle;
 
 /**
@@ -10,6 +10,7 @@ import io.vertx.rxjava.core.AbstractVerticle;
 public class BrowseServiceVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
-        BrowseServiceContext context = new BrowseServiceContextImpl(vertx);
+        BrowseServiceContext context = new BrowseServiceContextImpl(vertx,
+                vertx.getOrCreateContext().config());
     }
 }

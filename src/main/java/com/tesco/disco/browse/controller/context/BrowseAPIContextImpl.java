@@ -1,24 +1,28 @@
-package com.tesco.disco.browse.api;
+package com.tesco.disco.browse.controller.context;
 
 import com.tesco.disco.browse.controller.BrowseController;
 import com.tesco.disco.browse.controller.impl.BrowseControllerImpl;
 import com.tesco.disco.browse.service.BrowseService;
+import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.serviceproxy.ProxyHelper;
+import com.tesco.search.commons.context.Context;
 
 /**
  * Created by bruno on 21/04/16.
  */
 public class BrowseAPIContextImpl implements BrowseAPIContext {
     private Vertx vertx;
+    private JsonObject config;
     private Router router;
-
     private BrowseService browseService;
     private BrowseController browseController;
 
-    public BrowseAPIContextImpl(Vertx vertx) {
+    @Context
+    public BrowseAPIContextImpl(Vertx vertx, JsonObject config) {
         this.vertx = vertx;
+        this.config = config;
         router = Router.router(vertx);
         init();
     }

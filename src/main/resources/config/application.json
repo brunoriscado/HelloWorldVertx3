@@ -5,9 +5,7 @@
       "main": "service:com.tesco.disco.browse.service.vertx.BrowseServiceVerticle",
       "options": {
         "config": {
-          "profile": {
-            "context": "com.tesco.disco.browse.api.BrowseAPIContextImpl"
-          },
+          "context": "com.tesco.disco.browse.service.context.BrowseAPIContextImpl",
           "elasticsearch": {
             "transport.addresses": [
               {
@@ -22,12 +20,10 @@
       }
     },
     {
-      "main": "service:com.tesco.disco.browse.api.vertx.BrowseAPIVerticle",
+      "main": "service:com.tesco.disco.browse.controller.vertx.BrowseAPIVerticle",
       "options": {
         "config": {
-          "profile": {
-            "context": "com.tesco.disco.browse.service.BrowseServiceContextImpl"
-          },
+          "context": "com.tesco.disco.browse.controller.context.BrowseServiceContextImpl",
           "port": 9003,
           "host": "localhost",
           "apiDocsResourcePackages": ["com.tesco.disco.browse.controller.impl"]

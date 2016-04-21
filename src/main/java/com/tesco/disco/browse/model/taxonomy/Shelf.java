@@ -1,4 +1,4 @@
-package com.tesco.disco.browse.model.taxonomy.model;
+package com.tesco.disco.browse.model.taxonomy;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.vertx.core.json.Json;

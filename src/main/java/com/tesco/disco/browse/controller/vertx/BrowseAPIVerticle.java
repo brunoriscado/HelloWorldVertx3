@@ -1,12 +1,11 @@
-package com.tesco.disco.browse.api.vertx;
+package com.tesco.disco.browse.controller.vertx;
 
 
-import com.tesco.disco.browse.api.BrowseAPIContext;
-import com.tesco.disco.browse.api.BrowseAPIContextImpl;
+import com.tesco.disco.browse.controller.context.BrowseAPIContext;
+import com.tesco.disco.browse.controller.context.BrowseAPIContextImpl;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.http.HttpServer;
-import io.vertx.rxjava.ext.web.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +22,7 @@ public class BrowseAPIVerticle extends io.vertx.rxjava.core.AbstractVerticle {
     @Override
     public void start() throws Exception {
         JsonObject config = vertx.getOrCreateContext().config();
-        BrowseAPIContext context = new BrowseAPIContextImpl(vertx);
+        BrowseAPIContext context = new BrowseAPIContextImpl(vertx, config);
         vertx.createHttpServer(new HttpServerOptions()
                 .setHost(config.getString("host"))
                 .setPort(config.getInteger("port")))

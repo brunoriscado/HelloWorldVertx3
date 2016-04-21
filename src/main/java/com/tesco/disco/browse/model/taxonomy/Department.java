@@ -1,4 +1,4 @@
-package com.tesco.disco.browse.model.taxonomy.model;
+package com.tesco.disco.browse.model.taxonomy;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.vertx.core.json.Json;
@@ -10,17 +10,17 @@ import java.util.List;
  * Created by bruno on 07/04/16.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SuperDepartment implements SearchSerializable {
+public class Department implements SearchSerializable {
     private String name;
     private long total;
-    private List<Department> departments;
+    private List<Aisle> aisles;
 
-    public SuperDepartment() {
+    public Department() {
     }
 
-    public SuperDepartment(String name, long total) {
+    public Department(String name, long total) {
         this.name = name;
-        this.total = total;
+        this.total =  total;
     }
 
     public String getName() {
@@ -39,16 +39,16 @@ public class SuperDepartment implements SearchSerializable {
         this.total = total;
     }
 
-    public List<Department> getDepartments() {
-        return departments;
+    public List<Aisle> getAisles() {
+        return aisles;
     }
 
-    public void setDepartments(List<Department> departments) {
-        this.departments = departments;
+    public void setAisles(List<Aisle> aisles) {
+        this.aisles = aisles;
     }
 
-    public SuperDepartment addDepartments(List<Department> departments) {
-        this.setDepartments(departments);
+    public Department addAisles(List<Aisle> aisles) {
+        this.setAisles(aisles);
         return this;
     }
 

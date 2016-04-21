@@ -92,16 +92,11 @@ public abstract class AbstractElasticsearchTestVerticle extends AbstractVerticle
     }
 
     public void createIndexes() throws IOException, InterruptedException, ExecutionException {
-
-        Utils.touch("synonyms/synonyms.txt");
-
-        createIndex("ghs.products");
-        createIndex("ghs.products_index_parameter_test");
+        createIndex("ghs.taxonomy");
 
         // load data
         BulkRequest bulkRequest = new BulkRequest();
-        loadData(bulkRequest, "ghs.products");
-        loadData(bulkRequest, "ghs.products_index_parameter_test");
+        loadData(bulkRequest, "ghs.taxonomy");
 
         // load query
         bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.products.default").source(TestingUtilities.buildQuery("ghs.products.default")));
@@ -115,7 +110,7 @@ public abstract class AbstractElasticsearchTestVerticle extends AbstractVerticle
 
     public void createIndex(String indexName) throws IOException {
         final CreateIndexRequestBuilder createIndexRequestBuilder = getClient().admin().indices().prepareCreate(indexName);
-        JsonObject schema = Utils.getJsonFile("src/test/resources/queries/products.json");
+        JsonObject schema = Utils.getJsonFile("src/test/resources/taxonomyMapping/taxonomyMapping.json");
         // apply settings
         if (schema.getJsonObject("indexers").containsKey("settings")) {
             JsonObject settings = schema.getJsonObject("indexers").getJsonObject("settings");
@@ -140,18 +135,18 @@ public abstract class AbstractElasticsearchTestVerticle extends AbstractVerticle
 
     public BulkRequest loadData(BulkRequest bulkRequest, String index) throws IOException, InterruptedException, ExecutionException {
 
-        String dataPath = "src/test/resources/ghs.products/";
+        String dataPath = "src/test/resources/indexData/";
         String[] files = Utils.getFiles(dataPath);
         Integer productLength = files.length;
 
         // to test a different index, change the size of it by half
-        if(index!="ghs.products"){ productLength=(files.length / 2); }
+        if(index!="ghs.taxonomy"){ productLength=(files.length / 2); }
 
         for (Integer i=0; i < productLength; i++) {
             if (!files[i].substring(0,1).equals(".")) {
                 try {
                     JsonObject document = Utils.getJsonFile(dataPath + files[i]);
-                    bulkRequest.add(new IndexRequest(index, "product", document.getString("id")).source(document.encode()));
+                    bulkRequest.add(new IndexRequest(index, "taxonomy", document.getString("id")).source(document.encode()));
                 } catch (Exception e) {
                     logger.warn("Failed to add " + files[i] + "\n" + e.getMessage());
                 }

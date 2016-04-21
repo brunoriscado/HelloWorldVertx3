@@ -1,0 +1,3 @@
+{
+  "main": "com.tesco.disco.browse.controller.vertx.BrowseAPIVerticle"
+}
