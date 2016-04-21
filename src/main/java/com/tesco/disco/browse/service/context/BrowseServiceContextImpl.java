@@ -10,13 +10,13 @@ import com.tesco.search.commons.context.Context;
 /**
  * Created by bruno on 21/04/16.
  */
+@Context
 public class BrowseServiceContextImpl implements BrowseServiceContext {
     private Vertx vertx;
     private JsonObject config;
     private BrowseService browseService;
     private ElasticSearchManager elasticSearchManager;
 
-    @Context
     public BrowseServiceContextImpl(Vertx vertx, JsonObject config) {
         this.vertx = vertx;
         this.config = config;

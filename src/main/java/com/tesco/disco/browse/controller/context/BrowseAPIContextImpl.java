@@ -12,6 +12,7 @@ import com.tesco.search.commons.context.Context;
 /**
  * Created by bruno on 21/04/16.
  */
+@Context
 public class BrowseAPIContextImpl implements BrowseAPIContext {
     private Vertx vertx;
     private JsonObject config;
@@ -19,7 +20,6 @@ public class BrowseAPIContextImpl implements BrowseAPIContext {
     private BrowseService browseService;
     private BrowseController browseController;
 
-    @Context
     public BrowseAPIContextImpl(Vertx vertx, JsonObject config) {
         this.vertx = vertx;
         this.config = config;
