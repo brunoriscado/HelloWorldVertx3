@@ -8,7 +8,16 @@
           "profile": {
             "context": "com.tesco.disco.browse.api.BrowseAPIContextImpl"
           },
-          "elasticsearch.host": ""
+          "elasticsearch": {
+            "transport.addresses": [
+              {
+                "hostname": "localhost",
+                "port": 9300
+              }
+            ],
+            "cluster.name": "elasticsearch",
+            "client.transport.sniff": true
+          }
         }
       }
     },
