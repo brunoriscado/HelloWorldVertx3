@@ -1,6 +1,8 @@
 package com.tesco.disco.browse.api.vertx;
 
 
+import com.tesco.disco.browse.api.BrowseAPIContext;
+import com.tesco.disco.browse.api.BrowseAPIContextImpl;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.http.HttpServer;
@@ -23,6 +25,7 @@ public class BrowseAPIVerticle extends io.vertx.rxjava.core.AbstractVerticle {
     public void start() throws Exception {
         router = Router.router(vertx);
         JsonObject config = vertx.getOrCreateContext().config();
+        BrowseAPIContext context = new BrowseAPIContextImpl(vertx);
         vertx.createHttpServer(new HttpServerOptions()
                 .setHost(config.getString("host"))
                 .setPort(config.getInteger("port")))

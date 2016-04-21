@@ -1,5 +1,6 @@
 package com.tesco.disco.browse.api;
 
+import com.tesco.disco.browse.controller.BrowseController;
 import com.tesco.disco.browse.service.BrowseService;
 
 /**
@@ -7,4 +8,5 @@ import com.tesco.disco.browse.service.BrowseService;
  */
 public interface BrowseAPIContext {
     public BrowseService getBrowseService();
+    public BrowseController getBrowseController();
 }

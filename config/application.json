@@ -2,7 +2,7 @@
   "verticles":
   [
     {
-      "main": "service:com.tesco:disco-browse-api:0.1-SNAPSHOT::com.tesco.disco.browse.service.vertx.BrowseServiceVerticle",
+      "main": "service:com.tesco.disco.browse.service.vertx.BrowseServiceVerticle",
       "options": {
         "config": {
           "profile": {
@@ -13,7 +13,7 @@
       }
     },
     {
-      "main": "service:com.tesco:0.1-SNAPSHOT::com.tesco.disco.browse.BrowseAPIVerticle",
+      "main": "service:com.tesco.disco.browse.api.vertx.BrowseAPIVerticle",
       "options": {
         "config": {
           "profile": {
