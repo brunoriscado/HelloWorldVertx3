@@ -28,6 +28,8 @@ dependencies {
     compile "io.vertx:vertx-core:$vertxVersion"
     compile "io.vertx:vertx-web:$vertxVersion"
     compile "io.vertx:vertx-rx-java:$vertxVersion"
+    compile "io.vertx:vertx-service-proxy:$vertxVersion"
+    compile "io.vertx:vertx-codegen:$vertxVersion"
 
     //RX
     compile "io.reactivex:rxjava:$rxJavaVersion"

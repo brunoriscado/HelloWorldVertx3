@@ -19,7 +19,7 @@ idea {
     }
 }
 
-group = 'com.tesco.disco.browse'
+group = this.properties['group']
 version = this.properties['version']
 
 test {

@@ -1,7 +1,6 @@
 package com.tesco.disco.browse;
 
 
-import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.rxjava.core.http.HttpServer;
 import io.vertx.rxjava.ext.web.Router;
@@ -14,8 +13,8 @@ import java.time.format.DateTimeFormatter;
 /**
  * Created by bruno on 20/04/16.
  */
-public class BrowseVerticle extends io.vertx.rxjava.core.AbstractVerticle {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BrowseVerticle.class);
+public class BrowseAPIVerticle extends io.vertx.rxjava.core.AbstractVerticle {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BrowseAPIVerticle.class);
     private Router router;
     private HttpServer httpServer;
 
