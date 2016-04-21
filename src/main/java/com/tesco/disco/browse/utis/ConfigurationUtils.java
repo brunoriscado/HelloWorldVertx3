@@ -29,7 +29,7 @@ public class ConfigurationUtils {
             transformedConfigName = APPLICATION_CONFIG_NAME;
         }
         return vertx.fileSystem()
-                .readFileObservable("/home/bruno/workspace/DiscoBrowseAPI/config/" + transformedConfigName + ".json")
+                .readFileObservable("config/" + transformedConfigName + ".json")
                 .map(fileBuffer -> {
                     return new JsonObject(fileBuffer.toString());
                 });

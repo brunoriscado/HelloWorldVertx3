@@ -1,6 +1,5 @@
 package com.tesco.disco.browse.service;
 
-import com.tesco.disco.browse.service.BrowseService;
 import com.tesco.disco.browse.service.elasticsearch.ElasticSearchManager;
 
 /**
@@ -8,6 +7,4 @@ import com.tesco.disco.browse.service.elasticsearch.ElasticSearchManager;
  */
 public interface BrowseServiceContext {
     public BrowseService getBrowseService();
-    public ElasticSearchManager getElasticSearchManager();
-    public void setElasticSearchManager(ElasticSearchManager elasticSearchManager);
 }

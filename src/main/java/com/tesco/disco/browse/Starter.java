@@ -22,11 +22,10 @@ public class Starter extends AbstractVerticle {
     public void start() throws Exception {
         ConfigurationUtils.getConfig(vertx)
                 .flatMap(config -> {
-//                    return Observable.<JsonObject>from((List<>)Json.decodeValue(verticles.encode(), List.class));
                     return Observable.from(config.getJsonArray("verticles").getList());
                 })
-                .flatMap(v -> {
-                    JsonObject verticle = new JsonObject(Json.encode(v));
+                .flatMap(verticleConfig -> {
+                    JsonObject verticle = new JsonObject(Json.encode(verticleConfig));
                     return vertx.deployVerticleObservable(verticle.getString("main"),
                             new DeploymentOptions(verticle.getJsonObject("options")));
                 })
@@ -34,7 +33,7 @@ public class Starter extends AbstractVerticle {
                             LOGGER.info("Verticle: {} as been deployed", deploymentID);
                         },
                         error -> {
-//                            LOGGER.error("Failed to deploy Verticle: {}", error.getMessage());
+                            LOGGER.error("Failed to deploy Verticle: {}", error);
                         });
     }
 }

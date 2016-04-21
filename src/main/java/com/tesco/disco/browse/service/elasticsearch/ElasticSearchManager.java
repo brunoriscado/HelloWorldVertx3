@@ -6,6 +6,7 @@ import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,8 @@ public class ElasticSearchManager {
 
     public static ElasticSearchManager getINSTANCE(JsonObject esConfig) {
         if (INSTANCE == null) {
-            transportAddresses = esConfig.getJsonArray("transport.addresses").getList();
+            transportAddresses = esConfig.getJsonArray("transport.addresses") != null ?
+                    esConfig.getJsonArray("transport.addresses").getList() : new ArrayList<JsonObject>();
             INSTANCE = new ElasticSearchManager(esConfig);
         }
         return INSTANCE;
@@ -32,7 +34,7 @@ public class ElasticSearchManager {
     public void setup(JsonObject esConfig) {
         settings = ImmutableSettings.settingsBuilder()
                 .put("cluster.name", esConfig.getString("cluster.name"))
-                .put("client.transport.sniff", esConfig.getString("client.transport.sniff"))
+                .put("client.transport.sniff", esConfig.getBoolean("client.transport.sniff"))
                 .build();
     }
 

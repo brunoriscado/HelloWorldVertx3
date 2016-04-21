@@ -15,13 +15,13 @@ public class BrowseServiceContextImpl implements BrowseServiceContext {
 
     public BrowseServiceContextImpl(Vertx vertx) {
         this.vertx = vertx;
-        JsonObject config = vertx.getOrCreateContext().config();
-        elasticSearchManager = ElasticSearchManager.getINSTANCE(config);
         init();
     }
 
     public void init() {
-        browseService = new BrowseServiceImpl(vertx);
+        JsonObject config = vertx.getOrCreateContext().config();
+        browseService = new BrowseServiceImpl(vertx,
+                ElasticSearchManager.getINSTANCE(config.getJsonObject("elasticsearch")));
     }
 
     public BrowseService getBrowseService() {
@@ -30,13 +30,5 @@ public class BrowseServiceContextImpl implements BrowseServiceContext {
 
     public void setBrowseService(BrowseService browseService) {
         this.browseService = browseService;
-    }
-
-    public ElasticSearchManager getElasticSearchManager() {
-        return elasticSearchManager;
-    }
-
-    public void setElasticSearchManager(ElasticSearchManager elasticSearchManager) {
-        this.elasticSearchManager = elasticSearchManager;
     }
 }
