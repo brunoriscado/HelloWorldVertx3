@@ -12,18 +12,20 @@ import io.vertx.serviceproxy.ProxyHelper;
  */
 public class BrowseAPIContextImpl implements BrowseAPIContext {
     private Vertx vertx;
+    private Router router;
 
     private BrowseService browseService;
     private BrowseController browseController;
 
     public BrowseAPIContextImpl(Vertx vertx) {
         this.vertx = vertx;
+        router = Router.router(vertx);
         init();
     }
 
     public void init() {
         browseService = ProxyHelper.createProxy(BrowseService.class, ((io.vertx.core.Vertx)vertx.getDelegate()), BrowseService.class.getName());
-        browseController = new BrowseControllerImpl(vertx, Router.router(vertx), browseService);
+        browseController = new BrowseControllerImpl(vertx, router, browseService);
     }
 
     public BrowseService getBrowseService() {
@@ -40,5 +42,13 @@ public class BrowseAPIContextImpl implements BrowseAPIContext {
 
     public void setBrowseController(BrowseController browseController) {
         this.browseController = browseController;
+    }
+
+    public Router getRouter() {
+        return router;
+    }
+
+    public void setRouter(Router router) {
+        this.router = router;
     }
 }

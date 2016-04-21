@@ -18,18 +18,16 @@ import java.time.format.DateTimeFormatter;
  */
 public class BrowseAPIVerticle extends io.vertx.rxjava.core.AbstractVerticle {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseAPIVerticle.class);
-    private Router router;
     private HttpServer httpServer;
 
     @Override
     public void start() throws Exception {
-        router = Router.router(vertx);
         JsonObject config = vertx.getOrCreateContext().config();
         BrowseAPIContext context = new BrowseAPIContextImpl(vertx);
         vertx.createHttpServer(new HttpServerOptions()
                 .setHost(config.getString("host"))
                 .setPort(config.getInteger("port")))
-                .requestHandler(router::accept)
+                .requestHandler(context.getRouter()::accept)
                 .listenObservable()
                 .subscribe(server -> {
                         httpServer = server;

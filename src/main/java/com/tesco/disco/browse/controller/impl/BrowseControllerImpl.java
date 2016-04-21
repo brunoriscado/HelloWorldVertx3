@@ -41,7 +41,7 @@ public class BrowseControllerImpl implements BrowseController {
         LOGGER.info("Initializing routing definitions for controller");
         Router subRouter = Router.router(vertx);
 
-        subRouter.get("/cenas/").handler(this::browseHandler);
+        subRouter.get("/").handler(this::browseHandler);
 
         router.mountSubRouter("/browse", subRouter);
     }
