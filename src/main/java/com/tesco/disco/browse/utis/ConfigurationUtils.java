@@ -5,6 +5,7 @@ import io.vertx.rxjava.core.Vertx;
 import org.elasticsearch.common.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rx.Observable;
 
 /**
  * Created by bruno on 20/04/16.
@@ -16,28 +17,21 @@ public class ConfigurationUtils {
     public static final String ENV_SEPARATOR_CHAR = "-";
     public static final String APPLICATION_CONFIG_NAME = "application";
 
-    public static JsonObject getConfig(Vertx vertx) {
+    public static Observable<JsonObject> getConfig(Vertx vertx) {
         String environment = System.getenv(ENV_PROPERTY_NAME);
-
+        JsonObject config = new JsonObject();
         LOGGER.info("Environment is : " + environment);
-
+        String transformedConfigName;
         if (StringUtils.isNotBlank(environment)) {
-            String transformedConfigName = APPLICATION_CONFIG_NAME + ENV_SEPARATOR_CHAR + environment;
-            vertx.fileSystem().exists("config/" + transformedConfigName + ".json",
-                    configHandler -> {
-                        if (configHandler.succeeded()) {
-
-                        } else {
-
-                        }
-                    });
+            transformedConfigName = APPLICATION_CONFIG_NAME + ENV_SEPARATOR_CHAR + environment;
         } else {
             LOGGER.info("Loading base application config.");
-            //LOAD - default
+            transformedConfigName = APPLICATION_CONFIG_NAME;
         }
-
-
-
-        return new JsonObject();
+        return vertx.fileSystem()
+                .readFileObservable("config/" + transformedConfigName + ".json")
+                .map(fileBuffer -> {
+                    return new JsonObject(fileBuffer.toString());
+                });
     }
 }

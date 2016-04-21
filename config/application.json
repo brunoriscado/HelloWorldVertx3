@@ -15,7 +15,7 @@
         "config": {
           "profile": {
             "context": ""
-          }
+          },
           "elasticsearch.host": ""
         }
       }
