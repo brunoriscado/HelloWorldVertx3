@@ -1,5 +1,6 @@
 package com.tesco.disco.browse.service.elasticsearch;
 
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -16,7 +17,7 @@ public class ElasticSearchManager {
     public static ElasticSearchManager INSTANCE;
     private Settings settings;
     private TransportClient client;
-    private static List<JsonObject> transportAddresses;
+    private static List transportAddresses;
 
     public static ElasticSearchManager getINSTANCE(JsonObject esConfig) {
         if (INSTANCE == null) {
@@ -41,9 +42,10 @@ public class ElasticSearchManager {
     public TransportClient getElasticsearchClient() {
         client = new TransportClient(settings);
         transportAddresses.forEach(address -> {
+            JsonObject jsonAddress = new JsonObject(Json.encode(address));
             client.addTransportAddress(new InetSocketTransportAddress(
-                    address.getString(address.getString("hostname")),
-                    address.getInteger("port")));
+                    jsonAddress.getString("hostname"),
+                    jsonAddress.getInteger("port")));
         });
         if (client.transportAddresses().isEmpty()) {
             client.addTransportAddress(new InetSocketTransportAddress("localhost", 9300));

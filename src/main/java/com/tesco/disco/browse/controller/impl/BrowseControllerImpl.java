@@ -65,7 +65,6 @@ public class BrowseControllerImpl implements BrowseController {
     }
 
     public void browse(JsonObject payload, HttpServerResponse response) {
-        //Call the Browse service and responde
         ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
         browseService.getBrowseResults(payload, handler.toHandler());
         response.setChunked(true);
