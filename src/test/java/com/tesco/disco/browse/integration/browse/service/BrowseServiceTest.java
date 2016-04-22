@@ -26,7 +26,6 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle {
     static Vertx vertx;
     static ElasticSearchClientFactory esManager;
 
-
     @BeforeClass
     public static void test(TestContext testContext) throws IOException {
         Async async = testContext.async();
@@ -47,10 +46,30 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle {
     }
 
     @Test
-    public void testBrowse() {
+    public void testGenericBrowse() {
         SearchResponse res = esManager.getElasticsearchClient().prepareSearch()
                 .setIndices("ghs.taxonomy")
                 .get();
         res.toString();
+    }
+
+    @Test
+    public void testBrowseWithSuperDeparmentFilter() {
+
+    }
+
+    @Test
+    public void testBrowseWithDeparmentFilter() {
+
+    }
+
+    @Test
+    public void testBrowseWithAisleFilter() {
+
+    }
+
+    @Test
+    public void testBrowseWithShelfFilter() {
+
     }
 }

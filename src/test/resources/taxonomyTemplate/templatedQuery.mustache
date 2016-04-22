@@ -1,0 +1,82 @@
+{
+    "size": 0,
+    "filter": {
+    "and": [
+        {
+            "or": {
+                "filters": [
+                    {{#superDepartment}}
+                    {
+                       "term" : { "superDepartment.raw" : "{{.}}" }
+                    },
+                    {{/superDepartment}}
+                    {}
+                ]
+            }
+        },
+        {
+            "or": {
+                "filters": [
+                    {{#department}}
+                    {
+                        "term" : { "department.raw" : "{{.}}" }
+                    },
+                    {{/department}}
+                    {}
+                ]
+            }
+        },
+        {
+            "or": {
+              "filters": [
+                  {{#aisle}}
+                  {
+                    "term" : { "aisle.raw" : "{{.}}" }
+                  },
+                  {{/aisle}}
+                  {}
+              ]
+          }
+      },
+      {
+         "or": {
+             "filters": [
+                 {{#shelf}}
+                 {
+                   "term" : { "shelf.raw" : "{{.}}" }
+                 },
+                 {{/shelf}}
+                 {}
+             ]
+         }
+      }]
+   },
+   "aggs": {
+       "superDepartments": {
+           "aggs": {
+               "departments": {
+                   "aggs": {
+                       "aisles": {
+                           "aggs": {
+                               "shelves": {
+                                   "terms": {
+                                      "field": "shelf.raw"
+                                   }
+                               }
+                           },
+                           "terms": {
+                              "field": "aisle.raw"
+                           }
+                       }
+                   },
+                   "terms": {
+                       "field": "department.raw"
+                   }
+               }
+           },
+           "terms": {
+               "field": "superDepartment.raw"
+           }
+       }
+   }
+}
