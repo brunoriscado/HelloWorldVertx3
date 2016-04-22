@@ -257,7 +257,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                                             });
                                 });
                     });
-            testContext.assertEquals(1, shelves.size(), 1);
+            testContext.assertEquals(1, shelves.size());
             List<String> expected = new ArrayList<String>();
             expected.add("Womens Gift Sets");
             testContext.assertTrue(shelves.containsAll(expected));
