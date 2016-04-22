@@ -11,6 +11,8 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.http.HttpClient;
+import io.vertx.rxjava.core.http.HttpClientRequest;
+import io.vertx.rxjava.core.http.HttpServerRequest;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -299,7 +301,8 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testNonExistentFilter(TestContext testContext) {
         List<String> shelves = new ArrayList<String>();
-        JsonObject response = httpClient.get("/browse/").toObservable()
+        HttpClientRequest request = httpClient.get("/browse/");
+        JsonObject response = request.toObservable()
                 .flatMap(resp -> {
                     return resp.toObservable();
                 })
@@ -325,6 +328,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
                                         });
                             });
                 });
+        request.end();
         testContext.assertEquals(shelves.size(), 9);
         List<String> expected = new ArrayList<String>();
         expected.add("Tesco Shower Gel");
@@ -337,5 +341,22 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
         expected.add("Professional Styling");
         expected.add("Blonde Shampoo & Conditioner");
         testContext.assertTrue(shelves.containsAll(expected));
+    }
+
+    @Test
+    public void testStatus(TestContext testContext) {
+        List<String> shelves = new ArrayList<String>();
+        HttpClientRequest request = httpClient.get("/_status", handler -> {
+            handler.statusCode();
+        });
+
+//        JsonObject response = request.toObservable()
+//                .flatMap(resp -> {
+//                    return resp.toObservable();
+//                })
+//                .map(respBody -> {
+//                    return new JsonObject(respBody.toString());
+//                }).toBlocking().single();
+        request.end();
     }
 }

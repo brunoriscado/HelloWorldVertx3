@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class BrowseServiceImpl implements BrowseService {
                 .setIndices(index)
                 .setTemplateName(templateId)
                 .setTemplateType(ScriptService.ScriptType.INDEXED)
-                .setTemplateParams(query.getMap())
+                .setTemplateParams(query == null ? new HashMap<String, Object>() : query.getMap())
                 .get();
 
         try {

@@ -1,56 +1,63 @@
 {
     "size": 0,
-    "filter": {
-    "and": [
-        {
-            "or": {
-                "filters": [
-                    {{#superDepartment}}
+    "query": {
+        "filtered": {
+            "query": {
+                "match_all": {}
+            },
+            "filter": {
+                "and": [
                     {
-                       "term" : { "superDepartment.raw" : "{{.}}" }
+                        "or": {
+                            "filters": [
+                                {{#superDepartment}}
+                                {
+                                   "term" : { "superDepartment.raw" : "{{.}}" }
+                                },
+                                {{/superDepartment}}
+                                {}
+                            ]
+                        }
                     },
-                    {{/superDepartment}}
-                    {}
-                ]
-            }
-        },
-        {
-            "or": {
-                "filters": [
-                    {{#department}}
                     {
-                        "term" : { "department.raw" : "{{.}}" }
+                        "or": {
+                            "filters": [
+                                {{#department}}
+                                {
+                                    "term" : { "department.raw" : "{{.}}" }
+                                },
+                                {{/department}}
+                                {}
+                            ]
+                        }
                     },
-                    {{/department}}
-                    {}
-                ]
+                    {
+                        "or": {
+                            "filters": [
+                                {{#aisle}}
+                                {
+                                   "term" : { "aisle.raw" : "{{.}}" }
+                                },
+                                {{/aisle}}
+                                {}
+                            ]
+                        }
+                    },
+                    {
+                        "or": {
+                            "filters": [
+                                {{#shelf}}
+                                {
+                                    "term" : { "shelf.raw" : "{{.}}" }
+                                },
+                                {{/shelf}}
+                                {}
+                            ]
+                        }
+                    }]
+                }
             }
-        },
-        {
-            "or": {
-              "filters": [
-                  {{#aisle}}
-                  {
-                    "term" : { "aisle.raw" : "{{.}}" }
-                  },
-                  {{/aisle}}
-                  {}
-              ]
-          }
-      },
-      {
-         "or": {
-             "filters": [
-                 {{#shelf}}
-                 {
-                   "term" : { "shelf.raw" : "{{.}}" }
-                 },
-                 {{/shelf}}
-                 {}
-             ]
-         }
-      }]
-   },
+    },
    "aggs": {
        "superDepartments": {
            "aggs": {
