@@ -9,11 +9,11 @@
           "elasticsearch": {
             "transport.addresses": [
               {
-                "hostname": "localhost",
+                "hostname": "192.168.56.101",
                 "port": 9300
               }
             ],
-            "cluster.name": "elasticsearch",
+            "cluster.name": "vagrant",
             "client.transport.sniff": true
           }
         }

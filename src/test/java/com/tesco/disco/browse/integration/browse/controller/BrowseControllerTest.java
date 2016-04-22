@@ -2,30 +2,72 @@ package com.tesco.disco.browse.integration.browse.controller;
 
 import com.tesco.disco.browse.integration.AbstractElasticsearchTestVerticle;
 import com.tesco.disco.browse.integration.browse.BrowseTest;
+import com.tesco.disco.browse.service.context.BrowseServiceContext;
+import com.tesco.search.commons.context.ContextDelegator;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
+import io.vertx.ext.unit.junit.VertxUnitRunner;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.http.HttpClient;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by bruno on 21/04/16.
  */
+@RunWith(VertxUnitRunner.class)
 public class BrowseControllerTest extends AbstractElasticsearchTestVerticle implements BrowseTest {
     private static Vertx vertx;
     private HttpClient httpClient;
 
     @BeforeClass
-    public static void setup() {
+    public static void setup(TestContext testContext) throws IOException {
+        Async async = testContext.async();
         vertx = Vertx.vertx();
+        vertx.deployVerticle(AbstractElasticsearchTestVerticle.class.getName(), res -> {
+            if (res.succeeded()) {
+                System.out.println("Deployment id is: " + res.result());
+                async.complete();
+            } else {
+                System.out.println("Deployment failed!");
+            }
+        });
+        String testConfig = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResource("config/application-test.json"));
+        JsonObject serviceVerticleConfig = new JsonObject(Json.encode(new JsonObject(testConfig).getJsonArray("verticles").getList().get(0)));
+        JsonObject controllerVerticleConfig = new JsonObject(Json.encode(new JsonObject(testConfig).getJsonArray("verticles").getList().get(1)));
+
+        Async asyncService = testContext.async();
+
+        vertx.deployVerticle(serviceVerticleConfig.getString("main"), new DeploymentOptions(serviceVerticleConfig.getJsonObject("options")), res -> {
+            if (res.succeeded()) {
+                System.out.println("Deployment id is: " + res.result());
+                asyncService.complete();
+            } else {
+                System.out.println("Deployment failed!");
+            }
+        });
+
+        Async asyncController = testContext.async();
+
+        vertx.deployVerticle(controllerVerticleConfig.getString("main"), new DeploymentOptions(controllerVerticleConfig.getJsonObject("options")), res -> {
+            if (res.succeeded()) {
+                System.out.println("Deployment id is: " + res.result());
+                asyncController.complete();
+            } else {
+                System.out.println("Deployment failed!");
+            }
+        });
     }
 
     @Before

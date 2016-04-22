@@ -20,6 +20,8 @@ import rx.Observable;
  */
 public class BrowseControllerImpl implements BrowseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseControllerImpl.class.getName());
+    private static final String INDEX = "ghs.taxonomy";
+    private static final String TEMPLATE_ID = "ghs.taxonomy.default";
     private Vertx vertx;
     private BrowseService browseService;
 
@@ -33,7 +35,7 @@ public class BrowseControllerImpl implements BrowseController {
         LOGGER.info("Initializing routing definitions for controller");
         Router subRouter = Router.router(vertx);
 
-        subRouter.get("/browse").handler(this::browseHandler);
+        subRouter.get("/browse/*").handler(this::browseHandler);
         subRouter.get("/_status").handler(this::statusHandler);
 
         router.mountSubRouter("/", subRouter);
@@ -84,10 +86,9 @@ public class BrowseControllerImpl implements BrowseController {
 
     public void browse(JsonObject payload, HttpServerResponse response) {
         ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
-        browseService.getBrowseResults(payload, handler.toHandler());
+        browseService.getBrowseResults(INDEX, TEMPLATE_ID, payload, handler.toHandler());
         response.setChunked(true);
         handler.flatMap(esResponse -> {
-                    //TODO - implement service handling correctly
                     if (esResponse.succeeded()) {
                         return Observable.just(esResponse.result());
                     } else {

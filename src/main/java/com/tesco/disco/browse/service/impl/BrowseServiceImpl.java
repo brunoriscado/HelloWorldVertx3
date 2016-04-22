@@ -11,6 +11,9 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.serviceproxy.ProxyHelper;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.script.ScriptService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,16 +27,25 @@ import java.util.List;
 public class BrowseServiceImpl implements BrowseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseServiceImpl.class);
     private MessageConsumer<JsonObject> consumer;
-    private ElasticSearchClientFactory elasticSearchClientFactory;
+    private TransportClient client;
 
     public BrowseServiceImpl(Vertx vertx, ElasticSearchClientFactory elasticSearchClientFactory) {
-        this.elasticSearchClientFactory = elasticSearchClientFactory;
+        client = elasticSearchClientFactory.getElasticsearchClient();
         consumer = ProxyHelper
                 .registerService(BrowseService.class, (io.vertx.core.Vertx)vertx.getDelegate(), this, BrowseService.class.getName());
     }
 
     @Override
-    public void getBrowseResults(JsonObject query, Handler<AsyncResult<JsonObject>> response) {
+    public void getBrowseResults(String index, String templateId, JsonObject query, Handler<AsyncResult<JsonObject>> response) {
+        //TODO - perform templated query
+
+        SearchResponse res = client.prepareSearch()
+                .setIndices(index)
+                .setTemplateName(templateId)
+                .setTemplateType(ScriptService.ScriptType.INDEXED)
+                .setTemplateParams(query.getMap())
+                .get();
+
         response.handle(Future.succeededFuture(new JsonObject().put("cenas", "cenas")));
     }
 

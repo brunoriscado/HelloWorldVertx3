@@ -10,5 +10,5 @@ import io.vertx.core.json.JsonObject;
  */
 @ProxyGen
 public interface BrowseService {
-    void getBrowseResults(JsonObject query, Handler<AsyncResult<JsonObject>> response);
+    void getBrowseResults(String index, String templateId, JsonObject query, Handler<AsyncResult<JsonObject>> response);
 }
