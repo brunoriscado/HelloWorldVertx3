@@ -32,10 +32,16 @@ public class BrowseControllerImpl implements BrowseController {
     public void init(Router router) {
         LOGGER.info("Initializing routing definitions for controller");
         Router subRouter = Router.router(vertx);
-        //TODO - add status route
-        subRouter.get("/").handler(this::browseHandler);
 
-        router.mountSubRouter("/browse", subRouter);
+        subRouter.get("/browse").handler(this::browseHandler);
+        subRouter.get("/_status").handler(this::statusHandler);
+
+        router.mountSubRouter("/", subRouter);
+    }
+
+    private void statusHandler(RoutingContext context) {
+        context.response().setStatusCode(200);
+        context.response().end("keepalive");
     }
 
     private void browseHandler(RoutingContext context) {

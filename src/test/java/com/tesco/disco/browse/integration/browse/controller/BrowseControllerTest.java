@@ -253,7 +253,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
                 }).toBlocking().single();
         testContext.assertTrue(response.getJsonObject("uk")
                 .getJsonObject("ghs")
-                .getJsonObject("taxonomy").isEmpty()):
+                .getJsonObject("taxonomy").isEmpty());
     }
 
     @Test

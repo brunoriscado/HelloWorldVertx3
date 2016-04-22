@@ -62,7 +62,7 @@ public class TestingUtilities {
 
     public static String buildQuery(String name) {
         try {
-            String query = Utils.getJsonFile("src/test/resources/queries/" + name + ".json").encodePrettily();
+            String query = Utils.getJsonFile("src/test/resources/taxonomyTemplate/" + name + ".json").encodePrettily();
             String template = fetchQueryTemplate(name);
             template = StringEscapeUtils.escapeJava(template);
             return query.replace("{{template}}", template);

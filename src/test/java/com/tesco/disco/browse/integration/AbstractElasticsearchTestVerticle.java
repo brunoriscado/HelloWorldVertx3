@@ -1,5 +1,6 @@
 package com.tesco.disco.browse.integration;
 
+import com.tesco.disco.browse.integration.utils.TestingUtilities;
 import com.tesco.disco.browse.integration.utils.Utils;
 import com.tesco.disco.browse.utis.ConfigurationUtils;
 import com.tesco.search.commons.util.EmbeddedElasticsearchServer;
@@ -67,8 +68,8 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
         BulkRequest bulkRequest = new BulkRequest();
         loadData(bulkRequest, "ghs.taxonomy");
 
-//        // load query
-//        bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.products.default").source(TestingUtilities.buildQuery("ghs.products.default")));
+        // load query
+        bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.taxonomy.default").source(TestingUtilities.buildQuery("templatedQuery.mustache")));
 
         getClient().bulk(bulkRequest).get();
         logger.info("Loaded data into Elasticsearch");

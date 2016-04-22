@@ -11,7 +11,6 @@ public interface BrowseTest {
 				public void testBrowseWithDeparmentFilter(TestContext testContext);
 				public void testBrowseWithAisleFilter(TestContext testContext);
 				public void testBrowseWithShelfFilter(TestContext testContext);
-				public void testIncorrectBrowseEndpoint(TestContext testContext);
 				public void testEmptyTaxonomyResponse(TestContext testContext);
 				public void testNonExistentFilter(TestContext testContext);
 }
