@@ -1,6 +1,7 @@
 package com.tesco.disco.browse.integration.browse.service;
 
 import com.tesco.disco.browse.integration.AbstractElasticsearchTestVerticle;
+import com.tesco.disco.browse.integration.browse.BrowseTest;
 import com.tesco.disco.browse.service.context.BrowseServiceContext;
 import com.tesco.disco.browse.service.elasticsearch.ElasticSearchClientFactory;
 import com.tesco.search.commons.context.ContextDelegator;
@@ -22,12 +23,12 @@ import java.io.IOException;
  * Created by bruno on 21/04/16.
  */
 @RunWith(VertxUnitRunner.class)
-public class BrowseServiceTest extends AbstractElasticsearchTestVerticle {
+public class BrowseServiceTest extends AbstractElasticsearchTestVerticle implements BrowseTest {
     static Vertx vertx;
     static ElasticSearchClientFactory esManager;
 
     @BeforeClass
-    public static void test(TestContext testContext) throws IOException {
+    public static void setup(TestContext testContext) throws IOException {
         Async async = testContext.async();
         vertx = Vertx.vertx();
         vertx.deployVerticle(AbstractElasticsearchTestVerticle.class.getName(), res -> {
@@ -46,7 +47,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle {
     }
 
     @Test
-    public void testGenericBrowse() {
+    public void testGenericBrowse(TestContext testContext) {
         SearchResponse res = esManager.getElasticsearchClient().prepareSearch()
                 .setIndices("ghs.taxonomy")
                 .get();
@@ -54,22 +55,37 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle {
     }
 
     @Test
-    public void testBrowseWithSuperDeparmentFilter() {
+    public void testBrowseWithSuperDeparmentFilter(TestContext testContext) {
 
     }
 
     @Test
-    public void testBrowseWithDeparmentFilter() {
+    public void testBrowseWithDeparmentFilter(TestContext testContext) {
 
     }
 
     @Test
-    public void testBrowseWithAisleFilter() {
+    public void testBrowseWithAisleFilter(TestContext testContext) {
 
     }
 
     @Test
-    public void testBrowseWithShelfFilter() {
+    public void testBrowseWithShelfFilter(TestContext testContext) {
+
+    }
+
+    @Test
+    public void testIncorrectBrowseEndpoint(TestContext testContext) {
+
+    }
+
+    @Test
+    public void testEmptyTaxonomyResponse(TestContext testContext) {
+
+    }
+
+    @Test
+    public void testNonExistentFilter(TestContext testContext) {
 
     }
 }
