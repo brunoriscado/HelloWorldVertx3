@@ -2,11 +2,9 @@ package com.tesco.disco.browse.integration.browse.service;
 
 import com.tesco.disco.browse.integration.AbstractElasticsearchTestVerticle;
 import com.tesco.disco.browse.service.context.BrowseServiceContext;
-import com.tesco.disco.browse.service.elasticsearch.ElasticSearchManager;
-import com.tesco.disco.browse.utis.ConfigurationUtils;
+import com.tesco.disco.browse.service.elasticsearch.ElasticSearchClientFactory;
 import com.tesco.search.commons.context.ContextDelegator;
 import io.vertx.core.json.Json;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
@@ -26,7 +24,7 @@ import java.io.IOException;
 @RunWith(VertxUnitRunner.class)
 public class BrowseServiceTest extends AbstractElasticsearchTestVerticle {
     static Vertx vertx;
-    static ElasticSearchManager esManager;
+    static ElasticSearchClientFactory esManager;
 
 
     @BeforeClass
@@ -45,12 +43,12 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle {
         String serviceVerticleConfig = Json.encode(new JsonObject(testConfig).getJsonArray("verticles").getList().get(0));
         BrowseServiceContext context = ContextDelegator.getInstance()
                 .getContext(vertx, new JsonObject(serviceVerticleConfig).getJsonObject("options").getJsonObject("config"));
-        esManager = context.getElasticSearchManager();
+        esManager = context.getElasticSearchClientFactory();
     }
 
     @Test
     public void testBrowse() {
-        SearchResponse res = getClient().prepareSearch()
+        SearchResponse res = esManager.getElasticsearchClient().prepareSearch()
                 .setIndices("ghs.taxonomy")
                 .get();
         res.toString();

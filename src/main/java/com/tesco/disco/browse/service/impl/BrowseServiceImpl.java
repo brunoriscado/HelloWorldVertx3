@@ -2,7 +2,7 @@ package com.tesco.disco.browse.service.impl;
 
 import com.tesco.disco.browse.model.taxonomy.*;
 import com.tesco.disco.browse.service.BrowseService;
-import com.tesco.disco.browse.service.elasticsearch.ElasticSearchManager;
+import com.tesco.disco.browse.service.elasticsearch.ElasticSearchClientFactory;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -24,10 +24,10 @@ import java.util.List;
 public class BrowseServiceImpl implements BrowseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseServiceImpl.class);
     private MessageConsumer<JsonObject> consumer;
-    private ElasticSearchManager elasticSearchManager;
+    private ElasticSearchClientFactory elasticSearchClientFactory;
 
-    public BrowseServiceImpl(Vertx vertx, ElasticSearchManager elasticSearchManager) {
-        this.elasticSearchManager = elasticSearchManager;
+    public BrowseServiceImpl(Vertx vertx, ElasticSearchClientFactory elasticSearchClientFactory) {
+        this.elasticSearchClientFactory = elasticSearchClientFactory;
         consumer = ProxyHelper
                 .registerService(BrowseService.class, (io.vertx.core.Vertx)vertx.getDelegate(), this, BrowseService.class.getName());
     }

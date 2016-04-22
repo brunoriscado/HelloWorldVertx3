@@ -1,7 +1,7 @@
 package com.tesco.disco.browse.service.context;
 
 import com.tesco.disco.browse.service.BrowseService;
-import com.tesco.disco.browse.service.elasticsearch.ElasticSearchManager;
+import com.tesco.disco.browse.service.elasticsearch.ElasticSearchClientFactory;
 import com.tesco.disco.browse.service.impl.BrowseServiceImpl;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.Vertx;
@@ -16,7 +16,7 @@ public class BrowseServiceContextImpl implements BrowseServiceContext {
     private JsonObject config;
     private BrowseService browseService;
 
-    private ElasticSearchManager elasticSearchManager;
+    private ElasticSearchClientFactory elasticSearchClientFactory;
 
     public BrowseServiceContextImpl(Vertx vertx, JsonObject config) {
         this.vertx = vertx;
@@ -25,8 +25,8 @@ public class BrowseServiceContextImpl implements BrowseServiceContext {
     }
 
     public void init() {
-        elasticSearchManager = ElasticSearchManager.getINSTANCE(config.getJsonObject("elasticsearch"));
-        browseService = new BrowseServiceImpl(vertx, elasticSearchManager);
+        elasticSearchClientFactory = ElasticSearchClientFactory.getINSTANCE(config.getJsonObject("elasticsearch"));
+        browseService = new BrowseServiceImpl(vertx, elasticSearchClientFactory);
     }
 
     public BrowseService getBrowseService() {
@@ -37,11 +37,11 @@ public class BrowseServiceContextImpl implements BrowseServiceContext {
         this.browseService = browseService;
     }
 
-    public ElasticSearchManager getElasticSearchManager() {
-        return elasticSearchManager;
+    public ElasticSearchClientFactory getElasticSearchClientFactory() {
+        return elasticSearchClientFactory;
     }
 
-    public void setElasticSearchManager(ElasticSearchManager elasticSearchManager) {
-        this.elasticSearchManager = elasticSearchManager;
+    public void setElasticSearchClientFactory(ElasticSearchClientFactory elasticSearchClientFactory) {
+        this.elasticSearchClientFactory = elasticSearchClientFactory;
     }
 }

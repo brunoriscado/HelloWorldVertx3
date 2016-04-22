@@ -13,22 +13,22 @@ import java.util.List;
 /**
  * Created by bruno on 21/04/16.
  */
-public class ElasticSearchManager {
-    public static ElasticSearchManager INSTANCE;
+public class ElasticSearchClientFactory {
+    public static ElasticSearchClientFactory INSTANCE;
     private Settings settings;
     private TransportClient client;
     private static List transportAddresses;
 
-    public static ElasticSearchManager getINSTANCE(JsonObject esConfig) {
+    public static ElasticSearchClientFactory getINSTANCE(JsonObject esConfig) {
         if (INSTANCE == null) {
             transportAddresses = esConfig.getJsonArray("transport.addresses") != null ?
                     esConfig.getJsonArray("transport.addresses").getList() : new ArrayList<JsonObject>();
-            INSTANCE = new ElasticSearchManager(esConfig);
+            INSTANCE = new ElasticSearchClientFactory(esConfig);
         }
         return INSTANCE;
     }
 
-    private ElasticSearchManager (JsonObject esConfig) {
+    private ElasticSearchClientFactory(JsonObject esConfig) {
         setup(esConfig);
     }
 

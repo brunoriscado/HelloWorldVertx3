@@ -13,7 +13,7 @@
                                 "port": 9350
                             }
                         ],
-                        "cluster.name": "elasticsearch",
+                        "cluster.name": "embedded",
                         "client.transport.sniff": true
                     }
                 }
