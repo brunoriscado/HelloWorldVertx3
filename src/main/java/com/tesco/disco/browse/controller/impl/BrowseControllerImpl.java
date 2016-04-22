@@ -32,7 +32,7 @@ public class BrowseControllerImpl implements BrowseController {
     public void init(Router router) {
         LOGGER.info("Initializing routing definitions for controller");
         Router subRouter = Router.router(vertx);
-
+        //TODO - add status route
         subRouter.get("/").handler(this::browseHandler);
 
         router.mountSubRouter("/browse", subRouter);
@@ -57,6 +57,18 @@ public class BrowseControllerImpl implements BrowseController {
             query.put("shelf", context.request().getParam("shelf"));
         }
 
+        if (StringUtils.isNotBlank(context.request().getParam("distChannel"))) {
+            query.put("distChannel", context.request().getParam("distChannel"));
+        } else {
+            query.put("distChannel", "ghs");
+        }
+
+        if (StringUtils.isNotBlank(context.request().getParam("geo"))) {
+            query.put("geo", context.request().getParam("geo"));
+        } else {
+            query.put("geo", "uk");
+        }
+
         if (query.isEmpty()) {
             query = null;
         }
@@ -69,6 +81,7 @@ public class BrowseControllerImpl implements BrowseController {
         browseService.getBrowseResults(payload, handler.toHandler());
         response.setChunked(true);
         handler.flatMap(esResponse -> {
+                    //TODO - implement service handling correctly
                     if (esResponse.succeeded()) {
                         return Observable.just(esResponse.result());
                     } else {
@@ -79,10 +92,16 @@ public class BrowseControllerImpl implements BrowseController {
                         next -> {
                             response.write(next.encode());
                         },
-                        error -> {},
+                        error -> {
+                            handlerError(error, response);
+                        },
                         () -> {
                             response.setStatusCode(200);
                             response.end();
                         });
+    }
+
+    private void handlerError(Throwable error,  HttpServerResponse response) {
+        //TODO - do stuff
     }
 }
