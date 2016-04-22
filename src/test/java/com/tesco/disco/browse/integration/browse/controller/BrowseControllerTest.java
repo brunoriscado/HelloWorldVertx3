@@ -123,37 +123,179 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
 
     @Test
     public void testBrowseWithDeparmentFilter(TestContext testContext) {
-        Async async = testContext.async();
-        httpClient.get("/browse/?superDepartment=");
+        List<String> shelves = new ArrayList<String>();
+        JsonObject response = httpClient.get("/browse/?department=Haircare").toObservable()
+                .flatMap(resp -> {
+                    return resp.toObservable();
+                })
+                .map(respBody -> {
+                    return new JsonObject(respBody.toString());
+                }).toBlocking().single();
+        response.getJsonObject("uk")
+                .getJsonObject("ghs")
+                .getJsonObject("taxonomy")
+                .getJsonArray("superDepartments")
+                .forEach(superDepartment -> {
+                    JsonObject superDep = new JsonObject(Json.encode(superDepartment));
+                    superDep.getJsonArray("departments")
+                            .forEach(department -> {
+                                JsonObject jsonDep = new JsonObject(Json.encode(department));
+                                jsonDep.getJsonArray("aisles")
+                                        .forEach(aisle -> {
+                                            JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
+                                            jsonAisle.getJsonArray("shelf")
+                                                    .forEach(shelf -> {
+                                                        shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
+                                                    });
+                                        });
+                            });
+                });
+        testContext.assertEquals(shelves.size(), 6);
+        List<String> expected = new ArrayList<String>();
+        expected.add("Colour Conditioner");
+        expected.add("Professional Shampoo");
+        expected.add("Anti Dandruff Shampoo");
+        expected.add("Kids Shampoo");
+        expected.add("Professional Styling");
+        expected.add("Blonde Shampoo & Conditioner");
+        testContext.assertTrue(shelves.containsAll(expected));
     }
 
     @Test
     public void testBrowseWithAisleFilter(TestContext testContext) {
-        Async async = testContext.async();
-        httpClient.get("/browse/?superDepartment=");
+        List<String> shelves = new ArrayList<String>();
+        JsonObject response = httpClient.get("/browse/?aisle=Gift%20Sets").toObservable()
+                .flatMap(resp -> {
+                    return resp.toObservable();
+                })
+                .map(respBody -> {
+                    return new JsonObject(respBody.toString());
+                }).toBlocking().single();
+        response.getJsonObject("uk")
+                .getJsonObject("ghs")
+                .getJsonObject("taxonomy")
+                .getJsonArray("superDepartments")
+                .forEach(superDepartment -> {
+                    JsonObject superDep = new JsonObject(Json.encode(superDepartment));
+                    superDep.getJsonArray("departments")
+                            .forEach(department -> {
+                                JsonObject jsonDep = new JsonObject(Json.encode(department));
+                                jsonDep.getJsonArray("aisles")
+                                        .forEach(aisle -> {
+                                            JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
+                                            jsonAisle.getJsonArray("shelf")
+                                                    .forEach(shelf -> {
+                                                        shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
+                                                    });
+                                        });
+                            });
+                });
+        testContext.assertEquals(shelves.size(), 1);
+        List<String> expected = new ArrayList<String>();
+        expected.add("Womens Gift Sets");
+        testContext.assertTrue(shelves.containsAll(expected));
     }
 
     @Test
     public void testBrowseWithShelfFilter(TestContext testContext) {
-        Async async = testContext.async();
-        httpClient.get("/browse/?superDepartment=");
+        List<String> shelves = new ArrayList<String>();
+        JsonObject response = httpClient.get("/browse/?shelf==Womens%20Gift%20Sets").toObservable()
+                .flatMap(resp -> {
+                    return resp.toObservable();
+                })
+                .map(respBody -> {
+                    return new JsonObject(respBody.toString());
+                }).toBlocking().single();
+        response.getJsonObject("uk")
+                .getJsonObject("ghs")
+                .getJsonObject("taxonomy")
+                .getJsonArray("superDepartments")
+                .forEach(superDepartment -> {
+                    JsonObject superDep = new JsonObject(Json.encode(superDepartment));
+                    superDep.getJsonArray("departments")
+                            .forEach(department -> {
+                                JsonObject jsonDep = new JsonObject(Json.encode(department));
+                                jsonDep.getJsonArray("aisles")
+                                        .forEach(aisle -> {
+                                            JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
+                                            jsonAisle.getJsonArray("shelf")
+                                                    .forEach(shelf -> {
+                                                        shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
+                                                    });
+                                        });
+                            });
+                });
+        testContext.assertEquals(shelves.size(), 1);
+        List<String> expected = new ArrayList<String>();
+        expected.add("Womens Gift Sets");
+        testContext.assertTrue(shelves.containsAll(expected));
     }
 
     @Test
     public void testIncorrectBrowseEndpoint(TestContext testContext) {
-        Async async = testContext.async();
-        httpClient.get("/browsy/?superDepartment=Something");
+        int status = httpClient.get("/browsy/?superDepartment=Something")
+                .toObservable()
+                .map(response -> {
+                    return response.statusCode();
+                }).toBlocking().single();
+        testContext.assertEquals(404, status);
     }
 
     @Test
     public void testEmptyTaxonomyResponse(TestContext testContext) {
-        Async async = testContext.async();
-        httpClient.get("/browse/?superDepartment=");
+        JsonObject response = httpClient.get("/browse/?superDepartment=NonExistent")
+                .toObservable()
+                .flatMap(resp -> {
+                    return resp.toObservable();
+                })
+                .map(respBody -> {
+                    return new JsonObject(respBody.toString());
+                }).toBlocking().single();
+        testContext.assertTrue(response.getJsonObject("uk")
+                .getJsonObject("ghs")
+                .getJsonObject("taxonomy").isEmpty()):
     }
 
     @Test
     public void testNonExistentFilter(TestContext testContext) {
-        Async async = testContext.async();
-        httpClient.get("/browse/?superDepartment=");
+        List<String> shelves = new ArrayList<String>();
+        JsonObject response = httpClient.get("/browse/").toObservable()
+                .flatMap(resp -> {
+                    return resp.toObservable();
+                })
+                .map(respBody -> {
+                    return new JsonObject(respBody.toString());
+                }).toBlocking().single();
+        response.getJsonObject("uk")
+                .getJsonObject("ghs")
+                .getJsonObject("taxonomy")
+                .getJsonArray("superDepartments")
+                .forEach(superDepartment -> {
+                    JsonObject superDep = new JsonObject(Json.encode(superDepartment));
+                    superDep.getJsonArray("departments")
+                            .forEach(department -> {
+                                JsonObject jsonDep = new JsonObject(Json.encode(department));
+                                jsonDep.getJsonArray("aisles")
+                                        .forEach(aisle -> {
+                                            JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
+                                            jsonAisle.getJsonArray("shelf")
+                                                    .forEach(shelf -> {
+                                                        shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
+                                                    });
+                                        });
+                            });
+                });
+        testContext.assertEquals(shelves.size(), 9);
+        List<String> expected = new ArrayList<String>();
+        expected.add("Tesco Shower Gel");
+        expected.add("Travel Sizes");
+        expected.add("Womens Gift Sets");
+        expected.add("Colour Conditioner");
+        expected.add("Professional Shampoo");
+        expected.add("Anti Dandruff Shampoo");
+        expected.add("Kids Shampoo");
+        expected.add("Professional Styling");
+        expected.add("Blonde Shampoo & Conditioner");
+        testContext.assertTrue(shelves.containsAll(expected));
     }
 }
