@@ -74,7 +74,7 @@ public class TestingUtilities {
 
     public static String fetchQueryTemplate(String name) {
         try {
-            return Utils.getFileContents("src/test/resources/queries/" + name + ".json.template");
+            return Utils.getFileContents("src/test/resources/taxonomyTemplate/" + name + ".json.template");
         } catch (IOException e) {
             e.printStackTrace();
             return null;

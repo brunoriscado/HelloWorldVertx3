@@ -65,28 +65,19 @@ public class BrowseControllerImpl implements BrowseController {
             query.put("shelf", context.request().getParam("shelf"));
         }
 
-        if (StringUtils.isNotBlank(context.request().getParam("distChannel"))) {
-            query.put("distChannel", context.request().getParam("distChannel"));
-        } else {
-            query.put("distChannel", "ghs");
-        }
-
-        if (StringUtils.isNotBlank(context.request().getParam("geo"))) {
-            query.put("geo", context.request().getParam("geo"));
-        } else {
-            query.put("geo", "uk");
-        }
-
         if (query.isEmpty()) {
             query = null;
         }
 
-        browse(query, context.response());
+        browse(context.request().getParam("geo") == null ? context.request().getParam("geo") : "uk",
+                context.request().getParam("distChannel") == null ? context.request().getParam("distChannel") : "ghs",
+                query,
+                context.response());
     }
 
-    public void browse(JsonObject payload, HttpServerResponse response) {
+    public void browse(String geo, String distChannel, JsonObject payload, HttpServerResponse response) {
         ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
-        browseService.getBrowseResults(INDEX, TEMPLATE_ID, payload, handler.toHandler());
+        browseService.getBrowseResults(INDEX, TEMPLATE_ID, geo, distChannel, payload, handler.toHandler());
         response.setChunked(true);
         handler.flatMap(esResponse -> {
                     if (esResponse.succeeded()) {

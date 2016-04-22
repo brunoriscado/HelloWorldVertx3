@@ -2,8 +2,6 @@ package com.tesco.disco.browse.integration.browse.controller;
 
 import com.tesco.disco.browse.integration.AbstractElasticsearchTestVerticle;
 import com.tesco.disco.browse.integration.browse.BrowseTest;
-import com.tesco.disco.browse.service.context.BrowseServiceContext;
-import com.tesco.search.commons.context.ContextDelegator;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.json.Json;

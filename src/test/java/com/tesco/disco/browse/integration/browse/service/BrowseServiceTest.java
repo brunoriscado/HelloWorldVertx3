@@ -29,6 +29,8 @@ import java.util.List;
 public class BrowseServiceTest extends AbstractElasticsearchTestVerticle implements BrowseTest {
     private static final String INDEX = "ghs.taxonomy";
     private static final String TEMPLATE_ID = "ghs.taxonomy.default";
+    private static final String GEO = "uk";
+    private static final String DIST_CHANNEL = "ghs";
     static Vertx vertx;
     static BrowseServiceContext context;
     BrowseService browseService;
@@ -73,7 +75,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
     public void testGenericBrowse(TestContext testContext) {
         List<String> shelves = new ArrayList<String>();
         Async async = testContext.async();
-        browseService.getBrowseResults(INDEX, TEMPLATE_ID, null, handle -> {
+        browseService.getBrowseResults(INDEX, TEMPLATE_ID, GEO, DIST_CHANNEL, null, handle -> {
             if (handle.succeeded()) {
                 JsonObject response = handle.result();
                 response.getJsonObject("uk")
@@ -88,7 +90,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                                         jsonDep.getJsonArray("aisles")
                                                 .forEach(aisle -> {
                                                     JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
-                                                    jsonAisle.getJsonArray("shelf")
+                                                    jsonAisle.getJsonArray("shelves")
                                                             .forEach(shelf -> {
                                                                 shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
                                                             });
@@ -118,7 +120,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
     public void testBrowseWithSuperDeparmentFilter(TestContext testContext) {
         List<String> shelves = new ArrayList<String>();
         Async async = testContext.async();
-        browseService.getBrowseResults(INDEX, TEMPLATE_ID, new JsonObject().put("superDepartment", "Health & Beauty"), handle -> {
+        browseService.getBrowseResults(INDEX, TEMPLATE_ID, GEO, DIST_CHANNEL, new JsonObject().put("superDepartment", "Health & Beauty"), handle -> {
             if (handle.succeeded()) {
                 JsonObject response = handle.result();
                 response.getJsonObject("uk")
@@ -133,7 +135,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                                         jsonDep.getJsonArray("aisles")
                                                 .forEach(aisle -> {
                                                     JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
-                                                    jsonAisle.getJsonArray("shelf")
+                                                    jsonAisle.getJsonArray("shelves")
                                                             .forEach(shelf -> {
                                                                 shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
                                                             });
@@ -163,7 +165,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
     public void testBrowseWithDeparmentFilter(TestContext testContext) {
         List<String> shelves = new ArrayList<String>();
         Async async = testContext.async();
-        browseService.getBrowseResults(INDEX, TEMPLATE_ID, new JsonObject().put("department", "Haircare"), handle -> {
+        browseService.getBrowseResults(INDEX, TEMPLATE_ID, GEO, DIST_CHANNEL, new JsonObject().put("department", "Haircare"), handle -> {
             JsonObject response = handle.result();
             response.getJsonObject("uk")
                     .getJsonObject("ghs")
@@ -177,7 +179,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                                     jsonDep.getJsonArray("aisles")
                                             .forEach(aisle -> {
                                                 JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
-                                                jsonAisle.getJsonArray("shelf")
+                                                jsonAisle.getJsonArray("shelves")
                                                         .forEach(shelf -> {
                                                             shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
                                                         });
@@ -201,7 +203,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
     public void testBrowseWithAisleFilter(TestContext testContext) {
         List<String> shelves = new ArrayList<String>();
         Async async = testContext.async();
-        browseService.getBrowseResults(INDEX, TEMPLATE_ID, new JsonObject().put("aisle", "Gift Sets"), handle -> {
+        browseService.getBrowseResults(INDEX, TEMPLATE_ID, GEO, DIST_CHANNEL, new JsonObject().put("aisle", "Gift Sets"), handle -> {
             JsonObject response = handle.result();
             response.getJsonObject("uk")
                     .getJsonObject("ghs")
@@ -215,7 +217,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                                     jsonDep.getJsonArray("aisles")
                                             .forEach(aisle -> {
                                                 JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
-                                                jsonAisle.getJsonArray("shelf")
+                                                jsonAisle.getJsonArray("shelves")
                                                         .forEach(shelf -> {
                                                             shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
                                                         });
@@ -234,7 +236,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
     public void testBrowseWithShelfFilter(TestContext testContext) {
         List<String> shelves = new ArrayList<String>();
         Async async = testContext.async();
-        browseService.getBrowseResults(INDEX, TEMPLATE_ID, new JsonObject().put("shelf", "Womens Gift Sets"), handle -> {
+        browseService.getBrowseResults(INDEX, TEMPLATE_ID, GEO, DIST_CHANNEL, new JsonObject().put("shelf", "Womens Gift Sets"), handle -> {
             JsonObject response = handle.result();
             response.getJsonObject("uk")
                     .getJsonObject("ghs")
@@ -248,7 +250,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                                     jsonDep.getJsonArray("aisles")
                                             .forEach(aisle -> {
                                                 JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
-                                                jsonAisle.getJsonArray("shelf")
+                                                jsonAisle.getJsonArray("shelves")
                                                         .forEach(shelf -> {
                                                             shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
                                                         });
@@ -267,7 +269,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
     public void testEmptyTaxonomyResponse(TestContext testContext) {
         List<String> shelves = new ArrayList<String>();
         Async async = testContext.async();
-        browseService.getBrowseResults(INDEX, TEMPLATE_ID, new JsonObject().put("superDepartment", "NonExistentSuperDepartment"), handle -> {
+        browseService.getBrowseResults(INDEX, TEMPLATE_ID, GEO, DIST_CHANNEL, new JsonObject().put("superDepartment", "NonExistentSuperDepartment"), handle -> {
             JsonObject response = handle.result();
             testContext.assertTrue(response.getJsonObject("uk")
                             .getJsonObject("ghs")
@@ -280,7 +282,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
     public void testNonExistentFilter(TestContext testContext) {
         List<String> shelves = new ArrayList<String>();
         Async async = testContext.async();
-        browseService.getBrowseResults(INDEX, TEMPLATE_ID, new JsonObject().put("nonExistentFiler", "nonExistentFiler"), handle -> {
+        browseService.getBrowseResults(INDEX, TEMPLATE_ID, GEO, DIST_CHANNEL, new JsonObject().put("nonExistentFiler", "nonExistentFiler"), handle -> {
             JsonObject response = handle.result();
             response.getJsonObject("uk")
                     .getJsonObject("ghs")
@@ -294,7 +296,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                                     jsonDep.getJsonArray("aisles")
                                             .forEach(aisle -> {
                                                 JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
-                                                jsonAisle.getJsonArray("shelf")
+                                                jsonAisle.getJsonArray("shelves")
                                                         .forEach(shelf -> {
                                                             shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
                                                         });

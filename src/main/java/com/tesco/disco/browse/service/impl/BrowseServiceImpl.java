@@ -13,10 +13,13 @@ import io.vertx.rxjava.core.Vertx;
 import io.vertx.serviceproxy.ProxyHelper;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.script.ScriptService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +29,7 @@ import java.util.List;
  */
 public class BrowseServiceImpl implements BrowseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseServiceImpl.class);
+    private static final String TAXONOMY = "taxonomy";
     private MessageConsumer<JsonObject> consumer;
     private TransportClient client;
 
@@ -36,9 +40,7 @@ public class BrowseServiceImpl implements BrowseService {
     }
 
     @Override
-    public void getBrowseResults(String index, String templateId, JsonObject query, Handler<AsyncResult<JsonObject>> response) {
-        //TODO - perform templated query
-
+    public void getBrowseResults(String index, String templateId, String geo, String distChannel, JsonObject query, Handler<AsyncResult<JsonObject>> response) {
         SearchResponse res = client.prepareSearch()
                 .setIndices(index)
                 .setTemplateName(templateId)
@@ -46,7 +48,19 @@ public class BrowseServiceImpl implements BrowseService {
                 .setTemplateParams(query.getMap())
                 .get();
 
-        response.handle(Future.succeededFuture(new JsonObject().put("cenas", "cenas")));
+        try {
+            XContentBuilder builder = XContentFactory.jsonBuilder();
+            builder.startObject();
+            res.toXContent(builder, SearchResponse.EMPTY_PARAMS);
+            builder.endObject();
+            JsonObject resJson = new JsonObject(builder.string());
+            response.handle(Future.succeededFuture(new JsonObject()
+                    .put(geo, new JsonObject()
+                            .put(distChannel, new JsonObject()
+                                    .put(TAXONOMY, getBrowsingTaxonomy(resJson))))));
+        } catch (IOException e) {
+            throw new RuntimeException("oops");
+        }
     }
 
     //TODO unit test this method -  possibly converted to RXjava?

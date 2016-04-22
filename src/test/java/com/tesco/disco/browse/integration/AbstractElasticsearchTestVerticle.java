@@ -69,7 +69,7 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
         loadData(bulkRequest, "ghs.taxonomy");
 
         // load query
-        bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.taxonomy.default").source(TestingUtilities.buildQuery("templatedQuery.mustache")));
+        bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.taxonomy.default").source(TestingUtilities.buildQuery("ghs.taxonomy.default")));
 
         getClient().bulk(bulkRequest).get();
         logger.info("Loaded data into Elasticsearch");
