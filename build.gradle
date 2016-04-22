@@ -40,5 +40,4 @@ uploadArchives {
 //def generateSrcPath="$buildDir/generated-src"
 //def generatedSrcDir = file("$buildDir/generated-src")
 
-
 compileJava.dependsOn generateServiceProxy

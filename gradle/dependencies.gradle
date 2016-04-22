@@ -17,6 +17,8 @@ ext {
     moustacheVersion = '0.8.15'
     elasticsearchVersion = '1.7.2'
     searchCommonsVersion = '1.5-SNAPSHOT'
+    restAssuredVersion = '2.9.0'
+    junitVersion = '4.+'
 }
 
 dependencies {
@@ -48,9 +50,9 @@ dependencies {
     compile group: 'org.elasticsearch', name: 'elasticsearch', version:"$elasticsearchVersion"
 
     //Test
-    testCompile group: 'junit', name: 'junit', version: '4.+'
+    testCompile group: "junit", name: "junit", version: "$junitVersion"
     testCompile "io.vertx:vertx-unit:$vertxVersion"
     testCompile "io.vertx:vertx-core:test-jar$vertxVersion"
-    testCompile "org.vert-x:vertx-junit-annotations:1.3.0.final"
-
+    testCompile "com.jayway.restassured:rest-assured:$restAssuredVersion"
+    testCompile "com.jayway.restassured:json-path:$restAssuredVersion"
 }

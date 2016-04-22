@@ -46,18 +46,34 @@ jar {
     version = this.properties['version']
 }
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes('Main-Class': 'io.vertx.core.Launcher',
+                'Main-Verticle': 'com.tesco.disco.browse.Starter')
+    }
+    baseName = this.properties['mavenArtifactId']
+    group = this.properties['group']
+    version = this.properties['version']
+    classifier = 'all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
+    baseName = this.properties['mavenArtifactId']
+    group = this.properties['group']
+    version = this.properties['version']
     classifier = 'sources'
     from sourceSets.main.allSource
 }
 
 artifacts {
-    archives sourcesJar
+    archives(fatJar, sourcesJar)
 }
 
 task generatePom << {
     pom {
-    }.writeTo("$buildDir/libs/$project.name-$project.version" + ".pom")
+    }.writeTo("$buildDir/libs/" + this.properties['mavenArtifactId'] + "-$project.version" + ".pom")
 }
 
 compileJava() {
