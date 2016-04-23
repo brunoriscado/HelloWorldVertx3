@@ -13,10 +13,13 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import io.vertx.rxjava.core.Vertx;
 import org.apache.commons.io.IOUtils;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ import java.util.List;
  */
 @RunWith(VertxUnitRunner.class)
 public class BrowseServiceTest extends AbstractElasticsearchTestVerticle implements BrowseTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BrowseServiceTest.class);
     private static final String INDEX = "ghs.taxonomy";
     private static final String TEMPLATE_ID = "ghs.taxonomy.default";
     private static final String GEO = "uk";
@@ -41,10 +45,10 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
         vertx = Vertx.vertx();
         vertx.deployVerticle(AbstractElasticsearchTestVerticle.class.getName(), res -> {
             if (res.succeeded()) {
-                System.out.println("Deployment id is: " + res.result());
+                LOGGER.debug("Deployment id is: {}", res.result());
                 async.complete();
             } else {
-                System.out.println("Deployment failed!");
+                LOGGER.debug("Deployment failed!");
             }
         });
         String testConfig = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResource("config/application-test.json"));
@@ -317,5 +321,10 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
             testContext.assertTrue(shelves.containsAll(expected));
             async.complete();
         });
+    }
+
+    @AfterClass
+    public static void tearDown() {
+//        shutdownEmbeddedElasticsearchServer();
     }
 }

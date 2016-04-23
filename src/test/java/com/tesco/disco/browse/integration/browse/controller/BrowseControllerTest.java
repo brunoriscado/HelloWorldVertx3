@@ -16,6 +16,7 @@ import io.vertx.rxjava.core.http.HttpServerRequest;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

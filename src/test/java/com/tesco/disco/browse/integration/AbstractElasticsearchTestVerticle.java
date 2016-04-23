@@ -11,8 +11,10 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.AbstractVerticle;
 import org.apache.commons.io.IOUtils;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
+import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,17 +49,28 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
     public void start(Future<Void> startedResult) {
         System.setProperty("CONFIG_ENV", "local");
         System.setProperty("es.local", "false");
-        startEmbeddedElasticsearchServer();
+//        startEmbeddedElasticsearchServer();
         // use embedded elasticsearch test config for tests
         System.setProperty(ConfigurationUtils.ENV_PROPERTY_NAME, "test");
         try {
-            createIndexes();
+//            createIndexes();
+            vertx.executeBlockingObservable(handle -> {
+                try {
+                    startEmbeddedElasticsearchServer();
+                    createIndexes();
+                    //new IndexRequestBuilder(getClient(), "ghs.taxonomy").setRefresh(true).get();
+                } catch (IOException | InterruptedException | ExecutionException e) {
+                    handle.fail(e);
+                }
+                handle.complete();
+                startedResult.complete();
+            });
+
         } catch (Exception e) {
             logger.info(e.getMessage());
             logger.info(e.getStackTrace().toString());
             startedResult.fail(new RuntimeException("Failed to create search index."));
         }
-        startedResult.complete();
     }
 
 
@@ -66,6 +79,7 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
 
         // load data
         BulkRequest bulkRequest = new BulkRequest();
+        bulkRequest.refresh(true);
         loadData(bulkRequest, "ghs.taxonomy");
 
         // load query
@@ -98,7 +112,9 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
         JsonArray taxonomy = new JsonArray(IOUtils.toString(Thread.currentThread().getContextClassLoader().getResource("taxonomyData/taxonomy.json")));
         taxonomy.forEach(entry -> {
             JsonObject doc = new JsonObject(Json.encode(entry));
-            bulkRequest.add(new IndexRequest(index, "taxonomy", doc.getString("id")).source(doc.encode()));
+            String id = doc.getString("id");
+            doc.remove("id");
+            bulkRequest.add(new IndexRequest(index, "taxonomy", id).source(doc.encode()));
         });
         return bulkRequest;
     }
