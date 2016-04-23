@@ -41,7 +41,7 @@
     </encoder>
 </appender>
 
-<logger name="com.tesco.disco.browse" level="DEBUG" additivity="false">
+<logger name="com.tesco.disco.browse" level="INFO" additivity="false">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="FILESERVER" />
 </logger>

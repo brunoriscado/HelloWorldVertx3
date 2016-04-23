@@ -48,7 +48,13 @@ public class BrowseServiceImpl implements BrowseService {
     }
 
     @Override
-    public void getBrowseResults(String index, String templateId, String geo, String distChannel, JsonObject query, Handler<AsyncResult<JsonObject>> response) {
+    public void getBrowseResults(String index,
+            String templateId,
+            String geo,
+            String distChannel,
+            JsonObject query,
+            Handler<AsyncResult<JsonObject>> response) {
+        LOGGER.info("Fetching browse results for index: {}, templateId: {} - using query params: {} ", index, templateId, query != null ? query.encode() : "");
         vertx.<JsonObject>executeBlockingObservable(handleBlocking -> {
             JsonObject resJson = null;
             SearchResponse res = client.prepareSearch()
