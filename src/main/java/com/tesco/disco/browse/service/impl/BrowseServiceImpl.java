@@ -41,7 +41,7 @@ public class BrowseServiceImpl implements BrowseService {
     }
 
     public BrowseServiceImpl(Vertx vertx, ElasticSearchClientFactory elasticSearchClientFactory) {
-        vertx = vertx;
+        this.vertx = vertx;
         client = elasticSearchClientFactory.getElasticsearchClient();
         consumer = ProxyHelper.registerService(BrowseService.class,
                 (io.vertx.core.Vertx)vertx.getDelegate(), this, BrowseService.class.getName());
@@ -49,48 +49,37 @@ public class BrowseServiceImpl implements BrowseService {
 
     @Override
     public void getBrowseResults(String index, String templateId, String geo, String distChannel, JsonObject query, Handler<AsyncResult<JsonObject>> response) {
-        SearchResponse res = client.prepareSearch()
-                .setIndices(index)
-                .setTemplateName(templateId)
-                .setTemplateType(ScriptService.ScriptType.INDEXED)
-                .setTemplateParams(query == null ? new HashMap<String, Object>() : query.getMap())
-                .execute().actionGet();
-
-        try {
-            XContentBuilder builder = XContentFactory.jsonBuilder();
-            builder.startObject();
-            res.toXContent(builder, SearchResponse.EMPTY_PARAMS);
-            builder.endObject();
-            JsonObject resJson = new JsonObject(builder.string());
-            response.handle(Future.succeededFuture(new JsonObject()
-                    .put(geo, new JsonObject()
-                            .put(distChannel, new JsonObject()
-                                    .put(TAXONOMY, getBrowsingTaxonomy(resJson))))));
-        } catch (IOException e) {
-            throw new RuntimeException("oops");
-        }
-//        vertx.executeBlockingObservable(handleBlocking -> {
-//            SearchResponse res = client.prepareSearch()
-//                    .setIndices(index)
-//                    .setTemplateName(templateId)
-//                    .setTemplateType(ScriptService.ScriptType.INDEXED)
-//                    .setTemplateParams(query == null ? new HashMap<String, Object>() : query.getMap())
-//                    .execute().actionGet();
-//
-//            try {
-//                XContentBuilder builder = XContentFactory.jsonBuilder();
-//                builder.startObject();
-//                res.toXContent(builder, SearchResponse.EMPTY_PARAMS);
-//                builder.endObject();
-//                JsonObject resJson = new JsonObject(builder.string());
-//                response.handle(Future.succeededFuture(new JsonObject()
-//                        .put(geo, new JsonObject()
-//                                .put(distChannel, new JsonObject()
-//                                        .put(TAXONOMY, getBrowsingTaxonomy(resJson))))));
-//            } catch (IOException e) {
-//                throw new RuntimeException("oops");
-//            }
-//        });
+        vertx.<JsonObject>executeBlockingObservable(handleBlocking -> {
+            JsonObject resJson = null;
+            SearchResponse res = client.prepareSearch()
+                    .setIndices(index)
+                    .setTemplateName(templateId)
+                    .setTemplateType(ScriptService.ScriptType.INDEXED)
+                    .setTemplateParams(query == null ? new HashMap<String, Object>() : query.getMap())
+                    .execute().actionGet();
+            try {
+                XContentBuilder builder = XContentFactory.jsonBuilder();
+                builder.startObject();
+                res.toXContent(builder, SearchResponse.EMPTY_PARAMS);
+                builder.endObject();
+                resJson = new JsonObject().put(geo, new JsonObject()
+                            .put(distChannel, new JsonObject().put(
+                                    TAXONOMY, getBrowsingTaxonomy(new JsonObject(builder.string())))));
+            } catch (IOException e) {
+                handleBlocking.fail(new RuntimeException("oops"));
+            }
+            handleBlocking.complete(resJson);
+        })
+        .subscribe(
+                next -> {
+                    response.handle(Future.succeededFuture(next));
+                } ,
+                error -> {
+                    LOGGER.error("log stuff");
+                },
+                () -> {
+                    LOGGER.debug("Log stuff");
+                });
     }
 
     //TODO unit test this method -  possibly converted to RXjava?
