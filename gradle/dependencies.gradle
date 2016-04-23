@@ -19,6 +19,7 @@ ext {
     searchCommonsVersion = '1.5-SNAPSHOT'
     restAssuredVersion = '2.9.0'
     junitVersion = '4.+'
+    mockitoVersion = '1.10.19'
 }
 
 dependencies {
@@ -51,6 +52,7 @@ dependencies {
 
     //Test
     testCompile group: "junit", name: "junit", version: "$junitVersion"
+    testCompile "org.mockito:mockito-all:$mockitoVersion"
     testCompile "io.vertx:vertx-unit:$vertxVersion"
     testCompile "io.vertx:vertx-core:test-jar$vertxVersion"
     testCompile "com.jayway.restassured:rest-assured:$restAssuredVersion"

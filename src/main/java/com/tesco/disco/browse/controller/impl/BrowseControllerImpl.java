@@ -75,6 +75,7 @@ public class BrowseControllerImpl implements BrowseController {
                 context.response());
     }
 
+    //Annotate this method so that swagger definitions can be generated
     public void browse(String geo, String distChannel, JsonObject payload, HttpServerResponse response) {
         ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
         browseService.getBrowseResults(INDEX, TEMPLATE_ID, geo, distChannel, payload, handler.toHandler());
@@ -100,6 +101,6 @@ public class BrowseControllerImpl implements BrowseController {
     }
 
     private void handlerError(Throwable error,  HttpServerResponse response) {
-        //TODO - do stuff
+        //TODO - do stuff, check error type and respond accordingly
     }
 }

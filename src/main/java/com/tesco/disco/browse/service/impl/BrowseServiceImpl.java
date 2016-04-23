@@ -7,6 +7,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.MessageConsumer;
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.Vertx;
@@ -18,6 +19,7 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.script.ScriptService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rx.Observable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,11 +35,16 @@ public class BrowseServiceImpl implements BrowseService {
     private static final String TAXONOMY = "taxonomy";
     private MessageConsumer<JsonObject> consumer;
     private TransportClient client;
+    private Vertx vertx;
+
+    public BrowseServiceImpl() {
+    }
 
     public BrowseServiceImpl(Vertx vertx, ElasticSearchClientFactory elasticSearchClientFactory) {
+        vertx = vertx;
         client = elasticSearchClientFactory.getElasticsearchClient();
-        consumer = ProxyHelper
-                .registerService(BrowseService.class, (io.vertx.core.Vertx)vertx.getDelegate(), this, BrowseService.class.getName());
+        consumer = ProxyHelper.registerService(BrowseService.class,
+                (io.vertx.core.Vertx)vertx.getDelegate(), this, BrowseService.class.getName());
     }
 
     @Override
@@ -62,12 +69,34 @@ public class BrowseServiceImpl implements BrowseService {
         } catch (IOException e) {
             throw new RuntimeException("oops");
         }
+//        vertx.executeBlockingObservable(handleBlocking -> {
+//            SearchResponse res = client.prepareSearch()
+//                    .setIndices(index)
+//                    .setTemplateName(templateId)
+//                    .setTemplateType(ScriptService.ScriptType.INDEXED)
+//                    .setTemplateParams(query == null ? new HashMap<String, Object>() : query.getMap())
+//                    .execute().actionGet();
+//
+//            try {
+//                XContentBuilder builder = XContentFactory.jsonBuilder();
+//                builder.startObject();
+//                res.toXContent(builder, SearchResponse.EMPTY_PARAMS);
+//                builder.endObject();
+//                JsonObject resJson = new JsonObject(builder.string());
+//                response.handle(Future.succeededFuture(new JsonObject()
+//                        .put(geo, new JsonObject()
+//                                .put(distChannel, new JsonObject()
+//                                        .put(TAXONOMY, getBrowsingTaxonomy(resJson))))));
+//            } catch (IOException e) {
+//                throw new RuntimeException("oops");
+//            }
+//        });
     }
 
     //TODO unit test this method -  possibly converted to RXjava?
     //Also there might be more performant ways of mapping the response
     //this method might have a bit of overhead
-    protected JsonObject getBrowsingTaxonomy(JsonObject ESResponse) {
+    public JsonObject getBrowsingTaxonomy(JsonObject ESResponse) {
         LOGGER.debug("Mapping elastic aggregations response to API taxonomy");
         Taxonomy taxonomy = null;
         if (ESResponse.containsKey("aggregations")) {
@@ -152,18 +181,23 @@ public class BrowseServiceImpl implements BrowseService {
 //    protected JsonObject getBrowsingTaxonomyRx(JsonObject elasticResponse) {
 //        LOGGER.debug("Mapping elastic aggregations response to API taxonomy");
 //        Taxonomy taxonomy = new Taxonomy();
-//        Observable.just(elasticResponse)
+//        return Observable.just(elasticResponse)
 //                .filter(elasticResp -> {
 //                    return elasticResponse.containsKey("aggregations");
 //                })
 //                .flatMap(elasticResp -> {
-//                    elasticResp.getJsonObject("aggregations").getJsonObject("superDepartments").getJsonArray("buckets");
+//                    return Observable.from(elasticResp.getJsonObject("aggregations")
+//                            .getJsonObject("superDepartments")
+//                            .getJsonArray("buckets").getList());
 //                })
-//
-//
-//
-//
-//
+//                .flatMap(superDepartment -> {
+//                    superDepartment.toString();
+//                });
+
+
+
+
+
 //        if (elasticResponse.containsKey("aggregations")) {
 //            taxonomy = new Taxonomy();
 //            if (ESResponse.getJsonObject("aggregations").containsKey("superDepartments")) {
