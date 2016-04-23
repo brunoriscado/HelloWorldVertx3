@@ -13,6 +13,7 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import io.vertx.rxjava.core.Vertx;
 import org.apache.commons.io.IOUtils;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -317,5 +318,10 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
             testContext.assertTrue(shelves.containsAll(expected));
             async.complete();
         });
+    }
+
+    @AfterClass
+    public static void tearDown() {
+//        shutdownEmbeddedElasticsearchServer();
     }
 }

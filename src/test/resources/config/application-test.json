@@ -14,7 +14,7 @@
                             }
                         ],
                         "cluster.name": "embedded",
-                        "client.transport.sniff": true
+                        "client.transport.sniff": false
                     }
                 }
             }

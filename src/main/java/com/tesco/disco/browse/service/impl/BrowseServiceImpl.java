@@ -47,7 +47,7 @@ public class BrowseServiceImpl implements BrowseService {
                 .setTemplateName(templateId)
                 .setTemplateType(ScriptService.ScriptType.INDEXED)
                 .setTemplateParams(query == null ? new HashMap<String, Object>() : query.getMap())
-                .get();
+                .execute().actionGet();
 
         try {
             XContentBuilder builder = XContentFactory.jsonBuilder();
