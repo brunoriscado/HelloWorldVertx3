@@ -28,7 +28,6 @@ import java.util.List;
  * Created by bruno on 21/04/16.
  */
 @RunWith(VertxUnitRunner.class)
-@Ignore
 public class BrowseControllerTest extends AbstractElasticsearchTestVerticle implements BrowseTest {
     private static Vertx vertx;
     private HttpClient httpClient;
