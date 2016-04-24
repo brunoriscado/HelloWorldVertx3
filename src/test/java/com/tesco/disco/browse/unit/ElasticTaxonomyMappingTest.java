@@ -1,6 +1,7 @@
 package com.tesco.disco.browse.unit;
 
 import com.tesco.disco.browse.service.impl.BrowseServiceImpl;
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,6 +44,13 @@ public class ElasticTaxonomyMappingTest {
 				public void testMappingFromElasticResponse() {
 								BrowseServiceImpl browseServiceImpl = Mockito.spy(BrowseServiceImpl.class);
 								JsonObject result = browseServiceImpl.getBrowsingTaxonomy(new JsonObject(ELASTIC_PAYLOAD_MOCK));
+								Assert.assertEquals(EXPECTED_PAYLOAD_RESULT, result.encode());
+				}
+
+				@Test
+				public void testMappingFromElasticResponseRX() {
+								BrowseServiceImpl browseServiceImpl = Mockito.spy(BrowseServiceImpl.class);
+								JsonObject result = browseServiceImpl.getBrowsingTaxonomyRx(new JsonObject(ELASTIC_PAYLOAD_MOCK)).toBlocking().single();
 								Assert.assertEquals(EXPECTED_PAYLOAD_RESULT, result.encode());
 				}
 }
