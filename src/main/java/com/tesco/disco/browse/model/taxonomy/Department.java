@@ -12,13 +12,17 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Department implements SearchSerializable {
     private String name;
-    private long total;
+    private Long total;
     private List<Aisle> aisles;
 
     public Department() {
     }
 
-    public Department(String name, long total) {
+    public Department(String name) {
+        this.name = name;
+    }
+
+    public Department(String name, Long total) {
         this.name = name;
         this.total =  total;
     }
@@ -31,11 +35,11 @@ public class Department implements SearchSerializable {
         this.name = name;
     }
 
-    public long getTotal() {
+    public Long getTotal() {
         return total;
     }
 
-    public void setTotal(long total) {
+    public void setTotal(Long total) {
         this.total = total;
     }
 
