@@ -40,13 +40,6 @@ public class ElasticTaxonomyMappingTest {
 												"{\"name\":\"Toiletries for Travel\",\"total\":1,\"shelves\":[{\"name\":\"Travel Sizes\",\"total\":1}]}]}]}]}";
 
 				@Test
-				public void testMappingFromElasticResponse() {
-								BrowseServiceImpl browseServiceImpl = Mockito.spy(BrowseServiceImpl.class);
-								JsonObject result = browseServiceImpl.getBrowsingTaxonomy(new JsonObject(ELASTIC_PAYLOAD_MOCK));
-								Assert.assertEquals(EXPECTED_PAYLOAD_RESULT, result.encode());
-				}
-
-				@Test
 				public void testMappingFromElasticResponseRX() {
 								BrowseServiceImpl browseServiceImpl = Mockito.spy(BrowseServiceImpl.class);
 								JsonObject result = browseServiceImpl.getBrowsingTaxonomyRx(new JsonObject(ELASTIC_PAYLOAD_MOCK)).toBlocking().single();

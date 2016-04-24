@@ -16,6 +16,8 @@ import org.elasticsearch.common.lang3.StringUtils;
 import org.elasticsearch.common.netty.handler.codec.http.QueryStringDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import rx.Observable;
 
 import java.nio.charset.Charset;
@@ -27,6 +29,7 @@ import java.util.Map;
  */
 public class BrowseControllerImpl implements BrowseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseControllerImpl.class.getName());
+    private static final Marker MARKER = MarkerFactory.getMarker("CONTROLLER");
     private static final String INDEX = "ghs.taxonomy";
     private static final String TEMPLATE_ID = "ghs.taxonomy.default";
     private Vertx vertx;
@@ -39,7 +42,7 @@ public class BrowseControllerImpl implements BrowseController {
     }
 
     public void init(Router router) {
-        LOGGER.info("Initializing routing definitions for controller");
+        LOGGER.info(MARKER, "Initializing routing definitions for controller");
         Router subRouter = Router.router(vertx);
         subRouter.route().handler(this::queryStringDecoder);
 
@@ -96,6 +99,7 @@ public class BrowseControllerImpl implements BrowseController {
 
     //TODO - Annotate this method so that swagger definitions can be generated
     public void browse(String geo, String distChannel, JsonObject payload, HttpServerResponse response) {
+        LOGGER.info(MARKER, "Handling browse request using query params: {}", payload != null ? payload.encode() : "");
         ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
         browseService.getBrowseResults(INDEX, TEMPLATE_ID, geo, distChannel, payload, handler.toHandler());
         response.setChunked(true);
