@@ -1,7 +1,6 @@
 package com.tesco.disco.browse.unit;
 
 import com.tesco.disco.browse.service.impl.BrowseServiceImpl;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import org.junit.Assert;
 import org.junit.Test;

@@ -13,9 +13,14 @@ import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.RoutingContext;
 import org.elasticsearch.common.lang3.StringUtils;
+import org.elasticsearch.common.netty.handler.codec.http.QueryStringDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
+
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by bruno on 20/04/16.
@@ -36,12 +41,22 @@ public class BrowseControllerImpl implements BrowseController {
     public void init(Router router) {
         LOGGER.info("Initializing routing definitions for controller");
         Router subRouter = Router.router(vertx);
+        subRouter.route().handler(this::queryStringDecoder);
 
         subRouter.get("/browse/*").handler(this::browseHandler);
         subRouter.get("/_status").handler(this::statusHandler);
 
         router.mountSubRouter("/", subRouter);
     }
+
+    private void queryStringDecoder(RoutingContext context) {
+        Map<String, String> decoded = new HashMap<String, String>();
+        context.request().params().names().forEach(param -> {
+            decoded.put(param, QueryStringDecoder.decodeComponent(context.request().params().get(param), Charset.forName("UTF-8")));
+        });
+        context.put("decodedParams", decoded);
+        context.next();
+    };
 
     private void statusHandler(RoutingContext context) {
         context.response().setStatusCode(200);
@@ -51,28 +66,30 @@ public class BrowseControllerImpl implements BrowseController {
     private void browseHandler(RoutingContext context) {
         JsonObject query = new JsonObject();
 
-        if (StringUtils.isNotBlank(context.request().getParam("superDepartment"))) {
-            query.put("superDepartment", context.request().getParam("superDepartment"));
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("superDepartment"))) {
+            query.put("superDepartment", context.<Map<String, String>>get("decodedParams").get("superDepartment"));
         }
 
-        if (StringUtils.isNotBlank(context.request().getParam("department"))) {
-            query.put("department", context.request().getParam("department"));
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("department"))) {
+            query.put("department", context.<Map<String, String>>get("decodedParams").get("department"));
         }
 
-        if (StringUtils.isNotBlank(context.request().getParam("aisle"))) {
-            query.put("aisle", context.request().getParam("aisle"));
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("aisle"))) {
+            query.put("aisle", context.<Map<String, String>>get("decodedParams").get("aisle"));
         }
 
-        if (StringUtils.isNotBlank(context.request().getParam("shelf"))) {
-            query.put("shelf", context.request().getParam("shelf"));
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("shelf"))) {
+            query.put("shelf", context.<Map<String, String>>get("decodedParams").get("shelf"));
         }
 
         if (query.isEmpty()) {
             query = null;
         }
 
-        browse(StringUtils.isNotBlank(context.request().getParam("geo")) ? context.request().getParam("geo") : "uk",
-                StringUtils.isNotBlank(context.request().getParam("distChannel")) ? context.request().getParam("distChannel") : "ghs",
+        browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?
+                        context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
+                        context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
                 query,
                 context.response());
     }

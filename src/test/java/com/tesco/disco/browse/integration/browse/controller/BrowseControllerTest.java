@@ -1,6 +1,5 @@
 package com.tesco.disco.browse.integration.browse.controller;
 
-import com.jayway.restassured.specification.RequestSpecification;
 import com.tesco.disco.browse.controller.BrowseController;
 import com.tesco.disco.browse.integration.AbstractElasticsearchTestVerticle;
 import com.tesco.disco.browse.integration.browse.BrowseTest;
@@ -13,26 +12,18 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.http.HttpClient;
-import io.vertx.rxjava.core.http.HttpClientRequest;
-import io.vertx.rxjava.core.http.HttpServerRequest;
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 import static com.jayway.restassured.RestAssured.given;
-import static com.jayway.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.hasItems;
 
 /**
@@ -93,7 +84,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testGenericBrowse(TestContext testContext) {
         given().port(9003)
-                .when().get("/browse")
+                .when().get("/browse/")
                 .then()
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
                         hasItems("Anti Dandruff Shampoo", "Kids Shampoo", "Professional Shampoo"))
@@ -114,7 +105,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testBrowseWithSuperDeparmentFilter(TestContext testContext) {
         given().port(9003)
-                .when().get("/browse?superDepartment=Health%20&%20Beauty")
+                .when().get("/browse/?superDepartment=Health%20%26%20Beauty")
                 .then()
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
                         hasItems("Anti Dandruff Shampoo", "Kids Shampoo", "Professional Shampoo"))
@@ -135,136 +126,40 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testBrowseWithDeparmentFilter(TestContext testContext) {
         given().port(9003)
-                .when().get("/browse?department=Haircare")
+                .when().get("/browse/?department=Haircare")
                 .then()
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
-                        hasItems("Blonde Shampoo & Conditioner"))
+                        hasItems("Anti Dandruff Shampoo", "Kids Shampoo", "Professional Shampoo"))
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[1].shelves.name",
-                        hasItems("Colour Conditioner"))
+                        hasItems("Blonde Shampoo & Conditioner"))
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[2].shelves.name",
-                        hasItems("Professional Styling"))
-                .body("uk.ghs.taxonomy.superDepartments[0].departments[1].aisles[0].shelves.name",
-                        hasItems("Womens Gift Sets"))
-                .body("uk.ghs.taxonomy.superDepartments[0].departments[1].aisles[1].shelves.name",
-                        hasItems("Tesco Shower Gel"))
-                .body("uk.ghs.taxonomy.superDepartments[0].departments[1].aisles[2].shelves.name",
-                        hasItems("Travel Sizes"));
-//
-//
-//        List<String> shelves = new ArrayList<String>();
-//        JsonObject response = httpClient.get("/browse/?department=Haircare").toObservable()
-//                .flatMap(resp -> {
-//                    return resp.toObservable();
-//                })
-//                .map(respBody -> {
-//                    return new JsonObject(respBody.toString());
-//                }).toBlocking().single();
-//        response.getJsonObject("uk")
-//                .getJsonObject("ghs")
-//                .getJsonObject("taxonomy")
-//                .getJsonArray("superDepartments")
-//                .forEach(superDepartment -> {
-//                    JsonObject superDep = new JsonObject(Json.encode(superDepartment));
-//                    superDep.getJsonArray("departments")
-//                            .forEach(department -> {
-//                                JsonObject jsonDep = new JsonObject(Json.encode(department));
-//                                jsonDep.getJsonArray("aisles")
-//                                        .forEach(aisle -> {
-//                                            JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
-//                                            jsonAisle.getJsonArray("shelf")
-//                                                    .forEach(shelf -> {
-//                                                        shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
-//                                                    });
-//                                        });
-//                            });
-//                });
-//        testContext.assertEquals(shelves.size(), 6);
-//        List<String> expected = new ArrayList<String>();
-//        expected.add("Colour Conditioner");
-//        expected.add("Professional Shampoo");
-//        expected.add("Anti Dandruff Shampoo");
-//        expected.add("Kids Shampoo");
-//        expected.add("Professional Styling");
-//        expected.add("Blonde Shampoo & Conditioner");
-//        testContext.assertTrue(shelves.containsAll(expected));
+                        hasItems("Colour Conditioner"))
+                .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[3].shelves.name",
+                        hasItems("Professional Styling"));
     }
 
     @Test
-    @Ignore
     public void testBrowseWithAisleFilter(TestContext testContext) {
-        List<String> shelves = new ArrayList<String>();
-        JsonObject response = httpClient.get("/browse/?aisle=Gift%20Sets").toObservable()
-                .flatMap(resp -> {
-                    return resp.toObservable();
-                })
-                .map(respBody -> {
-                    return new JsonObject(respBody.toString());
-                }).toBlocking().single();
-        response.getJsonObject("uk")
-                .getJsonObject("ghs")
-                .getJsonObject("taxonomy")
-                .getJsonArray("superDepartments")
-                .forEach(superDepartment -> {
-                    JsonObject superDep = new JsonObject(Json.encode(superDepartment));
-                    superDep.getJsonArray("departments")
-                            .forEach(department -> {
-                                JsonObject jsonDep = new JsonObject(Json.encode(department));
-                                jsonDep.getJsonArray("aisles")
-                                        .forEach(aisle -> {
-                                            JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
-                                            jsonAisle.getJsonArray("shelf")
-                                                    .forEach(shelf -> {
-                                                        shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
-                                                    });
-                                        });
-                            });
-                });
-        testContext.assertEquals(shelves.size(), 1);
-        List<String> expected = new ArrayList<String>();
-        expected.add("Womens Gift Sets");
-        testContext.assertTrue(shelves.containsAll(expected));
+        given().port(9003)
+                .when().get("/browse/?aisle=Gift%20Sets")
+                .then()
+                .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
+                        hasItems("Womens Gift Sets"));
     }
 
     @Test
-    @Ignore
     public void testBrowseWithShelfFilter(TestContext testContext) {
-        List<String> shelves = new ArrayList<String>();
-        JsonObject response = httpClient.get("/browse/?shelf==Womens%20Gift%20Sets").toObservable()
-                .flatMap(resp -> {
-                    return resp.toObservable();
-                })
-                .map(respBody -> {
-                    return new JsonObject(respBody.toString());
-                }).toBlocking().single();
-        response.getJsonObject("uk")
-                .getJsonObject("ghs")
-                .getJsonObject("taxonomy")
-                .getJsonArray("superDepartments")
-                .forEach(superDepartment -> {
-                    JsonObject superDep = new JsonObject(Json.encode(superDepartment));
-                    superDep.getJsonArray("departments")
-                            .forEach(department -> {
-                                JsonObject jsonDep = new JsonObject(Json.encode(department));
-                                jsonDep.getJsonArray("aisles")
-                                        .forEach(aisle -> {
-                                            JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
-                                            jsonAisle.getJsonArray("shelf")
-                                                    .forEach(shelf -> {
-                                                        shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
-                                                    });
-                                        });
-                            });
-                });
-        testContext.assertEquals(shelves.size(), 1);
-        List<String> expected = new ArrayList<String>();
-        expected.add("Womens Gift Sets");
-        testContext.assertTrue(shelves.containsAll(expected));
+        given().port(9003)
+                .when().get("/browse/?shelf=Womens%20Gift%20Sets")
+                .then()
+                .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
+                        hasItems("Womens Gift Sets"));
     }
 
     @Test
     public void testIncorrectBrowseEndpoint(TestContext testContext) {
         given().port(9003)
-                .when().get("/browsy?superDepartment=Something")
+                .when().get("/browsy/?superDepartment=Something")
                 .then()
                 .statusCode(404);
     }
@@ -274,13 +169,13 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
         given().port(9003)
                 .when().get("/browse?superDepartment=NonExistent")
                 .then()
-                .body("uk.ghs.taxonomy", Matchers.anEmptyMap());
+                .body("uk.ghs.taxonomy.keySet()", Matchers.emptyIterable());
     }
 
     @Test
     public void testNonExistentFilter(TestContext testContext) {
         given().port(9003)
-                .when().get("/browse?nonExistentFilter=something")
+                .when().get("/browse/?nonExistentFilter=something")
                 .then()
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
                         hasItems("Anti Dandruff Shampoo", "Kids Shampoo", "Professional Shampoo"))

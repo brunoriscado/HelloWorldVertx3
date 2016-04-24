@@ -54,21 +54,21 @@ dependencies {
     //Test
     testCompile "org.hamcrest:hamcrest-all:$hamcrestVersion"
     testCompile (group: "junit", name: "junit", version: "$junitVersion") {
-        exclude group: 'org.hamcrest'
+        exclude group: 'org.hamcrest', module: 'hamcrest-all'
     }
-    testCompile ("org.mockito:mockito-core:$mockitoVersion") {
-        exclude group: 'org.hamcrest'
+    testCompile ("org.mockito:mockito-all:$mockitoVersion") {
+        exclude group: 'org.hamcrest', module: 'hamcrest-all'
     }
     testCompile ("io.vertx:vertx-unit:$vertxVersion") {
-        exclude group: 'org.hamcrest'
+        exclude group: 'org.hamcrest', module: 'hamcrest-all'
     }
-    testCompile ("io.vertx:vertx-core:test-jar$vertxVersion") {
-        exclude group: 'org.hamcrest'
-    }
+//    testCompile ("io.vertx:vertx-core:test-jar$vertxVersion") {
+//        exclude group: 'org.hamcrest', module: 'hamcrest-all'
+//    }
     testCompile ("com.jayway.restassured:rest-assured:$restAssuredVersion") {
-        exclude group: 'org.hamcrest'
+        exclude group: 'org.hamcrest', module: 'hamcrest-all'
     }
     testCompile ("com.jayway.restassured:json-path:$restAssuredVersion") {
-        exclude group: 'org.hamcrest'
+        exclude group: 'org.hamcrest', module: 'hamcrest-all'
     }
 }
