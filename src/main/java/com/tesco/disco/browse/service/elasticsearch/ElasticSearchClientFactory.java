@@ -6,6 +6,10 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +18,8 @@ import java.util.List;
  * Created by bruno on 21/04/16.
  */
 public class ElasticSearchClientFactory {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ElasticSearchClientFactory.class);
+    private static final Marker MARKER = MarkerFactory.getMarker("FACTORY");
     public static ElasticSearchClientFactory INSTANCE;
     private Settings settings;
     private TransportClient client;
@@ -33,6 +39,7 @@ public class ElasticSearchClientFactory {
     }
 
     public void setup(JsonObject esConfig) {
+        LOGGER.info(MARKER, "Setup elasticsearch settings - cluster name: {}", esConfig.getString("cluster.name"));
         settings = ImmutableSettings.settingsBuilder()
                 .put("cluster.name", esConfig.getString("cluster.name"))
                 .put("client.transport.sniff", esConfig.getBoolean("client.transport.sniff"))
@@ -40,6 +47,7 @@ public class ElasticSearchClientFactory {
     }
 
     public TransportClient getElasticsearchClient() {
+        LOGGER.info(MARKER, "Creating Elasticsearch transport client instance");
         client = new TransportClient(settings);
         transportAddresses.forEach(address -> {
             JsonObject jsonAddress = new JsonObject(Json.encode(address));

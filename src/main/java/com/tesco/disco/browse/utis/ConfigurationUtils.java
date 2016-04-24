@@ -5,6 +5,8 @@ import io.vertx.rxjava.core.Vertx;
 import org.elasticsearch.common.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import rx.Observable;
 
 /**
@@ -12,6 +14,7 @@ import rx.Observable;
  */
 public class ConfigurationUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationUtils.class);
+    private static final Marker MARKER = MarkerFactory.getMarker("UTIL");
 
     public static final String ENV_PROPERTY_NAME = "CONFIG_ENV";
     public static final String ENV_SEPARATOR_CHAR = "-";
@@ -19,6 +22,7 @@ public class ConfigurationUtils {
 
     public static Observable<JsonObject> getConfig(Vertx vertx) {
         String environment = System.getenv(ENV_PROPERTY_NAME);
+        LOGGER.info(MARKER, "fetching configuration from json file on environment: {}", environment);
         JsonObject config = new JsonObject();
         LOGGER.info("Environment is : " + environment);
         String transformedConfigName;

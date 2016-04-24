@@ -1,5 +1,6 @@
 package com.tesco.disco.browse.service.impl;
 
+import com.tesco.disco.browse.exceptions.ServiceException;
 import com.tesco.disco.browse.model.taxonomy.*;
 import com.tesco.disco.browse.service.BrowseService;
 import com.tesco.disco.browse.service.elasticsearch.ElasticSearchClientFactory;
@@ -18,6 +19,8 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.script.ScriptService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import rx.Observable;
 
 import java.io.IOException;
@@ -29,6 +32,7 @@ import java.util.HashMap;
  */
 public class BrowseServiceImpl implements BrowseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseServiceImpl.class);
+    private static final Marker MARKER = MarkerFactory.getMarker("SERVICE");
     private static final String TAXONOMY = "taxonomy";
     private MessageConsumer<JsonObject> consumer;
     private TransportClient client;
@@ -51,7 +55,8 @@ public class BrowseServiceImpl implements BrowseService {
                                  String distChannel,
                                  JsonObject query,
                                  Handler<AsyncResult<JsonObject>> response) {
-        LOGGER.info("Fetching browse results for index: {}, templateId: {} - using query params: {} ", index, templateId, query != null ? query.encode() : "");
+        LOGGER.info(MARKER, "Fetching browse results for index: {}, templateId: {} - using query params: {} ",
+                index, templateId, query != null ? query.encode() : "");
         vertx.<JsonObject>executeBlockingObservable(handleBlocking -> {
             JsonObject result = null;
             SearchResponse res = client.prepareSearch()
@@ -67,7 +72,7 @@ public class BrowseServiceImpl implements BrowseService {
                 builder.endObject();
                 result = new JsonObject(builder.string());
             } catch (IOException e) {
-                handleBlocking.fail(new RuntimeException("oops"));
+                handleBlocking.fail(new ServiceException(e.getMessage()));
             }
             handleBlocking.complete(result);
         })
@@ -84,11 +89,11 @@ public class BrowseServiceImpl implements BrowseService {
                     response.handle(Future.succeededFuture(next));
                 },
                 error -> {
-                    LOGGER.error("log stuff");
+                    LOGGER.error(MARKER, "Error obtaining/mapping elasticsearch response");
                     response.handle(Future.failedFuture(error));
                 },
                 () -> {
-                    LOGGER.debug("Log stuff");
+                    LOGGER.debug(MARKER, "Finished sending elasticsearch browse request to controller verticle");
                 });
     }
 
@@ -98,7 +103,7 @@ public class BrowseServiceImpl implements BrowseService {
      * @return
 					*/
     public Observable<JsonObject> getBrowsingTaxonomyRx(JsonObject elasticResponse) {
-        LOGGER.debug("Mapping elastic aggregations response to API taxonomy");
+        LOGGER.debug(MARKER, "Mapping elastic aggregations response to API taxonomy");
         Taxonomy taxonomy = new Taxonomy();
         return Observable.just(elasticResponse)
                 .filter(elasticResp -> {
@@ -112,18 +117,22 @@ public class BrowseServiceImpl implements BrowseService {
                 })
                 .switchIfEmpty(Observable.error(new RuntimeException("SuperDepartments are empty")))
                 .flatMap(superDepartment -> {
+                    LOGGER.debug(MARKER, "Mapping superDepartments");
                     JsonObject sd = new JsonObject(Json.encode(superDepartment));
                     return Observable.from(sd.getJsonObject("departments").getJsonArray("buckets").getList().toArray())
                             .switchIfEmpty(Observable.error(new RuntimeException("Departments are empty")))
                             .flatMap(department -> {
+                                LOGGER.debug(MARKER, "Mapping departments");
                                 JsonObject dep = new JsonObject(Json.encode(department));
                                 return Observable.from(dep.getJsonObject("aisles").getJsonArray("buckets").getList().toArray())
                                         .switchIfEmpty(Observable.error(new RuntimeException("Aisles are empty")))
                                         .flatMap(aisle -> {
+                                            LOGGER.debug(MARKER, "Mapping aisles");
                                             JsonObject jAisle = new JsonObject(Json.encode(aisle));
                                             return Observable.from(jAisle.getJsonObject("shelves").getJsonArray("buckets").getList().toArray())
                                                     .switchIfEmpty(Observable.error(new RuntimeException("Shelves are empty")))
                                                     .map(shelf -> {
+                                                        LOGGER.debug(MARKER, "Mapping shelves");
                                                         JsonObject jShelf = new JsonObject(Json.encode(shelf));
                                                         return new Shelf(jShelf.getString("key"), jShelf.getInteger("doc_count"));
                                                     })
@@ -164,6 +173,7 @@ public class BrowseServiceImpl implements BrowseService {
     }
 
     public void unregister() {
+        LOGGER.info(MARKER, "Unregistering verticle address: {} from the eventbus", BrowseService.class.getName());
         ProxyHelper.unregisterService(consumer);
     }
 }
