@@ -1,6 +1,8 @@
 package com.tesco.disco.browse.controller.impl;
 
 import com.tesco.disco.browse.controller.BrowseController;
+import com.tesco.disco.browse.exceptions.ClientException;
+import com.tesco.disco.browse.exceptions.ServiceException;
 import com.tesco.disco.browse.service.BrowseService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.http.HttpHeaders;
@@ -68,27 +70,21 @@ public class BrowseControllerImpl implements BrowseController {
 
     private void browseHandler(RoutingContext context) {
         JsonObject query = new JsonObject();
-
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("superDepartment"))) {
             query.put("superDepartment", context.<Map<String, String>>get("decodedParams").get("superDepartment"));
         }
-
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("department"))) {
             query.put("department", context.<Map<String, String>>get("decodedParams").get("department"));
         }
-
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("aisle"))) {
             query.put("aisle", context.<Map<String, String>>get("decodedParams").get("aisle"));
         }
-
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("shelf"))) {
             query.put("shelf", context.<Map<String, String>>get("decodedParams").get("shelf"));
         }
-
         if (query.isEmpty()) {
             query = null;
         }
-
         browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?
                         context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
@@ -107,15 +103,17 @@ public class BrowseControllerImpl implements BrowseController {
                     if (esResponse.succeeded()) {
                         return Observable.just(esResponse.result());
                     } else {
-                        return Observable.error(new RuntimeException("oops"));
+                        return Observable.error(esResponse.cause());
                     }
                 })
                 .subscribe(
                         next -> {
+                            LOGGER.debug(MARKER, "response from elastic browse service: {}", next.encode());
                             response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
                             response.write(next.encode());
                         },
                         error -> {
+                            LOGGER.error(MARKER, "error obtaining response from elastic browse service verticle: {}", error.getMessage());
                             handlerError(error, response);
                         },
                         () -> {
@@ -125,8 +123,13 @@ public class BrowseControllerImpl implements BrowseController {
     }
 
     private void handlerError(Throwable error,  HttpServerResponse response) {
-        //TODO - do stuff, check error type and respond accordingly
-        response.setStatusCode(500);
-        response.end("booomm");
+        if (error instanceof ClientException) {
+            response.setStatusCode(400);
+        } else if (error instanceof ClientException) {
+            response.setStatusCode(500);
+        } else {
+            response.setStatusCode(500);
+        }
+        response.end(new JsonObject().put("error", error.getMessage()).encode());
     }
 }
