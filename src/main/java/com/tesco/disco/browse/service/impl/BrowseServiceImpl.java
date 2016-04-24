@@ -88,6 +88,7 @@ public class BrowseServiceImpl implements BrowseService {
                 },
                 error -> {
                     LOGGER.error("log stuff");
+                    response.handle(Future.failedFuture(error));
                 },
                 () -> {
                     LOGGER.debug("Log stuff");

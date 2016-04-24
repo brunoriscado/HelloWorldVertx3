@@ -3,6 +3,8 @@ package com.tesco.disco.browse.controller.impl;
 import com.tesco.disco.browse.controller.BrowseController;
 import com.tesco.disco.browse.service.BrowseService;
 import io.vertx.core.AsyncResult;
+import io.vertx.core.http.HttpHeaders;
+import io.vertx.core.http.impl.MimeMapping;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rx.java.ObservableHandler;
 import io.vertx.rx.java.RxHelper;
@@ -69,13 +71,13 @@ public class BrowseControllerImpl implements BrowseController {
             query = null;
         }
 
-        browse(context.request().getParam("geo") == null ? context.request().getParam("geo") : "uk",
-                context.request().getParam("distChannel") == null ? context.request().getParam("distChannel") : "ghs",
+        browse(StringUtils.isNotBlank(context.request().getParam("geo")) ? context.request().getParam("geo") : "uk",
+                StringUtils.isNotBlank(context.request().getParam("distChannel")) ? context.request().getParam("distChannel") : "ghs",
                 query,
                 context.response());
     }
 
-    //Annotate this method so that swagger definitions can be generated
+    //TODO - Annotate this method so that swagger definitions can be generated
     public void browse(String geo, String distChannel, JsonObject payload, HttpServerResponse response) {
         ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
         browseService.getBrowseResults(INDEX, TEMPLATE_ID, geo, distChannel, payload, handler.toHandler());
@@ -89,6 +91,7 @@ public class BrowseControllerImpl implements BrowseController {
                 })
                 .subscribe(
                         next -> {
+                            response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
                             response.write(next.encode());
                         },
                         error -> {
@@ -102,5 +105,7 @@ public class BrowseControllerImpl implements BrowseController {
 
     private void handlerError(Throwable error,  HttpServerResponse response) {
         //TODO - do stuff, check error type and respond accordingly
+        response.setStatusCode(500);
+        response.end("booomm");
     }
 }
