@@ -10,21 +10,25 @@ import io.vertx.core.json.JsonObject;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Shelf implements SearchSerializable {
     private String name;
-    private long total;
+    private Long total;
 
     public Shelf() {
     }
 
-    public Shelf(String name, long total) {
+    public Shelf(String name) {
+        this.name = name;
+    }
+
+    public Shelf(String name, Long total) {
         this.name = name;
         this.total = total;
     }
 
-    public long getTotal() {
+    public Long getTotal() {
         return total;
     }
 
-    public void setTotal(long total) {
+    public void setTotal(Long total) {
         this.total = total;
     }
 

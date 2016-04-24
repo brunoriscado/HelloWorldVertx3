@@ -28,16 +28,16 @@ public class ElasticTaxonomyMappingTest {
 												"[{\"key\":\"Tesco Shower Gel\",\"doc_count\":1}]}},{\"key\":\"Toiletries for Travel\",\"doc_count\":1,\"shelves\":" +
 												"{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"Travel Sizes\",\"doc_count\":1}]}}]}}]}}]}}}";
 
-				private static final String EXPECTED_PAYLOAD_RESULT = "{\"superDepartments\":[{\"name\":\"Health & Beauty\",\"total\":9,\"departments\":" +
-												"[{\"name\":\"Haircare\",\"total\":6,\"aisles\":[{\"name\":\"Shampoo\",\"total\":3,\"shelves\":" +
-												"[{\"name\":\"Anti Dandruff Shampoo\",\"total\":1},{\"name\":\"Kids Shampoo\",\"total\":1}," +
-												"{\"name\":\"Professional Shampoo\",\"total\":1}]},{\"name\":\"Colour Haircare\",\"total\":1,\"shelves\":" +
-												"[{\"name\":\"Blonde Shampoo & Conditioner\",\"total\":1}]},{\"name\":\"Conditioner\",\"total\":1,\"shelves\":" +
-												"[{\"name\":\"Colour Conditioner\",\"total\":1}]},{\"name\":\"Professional Haircare\",\"total\":1,\"shelves\":" +
-												"[{\"name\":\"Professional Styling\",\"total\":1}]}]},{\"name\":\"Shower, Bath & Soap\",\"total\":3,\"aisles\":" +
-												"[{\"name\":\"Gift Sets\",\"total\":1,\"shelves\":[{\"name\":\"Womens Gift Sets\",\"total\":1}]}," +
-												"{\"name\":\"Shower Gel\",\"total\":1,\"shelves\":[{\"name\":\"Tesco Shower Gel\",\"total\":1}]}," +
-												"{\"name\":\"Toiletries for Travel\",\"total\":1,\"shelves\":[{\"name\":\"Travel Sizes\",\"total\":1}]}]}]}]}";
+				private static final String EXPECTED_PAYLOAD_RESULT = "{\"superDepartments\":[{\"name\":\"Health & Beauty\",\"departments\":" +
+												"[{\"name\":\"Haircare\",\"aisles\":[{\"name\":\"Shampoo\",\"shelves\":" +
+												"[{\"name\":\"Anti Dandruff Shampoo\"},{\"name\":\"Kids Shampoo\"}," +
+												"{\"name\":\"Professional Shampoo\"}]},{\"name\":\"Colour Haircare\",\"shelves\":" +
+												"[{\"name\":\"Blonde Shampoo & Conditioner\"}]},{\"name\":\"Conditioner\",\"shelves\":" +
+												"[{\"name\":\"Colour Conditioner\"}]},{\"name\":\"Professional Haircare\",\"shelves\":" +
+												"[{\"name\":\"Professional Styling\"}]}]},{\"name\":\"Shower, Bath & Soap\",\"aisles\":" +
+												"[{\"name\":\"Gift Sets\",\"shelves\":[{\"name\":\"Womens Gift Sets\"}]}," +
+												"{\"name\":\"Shower Gel\",\"shelves\":[{\"name\":\"Tesco Shower Gel\"}]}," +
+												"{\"name\":\"Toiletries for Travel\",\"shelves\":[{\"name\":\"Travel Sizes\"}]}]}]}]}";
 
 				@Test
 				public void testMappingFromElasticResponseRX() {

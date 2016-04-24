@@ -134,34 +134,24 @@ public class BrowseServiceImpl implements BrowseService {
                                                     .map(shelf -> {
                                                         LOGGER.debug(MARKER, "Mapping shelves");
                                                         JsonObject jShelf = new JsonObject(Json.encode(shelf));
-                                                        return new Shelf(jShelf.getString("key"), jShelf.getInteger("doc_count"));
+                                                        return new Shelf(jShelf.getString("key"));
                                                     })
                                                     .collect(() -> new ArrayList<Shelf>(),
                                                             (shelves, she) -> shelves.add(she))
                                                     .map(shelves -> {
-                                                        return new Aisle(
-                                                                jAisle.getString("key"),
-                                                                jAisle.getInteger("doc_count"))
-                                                                        .addShelves(shelves);
+                                                        return new Aisle(jAisle.getString("key")).addShelves(shelves);
                                                     });
                                         })
                                         .collect(() -> new ArrayList<Aisle>(),
                                                 (aisles, aisle) -> aisles.add(aisle))
                                         .map(aisles -> {
-                                            return new Department(
-                                                    dep.getString("key"),
-                                                    dep.getInteger("doc_count"))
-                                                            .addAisles(aisles);
-
+                                            return new Department(dep.getString("key")).addAisles(aisles);
                                         });
                             })
                             .collect(() -> new ArrayList<Department>(),
                                     (departments, department) -> departments.add(department))
                             .map(departments -> {
-                                return new SuperDepartment(
-                                        sd.getString("key"),
-                                        sd.getInteger("doc_count"))
-                                                .addDepartments(departments);
+                                return new SuperDepartment(sd.getString("key")).addDepartments(departments);
                             })
                             .collect(() -> new ArrayList<SuperDepartment>(),
                                     (superDeps, superDep) -> superDeps.add(superDep))
