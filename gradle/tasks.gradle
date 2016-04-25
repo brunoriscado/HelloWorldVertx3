@@ -80,10 +80,47 @@ compileJava() {
     dependsOn generatePom
 }
 
+distributions {
+    main {
+        baseName = rootProject.name
+        contents {
+            into('playbooks'){
+                from { 'playbooks'}
+            }
+            into('providers'){
+                from { 'providers'}
+            }
+            into('scripts'){
+                from('assign-resource-to-subnet.sh')
+                from('authenticate.sh')
+                from('backup-jenkins.sh')
+                from('build.sh')
+                from('capture.sh')
+                from('common.sh')
+                from('define-parameters.sh')
+                from('define-region.sh')
+                from('delete.sh')
+                from('deploy.sh')
+                from('gradlew.sh')
+                from('instantiate.sh')
+                from('instantiate-download-template.sh')
+                from('instantiate-imperative.sh')
+                from('monitor.sh')
+                from('provision.sh')
+                from('set-storage-key.sh')
+                from('upload-template.sh')
 
+            }
+        }
 
+    }
+}
 
+assemble.dependsOn(distZip)
 
+artifacts {
+    archives distZip
+}
 
 
 // Release Plugin configuration ends
