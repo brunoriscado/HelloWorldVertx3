@@ -33,7 +33,7 @@ public class BrowseControllerImpl implements BrowseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseControllerImpl.class.getName());
     private static final Marker MARKER = MarkerFactory.getMarker("CONTROLLER");
     private static final String INDEX = "ghs.taxonomy";
-    private static final String TEMPLATE_ID = "ghs.taxonomy.default";
+    private static final String TEMPLATE_ID_SUFIX = "default";
     private Vertx vertx;
     private BrowseService browseService;
 
@@ -85,7 +85,11 @@ public class BrowseControllerImpl implements BrowseController {
         if (query.isEmpty()) {
             query = null;
         }
-        browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?
+        browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("index")) ?
+                        context.<Map<String, String>>get("decodedParams").get("index") : INDEX,
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("config")) ?
+                        context.<Map<String, String>>get("decodedParams").get("config") : TEMPLATE_ID_SUFIX,
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?
                         context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
                         context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
@@ -94,10 +98,10 @@ public class BrowseControllerImpl implements BrowseController {
     }
 
     //TODO - Annotate this method so that swagger definitions can be generated
-    public void browse(String geo, String distChannel, JsonObject payload, HttpServerResponse response) {
+    public void browse(String index, String templateId, String geo, String distChannel, JsonObject payload, HttpServerResponse response) {
         LOGGER.info(MARKER, "Handling browse request using query params: {}", payload != null ? payload.encode() : "");
         ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
-        browseService.getBrowseResults(INDEX, TEMPLATE_ID, geo, distChannel, payload, handler.toHandler());
+        browseService.getBrowseResults(index, templateId, geo, distChannel, payload, handler.toHandler());
         response.setChunked(true);
         handler.flatMap(esResponse -> {
                     if (esResponse.succeeded()) {

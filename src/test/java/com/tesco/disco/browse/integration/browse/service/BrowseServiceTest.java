@@ -29,7 +29,7 @@ import java.util.List;
 public class BrowseServiceTest extends AbstractElasticsearchTestVerticle implements BrowseTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseServiceTest.class);
     private static final String INDEX = "ghs.taxonomy";
-    private static final String TEMPLATE_ID = "ghs.taxonomy.default";
+    private static final String TEMPLATE_ID = "default";
     private static final String GEO = "uk";
     private static final String DIST_CHANNEL = "ghs";
     static Vertx vertx;
