@@ -1,3 +1,5 @@
+import java.util.regex.Matcher
+
 def generateSrcPath="src/main/java/generated-src"
 def generatedSrcDir = file("src/main/java/generated-src")
 
@@ -19,6 +21,16 @@ task generateServiceProxy(type: JavaCompile, description: 'Generates EBServicePr
 
             "-AoutputDirectory=$generateSrcPath"
     ]
+}
+
+jacoco {
+    toolVersion = "0.7.5.201505241946"
+}
+
+jacocoTestReport {
+    doFirst {
+        classDirectories = fileTree(dir: "${buildDir}/classes/main/").include(generatedSources)
+    }
 }
 
 tasks.withType(JavaCompile){
@@ -80,89 +92,6 @@ compileJava() {
     dependsOn generatePom
 }
 
-distributions {
-    main {
-        baseName = rootProject.name
-        contents {
-            into('playbooks'){
-                from { 'playbooks'}
-            }
-            into('providers'){
-                from { 'providers'}
-            }
-            into('scripts'){
-                from('assign-resource-to-subnet.sh')
-                from('authenticate.sh')
-                from('backup-jenkins.sh')
-                from('build.sh')
-                from('capture.sh')
-                from('common.sh')
-                from('define-parameters.sh')
-                from('define-region.sh')
-                from('delete.sh')
-                from('deploy.sh')
-                from('gradlew.sh')
-                from('instantiate.sh')
-                from('instantiate-download-template.sh')
-                from('instantiate-imperative.sh')
-                from('monitor.sh')
-                from('provision.sh')
-                from('set-storage-key.sh')
-                from('upload-template.sh')
-
-            }
-        }
-
-    }
-}
-
-assemble.dependsOn(distZip)
-
-artifacts {
-    archives distZip
-}
-
-
-// Release Plugin configuration ends
-
-def configurePom(def pom) {
-    pom.project {
-        name rootProject.name
-        description 'Description of your module here'
-        inceptionYear '2013'
-        packaging 'jar'
-
-        url 'Your project url'
-
-        developers {
-            developer {
-                id 'developer id (e.g. github username)'
-                name 'developer name'
-                email 'developer email'
-            }
-        }
-
-        scm {
-            url 'url to your repo - e.g. github repo url'
-        }
-
-        licenses {
-            license {
-                name 'The name of the license used, e.g.: The Apache Software License, Version 2.0'
-                url 'URl to the license, e.g.: http://www.apache.org/licenses/LICENSE-2.0.txt'
-                distribution 'repo'
-            }
-        }
-
-        properties {
-            setProperty('project.build.sourceEncoding', 'UTF8')
-        }
-    }
-}
-
-
-
-
 if (!hasProperty('userName')) {
     ext.userName = ''
 }
@@ -170,16 +99,12 @@ if (!hasProperty('password')) {
     ext.password = ''
 }
 if (!hasProperty('nexusReleaseRepo')) {
-    ext.nexusReleaseRepo = "http://releases"
+    ext.nexusReleaseRepo = "http://ess-nexus.westeurope.cloudapp.azure.com:8080/nexus/content/repositories/releases/"
 }
 
 if (!hasProperty('nexusSnapshotsRepo')) {
-    ext.nexusSnapshotsRepo = "http://snapshots"
+    ext.nexusSnapshotsRepo = "http://ess-nexus.westeurope.cloudapp.azure.com:8080/nexus/content/repositories/snapshots/"
 }
-
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// maven task configuration
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
@@ -188,34 +113,27 @@ signing {
     sign configurations.archives
 }
 
-uploadArchives {
-    group 'build'
-    description = "Does a maven deploy of archives artifacts"
-
-    repositories {
-        mavenDeployer {
-            // setUniqueVersion(false)
-
-            configuration = configurations.archives
-
-            repository(url: "$nexusReleaseRepo") {
-                authentication(userName: userName, password: password)
-            }
-
-            snapshotRepository(url: "$nexusSnapshotsRepo") {
-                authentication(userName: userName, password: password)
-            }
-
-            pom.artifactId = "$mavenArtifactId"
-
-            if (isReleaseVersion) {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-            }
-
-            configurePom(pom)
-        }
+repositories {
+    flatDir {
+        name "fileRepo"
+        dirs "repo"
     }
 }
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// configuration methods
+uploadArchives {
+    repositories {
+        add project.repositories.fileRepo
+        mavenDeployer {
+            repository(url: "$nexusReleaseRepo") {
+                authentication(userName: "admin", password: "adm1n.Pa55")
+            }
+
+            snapshotRepository(url: "$nexusSnapshotsRepo") {
+                authentication(userName: "admin", password: "adm1n.Pa55")
+            }
+            pom.version = this.properties['version']
+            pom.artifactId = this.properties['mavenArtifactId']
+            pom.groupId = this.properties['group']
+        }
+    }
+}

@@ -13,11 +13,10 @@ plugins{
     id "maven"
     id 'base'
     id 'signing'
-    id 'distribution'
     id 'jacoco'
     id "net.researchgate.release" version "2.1.2"
 }
-apply plugin: "net.researchgate.release"
+//apply plugin: "net.researchgate.release"
 
 idea {
     module {
@@ -35,14 +34,6 @@ version = this.properties['version']
 
 test {
     systemProperties 'property': 'value'
-}
-
-uploadArchives {
-    repositories {
-       flatDir {
-           dirs 'repos'
-       }
-    }
 }
 
 release {
@@ -70,19 +61,6 @@ release {
     }
 
 }
-
-jacoco {
-    toolVersion = "0.7.5.201505241946"
-}
-
-jacocoTestReport {
-    doFirst {
-        classDirectories = fileTree(dir: "${buildDir}/classes/main/").include(generatedSources)
-    }
-}
-
-//def generateSrcPath="$buildDir/generated-src"
-//def generatedSrcDir = file("$buildDir/generated-src")
 
 compileJava.dependsOn generateServiceProxy
 afterReleaseBuild.dependsOn uploadArchives
