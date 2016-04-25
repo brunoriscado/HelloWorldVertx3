@@ -65,6 +65,7 @@ public class BrowseControllerImpl implements BrowseController {
 
     private void statusHandler(RoutingContext context) {
         context.response().setStatusCode(200);
+        context.response().headers().set(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("txt"));
         context.response().end("keepalive");
     }
 
