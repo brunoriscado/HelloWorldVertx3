@@ -125,11 +125,11 @@ uploadArchives {
         add project.repositories.fileRepo
         mavenDeployer {
             repository(url: "$nexusReleaseRepo") {
-                authentication(userName: "admin", password: "adm1n.Pa55")
+                authentication(userName: userName, password: password)
             }
 
             snapshotRepository(url: "$nexusSnapshotsRepo") {
-                authentication(userName: "admin", password: "adm1n.Pa55")
+                authentication(userName: userName, password: password)
             }
             pom.version = this.properties['version']
             pom.artifactId = this.properties['mavenArtifactId']
