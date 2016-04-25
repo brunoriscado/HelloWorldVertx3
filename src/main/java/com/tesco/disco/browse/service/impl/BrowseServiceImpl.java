@@ -34,6 +34,7 @@ public class BrowseServiceImpl implements BrowseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseServiceImpl.class);
     private static final Marker MARKER = MarkerFactory.getMarker("SERVICE");
     private static final String TAXONOMY = "taxonomy";
+    private static final String TEMPLATE_ID_PREFIX = "ghs.taxonomy.";
     private MessageConsumer<JsonObject> consumer;
     private TransportClient client;
     private Vertx vertx;
@@ -61,7 +62,7 @@ public class BrowseServiceImpl implements BrowseService {
             JsonObject result = null;
             SearchResponse res = client.prepareSearch()
                     .setIndices(index)
-                    .setTemplateName(templateId)
+                    .setTemplateName(TEMPLATE_ID_PREFIX + templateId)
                     .setTemplateType(ScriptService.ScriptType.INDEXED)
                     .setTemplateParams(query == null ? new HashMap<String, Object>() : query.getMap())
                     .execute().actionGet();
