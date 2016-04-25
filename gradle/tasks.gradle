@@ -51,12 +51,12 @@ test {
     }
 }
 
-//jar {
-//    from sourceSets.main.allSource
-//    baseName = this.properties['mavenArtifactId']
-//    group = this.properties['group']
-//    version = this.properties['version']
-//}
+jar {
+    from sourceSets.main.allSource
+    baseName = this.properties['mavenArtifactId']
+    group = this.properties['group']
+    version = this.properties['version']
+}
 
 task fatJar(type: Jar) {
     manifest {
@@ -66,9 +66,9 @@ task fatJar(type: Jar) {
     baseName = this.properties['mavenArtifactId']
     group = this.properties['group']
     version = this.properties['version']
-    //classifier = 'all'
+    classifier = 'all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-//    with jar
+    with jar
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
