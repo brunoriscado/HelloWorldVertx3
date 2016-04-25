@@ -1,5 +1,6 @@
 repositories {
-    mavenLocal()
+    maven { url 'http://ess-nexus.westeurope.cloudapp.azure.com:8080/nexus/content/repositories/releases/' }
+    maven { url 'http://ess-nexus.westeurope.cloudapp.azure.com:8080/nexus/content/repositories/snapshots/' }
     mavenCentral()
     maven {
         url = 'http://oss.sonatype.org/content/repositories/snapshots/'

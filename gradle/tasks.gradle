@@ -79,3 +79,106 @@ task generatePom << {
 compileJava() {
     dependsOn generatePom
 }
+
+
+
+
+
+
+
+// Release Plugin configuration ends
+
+def configurePom(def pom) {
+    pom.project {
+        name rootProject.name
+        description 'Description of your module here'
+        inceptionYear '2013'
+        packaging 'jar'
+
+        url 'Your project url'
+
+        developers {
+            developer {
+                id 'developer id (e.g. github username)'
+                name 'developer name'
+                email 'developer email'
+            }
+        }
+
+        scm {
+            url 'url to your repo - e.g. github repo url'
+        }
+
+        licenses {
+            license {
+                name 'The name of the license used, e.g.: The Apache Software License, Version 2.0'
+                url 'URl to the license, e.g.: http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+
+        properties {
+            setProperty('project.build.sourceEncoding', 'UTF8')
+        }
+    }
+}
+
+
+
+
+if (!hasProperty('userName')) {
+    ext.userName = ''
+}
+if (!hasProperty('password')) {
+    ext.password = ''
+}
+if (!hasProperty('nexusReleaseRepo')) {
+    ext.nexusReleaseRepo = "http://releases"
+}
+
+if (!hasProperty('nexusSnapshotsRepo')) {
+    ext.nexusSnapshotsRepo = "http://snapshots"
+}
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// maven task configuration
+
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+uploadArchives {
+    group 'build'
+    description = "Does a maven deploy of archives artifacts"
+
+    repositories {
+        mavenDeployer {
+            // setUniqueVersion(false)
+
+            configuration = configurations.archives
+
+            repository(url: "$nexusReleaseRepo") {
+                authentication(userName: userName, password: password)
+            }
+
+            snapshotRepository(url: "$nexusSnapshotsRepo") {
+                authentication(userName: userName, password: password)
+            }
+
+            pom.artifactId = "$mavenArtifactId"
+
+            if (isReleaseVersion) {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            }
+
+            configurePom(pom)
+        }
+    }
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// configuration methods
