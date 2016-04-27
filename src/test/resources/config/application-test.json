@@ -29,6 +29,16 @@
                     "apiDocsResourcePackages": ["com.tesco.disco.browse.controller.impl"]
                 }
             }
+        },
+        {
+            "main": "service:com.tesco.disco.browse.controller.vertx.ProbeVerticle",
+            "options": {
+                "config": {
+                    "port": 8091,
+                    "host": "localhost",
+                    "jenkins.address": "10.0.1.5"
+                }
+            }
         }
     ]
 }
