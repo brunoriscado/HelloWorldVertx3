@@ -134,7 +134,6 @@ uploadArchives {
             pom.version = this.properties['version']
             pom.artifactId = this.properties['mavenArtifactId']
             pom.groupId = this.properties['group']
-            pom.classifier = "all"
 
             pom.project {
                 name rootProject.name
