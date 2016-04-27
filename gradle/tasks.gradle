@@ -23,6 +23,14 @@ task generateServiceProxy(type: JavaCompile, description: 'Generates EBServicePr
     ]
 }
 
+def generatedSources = ['com/tesco/**']
+
+test {
+    jacoco {
+        includes = generatedSources
+    }
+}
+
 jacoco {
     toolVersion = "0.7.5.201505241946"
 }
