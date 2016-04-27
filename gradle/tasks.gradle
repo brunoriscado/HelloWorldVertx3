@@ -134,11 +134,12 @@ uploadArchives {
             pom.version = this.properties['version']
             pom.artifactId = this.properties['mavenArtifactId']
             pom.groupId = this.properties['group']
+            pom.classifier = "all"
 
             pom.project {
                 name rootProject.name
-                description 'Description of your module here'
-                inceptionYear '2013'
+                description 'Cool app for browsing and stuff'
+                inceptionYear '2016'
                 packaging 'jar'
 
                 url 'Your project url'
