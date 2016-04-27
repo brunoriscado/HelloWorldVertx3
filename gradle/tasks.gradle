@@ -131,6 +131,7 @@ uploadArchives {
             snapshotRepository(url: "$nexusSnapshotsRepo") {
                 authentication(userName: userName, password: password)
             }
+            pom.latest = this.properties['version']
             pom.version = this.properties['version']
             pom.artifactId = this.properties['mavenArtifactId']
             pom.groupId = this.properties['group']

@@ -8,8 +8,12 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
+import io.vertx.rx.java.ObservableHandler;
+import io.vertx.rx.java.RxHelper;
 import io.vertx.rxjava.core.Vertx;
+import io.vertx.rxjava.core.buffer.Buffer;
 import io.vertx.rxjava.core.http.HttpClient;
+import io.vertx.rxjava.core.http.HttpClientRequest;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -78,17 +82,17 @@ public class ProbeTest {
 //												context.assertEquals(400, response.statusCode());
 //												ObservableHandler<Buffer> handleBody = RxHelper.observableHandler();
 //												response.bodyHandler(handleBody.toHandler());
-//            handleBody
-//																				.flatMap()
-//
-//
-//																				body -> {
-//																String actual = body.toString();
-//																String expected = "This server probe status is false";
-//																context.assertEquals(expected, actual, "Probe server should start disabled");
-//
-//												});
+//            handleBody.flatMap(body -> {
+//																				String actual = body.toString();
+//																				String expected = "This server probe status is false";
+//																				context.assertEquals(expected, actual, "Probe server should start disabled");
+//																    return body;
+//																})
+//																.flatMap()
 //								});
+
+
+
 //								HttpClientRequest request = vertx.createHttpClient().setPort(8090).exceptionHandler(handler).get("/", new Handler<HttpClientResponse>() {
 //
 //												@Override
