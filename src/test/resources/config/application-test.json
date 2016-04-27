@@ -9,7 +9,7 @@
                     "elasticsearch": {
                         "transport.addresses": [
                             {
-                                "hostname": "localhost",
+                                "hostname": "0.0.0.0",
                                 "port": 9350
                             }
                         ],
@@ -25,7 +25,7 @@
                 "config": {
                     "context": "com.tesco.disco.browse.controller.context.BrowseAPIContextImpl",
                     "port": 9003,
-                    "host": "localhost",
+                    "host": "0.0.0.0",
                     "apiDocsResourcePackages": ["com.tesco.disco.browse.controller.impl"]
                 }
             }
@@ -35,7 +35,7 @@
             "options": {
                 "config": {
                     "port": 8091,
-                    "host": "localhost",
+                    "host": "0.0.0.0",
                     "jenkins.address": "10.0.1.5"
                 }
             }
