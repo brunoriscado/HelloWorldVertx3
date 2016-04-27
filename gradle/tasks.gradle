@@ -80,7 +80,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 }
 
 artifacts {
-    archives(fatJar, sourcesJar)
+    archives fatJar, sourcesJar
 }
 
 task generatePom << {
@@ -122,8 +122,9 @@ repositories {
 
 uploadArchives {
     repositories {
-        add project.repositories.fileRepo
         mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
             repository(url: "$nexusReleaseRepo") {
                 authentication(userName: userName, password: password)
             }
@@ -131,42 +132,87 @@ uploadArchives {
             snapshotRepository(url: "$nexusSnapshotsRepo") {
                 authentication(userName: userName, password: password)
             }
-            pom.version = this.properties['version']
-            pom.artifactId = this.properties['mavenArtifactId']
-            pom.groupId = this.properties['group']
 
             pom.project {
-                name rootProject.name
-                description 'Cool app for browsing and stuff'
-                inceptionYear '2016'
+                name 'Example Application'
                 packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'A application used as an example on how to set up pushing  its components to the Central Repository.'
+                url 'http://www.example.com/example-application'
 
-                url 'Your project url'
-
-                developers {
-                    developer {
-                        id 'developer id (e.g. github username)'
-                        name 'developer name'
-                        email 'developer email'
-                    }
-                }
-
-                scm {
-                    url 'url to your repo - e.g. github repo url'
-                }
+//                scm {
+//                    connection 'scm:svn:http://foo.googlecode.com/svn/trunk/'
+//                    developerConnection 'scm:svn:https://foo.googlecode.com/svn/trunk/'
+//                    url 'http://foo.googlecode.com/svn/trunk/'
+//                }
 
                 licenses {
                     license {
-                        name 'The name of the license used, e.g.: The Apache Software License, Version 2.0'
-                        url 'URl to the license, e.g.: http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
 
-                properties {
-                    setProperty('project.build.sourceEncoding', 'UTF8')
+                developers {
+                    developer {
+                        id 'manfred'
+                        name 'Manfred Moser'
+                        email 'manfred@sonatype.com'
+                    }
                 }
             }
         }
     }
 }
+
+
+//uploadArchives {
+//    repositories {
+//        add project.repositories.fileRepo
+//        mavenDeployer {
+//            repository(url: "$nexusReleaseRepo") {
+//                authentication(userName: userName, password: password)
+//            }
+//
+//            snapshotRepository(url: "$nexusSnapshotsRepo") {
+//                authentication(userName: userName, password: password)
+//            }
+//            pom.version = this.properties['version']
+//            pom.artifactId = this.properties['mavenArtifactId']
+//            pom.groupId = this.properties['group']
+//
+//            pom.project {
+//                name rootProject.name
+//                description 'Cool app for browsing and stuff'
+//                inceptionYear '2016'
+//                packaging 'jar'
+//
+//                url 'Your project url'
+//
+//                developers {
+//                    developer {
+//                        id 'developer id (e.g. github username)'
+//                        name 'developer name'
+//                        email 'developer email'
+//                    }
+//                }
+//
+//                scm {
+//                    url 'url to your repo - e.g. github repo url'
+//                }
+//
+//                licenses {
+//                    license {
+//                        name 'The name of the license used, e.g.: The Apache Software License, Version 2.0'
+//                        url 'URl to the license, e.g.: http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                        distribution 'repo'
+//                    }
+//                }
+//
+//                properties {
+//                    setProperty('project.build.sourceEncoding', 'UTF8')
+//                }
+//            }
+//        }
+//    }
+//}
