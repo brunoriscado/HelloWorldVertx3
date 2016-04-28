@@ -76,6 +76,7 @@ public class ProbeTest {
 				}
 
 				@Test
+				@Ignore
 				public void shouldReturnProbeStatusEnabled(TestContext context) {
 								Async async = context.async();
 								ObservableHandler<HttpClientResponse> respHandler = RxHelper.observableHandler();
