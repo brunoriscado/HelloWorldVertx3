@@ -21,7 +21,7 @@ public class ConfigurationUtils {
     public static final String APPLICATION_CONFIG_NAME = "application";
 
     public static Observable<JsonObject> getConfig(Vertx vertx) {
-        String environment = System.getenv(ENV_PROPERTY_NAME);
+        String environment = System.getProperty(ENV_PROPERTY_NAME);
         LOGGER.info(MARKER, "fetching configuration from json file on environment: {}", environment);
         JsonObject config = new JsonObject();
         LOGGER.info("Environment is : " + environment);
