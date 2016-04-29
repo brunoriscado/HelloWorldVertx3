@@ -2,10 +2,12 @@ package com.tesco.disco.browse.controller.impl;
 
 import com.tesco.disco.browse.controller.BrowseController;
 import com.tesco.disco.browse.exceptions.ClientException;
+import com.tesco.disco.browse.model.enumerations.FieldsEnum;
 import com.tesco.disco.browse.service.BrowseService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.impl.MimeMapping;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rx.java.ObservableHandler;
 import io.vertx.rx.java.RxHelper;
@@ -22,7 +24,9 @@ import org.slf4j.MarkerFactory;
 import rx.Observable;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -83,6 +87,37 @@ public class BrowseControllerImpl implements BrowseController {
         }
     }
 
+    private void validateFields(RoutingContext context, JsonObject query) {
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("fields"))) {
+            JsonArray array = new JsonArray();
+            List<String> fields = Arrays.asList(context.<Map<String, String>>get("decodedParams").get("fields").split(","));
+            fields.forEach(field -> {
+                if (FieldsEnum.getField(field) != null) {
+                    array.add(field);
+                }
+            });
+            query.put("fields", array);
+        } else {
+            query.put("fields", new JsonArray().add(FieldsEnum.TPNB.getName()));
+        }
+    }
+
+    private void validateResponseSet(RoutingContext context, JsonObject query) {
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("responseSet"))) {
+            String responseSet = context.<Map<String, String>>get("decodedParams").get("responseSet");
+            JsonArray array = new JsonArray();
+            List<String> set = Arrays.asList(context.<Map<String, String>>get("decodedParams").get("responseSet").split(","));
+            set.forEach(res -> {
+                if (res.equals("results") || res.equals("totals") || res.equals("suggestions") || res.equals("taxonomy")) {
+                    array.add(res);
+                }
+            });
+            query.put("responseSet", array);
+        } else {
+            query.put("resType", new JsonArray().add("results").add("totals").add("suggestions"));
+        }
+    }
+
     private void validateOffset(RoutingContext context, JsonObject query) {
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("offset"))) {
             try {
@@ -101,13 +136,65 @@ public class BrowseControllerImpl implements BrowseController {
         }
     }
 
+    private void validateLimit(RoutingContext context, JsonObject query) {
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("limit"))) {
+            try {
+                int limit = Integer.valueOf(context.<Map<String, String>>get("decodedParams").get("limit"));
+                if (limit <= 0 && limit <= 100) {
+                    query.put("limit", limit);
+                } else {
+                    throw new ClientException("Incorrect limit type!");
+                }
+
+            } catch (NumberFormatException e) {
+                throw new ClientException("Incorrect limit type!");
+            }
+        } else {
+            query.put("limit", 10);
+        }
+    }
+
+    private void validateStore(RoutingContext context, JsonObject query) {
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("store"))) {
+            try {
+                int store = Integer.valueOf(context.<Map<String, String>>get("decodedParams").get("store"));
+                query.put("store", store);
+            } catch (NumberFormatException e) {
+                throw new ClientException("Incorrect store type!");
+            }
+        } else {
+            query.put("store", 3060);
+        }
+    }
+
+//    private void validateSort(RoutingContext context, JsonObject query) {
+//
+//        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("sort"))) {
+//            String sort = context.<Map<String, String>>get("decodedParams").get("sort");
+//            if (sort.equals("price") || sort.equals("price:desc") || sort.equals("name") || sort.equals("name:desc"))
+//        } else {
+//
+//        }
+//    }
+
     private JsonObject handleParameters(RoutingContext context) {
         JsonObject query = new JsonObject();
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("version"))) {
             query.put("version", context.<Map<String, String>>get("decodedParams").get("version"));
         }
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("explain"))) {
+            query.put("explain", context.<Map<String, String>>get("decodedParams").get("explain"));
+        }
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("pretty"))) {
+            query.put("pretty", context.<Map<String, String>>get("decodedParams").get("pretty"));
+        }
+
         validateResponseType(context, query);
         validateOffset(context, query);
+        validateLimit(context, query);
+        validateResponseSet(context, query);
+        validateFields(context, query);
+        validateResponseSet(context, query);
 
 
 

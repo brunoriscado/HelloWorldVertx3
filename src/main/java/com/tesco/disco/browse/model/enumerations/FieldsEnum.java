@@ -18,21 +18,35 @@ public enum FieldsEnum {
 				AISLE("aisle"),
 				SHELF("shelf"),
 				PROMOTION_DESCRIPTION("PromotionDescription"),
-				PROMOTION_("PromotionId"),
-				PROMOTION_("PromotionIcon"),
-				PROMOTION_("PromotionStart"),
-				PROMOTION_("PromotionEnd"),
+				PROMOTION_ID("PromotionId"),
+				PROMOTION_ICON("PromotionIcon"),
+				PROMOTION_START("PromotionStart"),
+				PROMOTION_END("PromotionEnd"),
 				CONTENTS_MEASURE_TYPE("ContentsMeasureType"),
 				CONTENTS_QUANTITY("ContentsQuantity"),
 				UNIT_QUANTITY("UnitQuantity"),
-				("AverageSellingUnitWeight"),
-				("UnitOfSale"),
-				("availability"),
+				AVERAGE_SELLING_UNIT_WEIGHT("AverageSellingUnitWeight"),
+				UNIT_OF_SALE("UnitOfSale"),
+				AVAILABILITY("availability"),
 				NEW("new"),
 				OFFER("offer");
+
 				private String name;
 
 				private FieldsEnum(String name) {
 								this.name = name;
+				}
+
+				public String getName() {
+								return name;
+				}
+
+				public static FieldsEnum getField(String field) {
+								for (int i = 0; i < FieldsEnum.values().length; i++) {
+												if (field.equals(FieldsEnum.values()[i])) {
+																return FieldsEnum.values()[i];
+												}
+								}
+								return null;
 				}
 }
