@@ -2,7 +2,6 @@ package com.tesco.disco.browse.controller.impl;
 
 import com.tesco.disco.browse.controller.BrowseController;
 import com.tesco.disco.browse.exceptions.ClientException;
-import com.tesco.disco.browse.exceptions.ServiceException;
 import com.tesco.disco.browse.service.BrowseService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.http.HttpHeaders;
@@ -32,7 +31,8 @@ import java.util.Map;
 public class BrowseControllerImpl implements BrowseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseControllerImpl.class.getName());
     private static final Marker MARKER = MarkerFactory.getMarker("CONTROLLER");
-    private static final String INDEX = "ghs.taxonomy";
+    private static final String TAXONOMY_INDEX = "ghs.taxonomy";
+    private static final String PRODUCTS_INDEX = "ghs.products";
     private static final String TEMPLATE_ID_SUFIX = "default";
     private Vertx vertx;
     private BrowseService browseService;
@@ -49,6 +49,7 @@ public class BrowseControllerImpl implements BrowseController {
         subRouter.route().handler(this::queryStringDecoder);
 
         subRouter.get("/browse/*").handler(this::browseHandler);
+        subRouter.get("/browse/products").handler(this::browseProductsHandler);
         subRouter.get("/_status").handler(this::statusHandler);
 
         router.mountSubRouter("/", subRouter);
@@ -69,8 +70,51 @@ public class BrowseControllerImpl implements BrowseController {
         context.response().end("keepalive");
     }
 
-    private void browseHandler(RoutingContext context) {
+    private void validateResponseType(RoutingContext context, JsonObject query) {
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("resType"))) {
+            String resType = context.<Map<String, String>>get("decodedParams").get("resType");
+            if (resType.equals("products") || resType.equals("terms")) {
+                query.put("resType", context.<Map<String, String>>get("decodedParams").get("resType"));
+            } else {
+                throw new ClientException("Incorrect resType type!");
+            }
+        } else {
+            query.put("resType", "products");
+        }
+    }
+
+    private void validateOffset(RoutingContext context, JsonObject query) {
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("offset"))) {
+            try {
+                int offset = Integer.valueOf(context.<Map<String, String>>get("decodedParams").get("offset"));
+                if (offset <= 0 && offset <= 100000) {
+                    query.put("offset", offset);
+                } else {
+                    throw new ClientException("Incorrect offset type!");
+                }
+
+            } catch (NumberFormatException e) {
+                throw new ClientException("Incorrect offset type!");
+            }
+        } else {
+            query.put("offset", 0);
+        }
+    }
+
+    private JsonObject handleParameters(RoutingContext context) {
         JsonObject query = new JsonObject();
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("version"))) {
+            query.put("version", context.<Map<String, String>>get("decodedParams").get("version"));
+        }
+        validateResponseType(context, query);
+        validateOffset(context, query);
+
+
+
+
+
+
+
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("superDepartment"))) {
             query.put("superDepartment", context.<Map<String, String>>get("decodedParams").get("superDepartment"));
         }
@@ -86,15 +130,32 @@ public class BrowseControllerImpl implements BrowseController {
         if (query.isEmpty()) {
             query = null;
         }
+        return query;
+    }
+
+    private void browseHandler(RoutingContext context) {
         browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("index")) ?
-                        context.<Map<String, String>>get("decodedParams").get("index") : INDEX,
+                        context.<Map<String, String>>get("decodedParams").get("index") : TAXONOMY_INDEX,
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("config")) ?
                         context.<Map<String, String>>get("decodedParams").get("config") : TEMPLATE_ID_SUFIX,
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?
                         context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
                         context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
-                query,
+                handleParameters(context),
+                context.response());
+    }
+
+    private void browseProductsHandler(RoutingContext context) {
+        browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("index")) ?
+                        context.<Map<String, String>>get("decodedParams").get("index") : PRODUCTS_INDEX,
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("config")) ?
+                        context.<Map<String, String>>get("decodedParams").get("config") : TEMPLATE_ID_SUFIX,
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?
+                        context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
+                        context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
+                handleParameters(context),
                 context.response());
     }
 
