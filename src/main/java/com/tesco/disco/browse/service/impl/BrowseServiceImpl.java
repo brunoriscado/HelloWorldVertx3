@@ -105,71 +105,6 @@ public class BrowseServiceImpl implements BrowseService {
                 });
     }
 
-    /**
-     * This method maps the elasticsearch aggregation response to a taxonomy response that the client expects
-     * @param elasticResponse
-     * @return
-					*/
-    public Observable<JsonObject> getBrowsingTaxonomy(JsonObject elasticResponse) {
-        LOGGER.debug(MARKER, "Mapping elastic aggregations response to API taxonomy");
-        Taxonomy taxonomy = new Taxonomy();
-        return Observable.just(elasticResponse)
-                .filter(elasticResp -> {
-                    return elasticResponse.containsKey("aggregations");
-                })
-                .switchIfEmpty(Observable.error(new RuntimeException("no aggregations found")))
-                .flatMap(elasticResp -> {
-                    return Observable.from(elasticResp.getJsonObject("aggregations")
-                            .getJsonObject("superDepartments")
-                            .getJsonArray("buckets").getList().toArray());
-                })
-                .switchIfEmpty(Observable.error(new RuntimeException("SuperDepartments are empty")))
-                .flatMap(superDepartment -> {
-                    LOGGER.debug(MARKER, "Mapping superDepartments");
-                    JsonObject sd = new JsonObject(Json.encode(superDepartment));
-                    return Observable.from(sd.getJsonObject("departments").getJsonArray("buckets").getList().toArray())
-                            .switchIfEmpty(Observable.error(new RuntimeException("Departments are empty")))
-                            .flatMap(department -> {
-                                LOGGER.debug(MARKER, "Mapping departments");
-                                JsonObject dep = new JsonObject(Json.encode(department));
-                                return Observable.from(dep.getJsonObject("aisles").getJsonArray("buckets").getList().toArray())
-                                        .switchIfEmpty(Observable.error(new RuntimeException("Aisles are empty")))
-                                        .flatMap(aisle -> {
-                                            LOGGER.debug(MARKER, "Mapping aisles");
-                                            JsonObject jAisle = new JsonObject(Json.encode(aisle));
-                                            return Observable.from(jAisle.getJsonObject("shelves").getJsonArray("buckets").getList().toArray())
-                                                    .switchIfEmpty(Observable.error(new RuntimeException("Shelves are empty")))
-                                                    .map(shelf -> {
-                                                        LOGGER.debug(MARKER, "Mapping shelves");
-                                                        JsonObject jShelf = new JsonObject(Json.encode(shelf));
-                                                        return new Shelf(jShelf.getString("key"));
-                                                    })
-                                                    .collect(() -> new ArrayList<Shelf>(),
-                                                            (shelves, she) -> shelves.add(she))
-                                                    .map(shelves -> {
-                                                        return new Aisle(jAisle.getString("key")).addShelves(shelves);
-                                                    });
-                                        })
-                                        .collect(() -> new ArrayList<Aisle>(),
-                                                (aisles, aisle) -> aisles.add(aisle))
-                                        .map(aisles -> {
-                                            return new Department(dep.getString("key")).addAisles(aisles);
-                                        });
-                            })
-                            .collect(() -> new ArrayList<Department>(),
-                                    (departments, department) -> departments.add(department))
-                            .map(departments -> {
-                                return new SuperDepartment(sd.getString("key")).addDepartments(departments);
-                            })
-                            .collect(() -> new ArrayList<SuperDepartment>(),
-                                    (superDeps, superDep) -> superDeps.add(superDep))
-                            .map(supeDeps -> {
-                                    return taxonomy.addSuperDepartments(supeDeps).toJson();
-                            });
-                })
-                .onErrorResumeNext(Observable.just(taxonomy.toJson()));
-    }
-
     public Observable<JsonObject> getApiResponse(JsonObject elasticResponse, JsonObject params){
         Observable<JsonObject> apiResponse = null;
         if (elasticResponse.getString("status") == "error") {
@@ -182,26 +117,37 @@ public class BrowseServiceImpl implements BrowseService {
     }
 
     protected Observable<JsonObject> getApiResponseBody(JsonObject elasticsearchResponse, JsonObject params) {
-        return getBrowsingTaxonomy(elasticsearchResponse)
-                .map(taxonomy -> {
+        return Observable.<JsonObject>just(new JsonObject())
+                .map(apiResult -> {
                     JsonObject resType = new JsonObject();
-                    if (params.getBoolean("taxonomy", false)) {
-                        resType.put("taxonomy", taxonomy);
-                    }
-                    if ((boolean)params.getMap().getOrDefault("totals", false)) {
+                    if (params.getBoolean("totals", false)) {
                         resType.put("totals", getResultsSet(elasticsearchResponse));
                     }
-                    if ((boolean)params.getMap().getOrDefault("results", false)) {
+                    if (params.getBoolean("results", false)) {
                         resType.put("results", parseResults(elasticsearchResponse, params));
                     }
-                    if ((boolean)params.getMap().getOrDefault("suggestions", false)) {
+                    if (params.getBoolean("suggestions", false)) {
                         resType.put("suggestions", parseDidYouMeanResults(elasticsearchResponse));
                     }
                     JsonObject distChannel = new JsonObject();
-                    distChannel.put(params.getMap().get("resType").toString(), resType);
+                    distChannel.put(params.getString("resType"), resType);
                     JsonObject geo = new JsonObject();
-                    geo.put(params.getMap().get("distChannel").toString(), distChannel);
-                    return new JsonObject().put(params.getMap().get("geo").toString(), geo);
+                    geo.put(params.getString("distChannel"), distChannel);
+                    return apiResult.put(params.getString("geo"), geo);
+                })
+                .flatMap(apiResult -> {
+                    if (params.getBoolean("taxonomy", false)) {
+                        return getBrowsingTaxonomy(elasticsearchResponse)
+                                .map(taxonomyResponse -> {
+                                    apiResult.getJsonObject(params.getString("geo"))
+                                            .getJsonObject(params.getString("distChannel"))
+                                            .getJsonObject(params.getString("resType"))
+                                            .put("taxonomy", taxonomyResponse);
+                                    return apiResult;
+                                });
+                    } else {
+                        return Observable.just(apiResult);
+                    }
                 });
     }
 
@@ -311,6 +257,71 @@ public class BrowseServiceImpl implements BrowseService {
         }
         // resultSet.putArray("didYouMeanResults", entries);
         return entries;
+    }
+
+    /**
+     * This method maps the elasticsearch aggregation response to a taxonomy response that the client expects
+     * @param elasticResponse
+     * @return
+     */
+    public Observable<JsonObject> getBrowsingTaxonomy(JsonObject elasticResponse) {
+        LOGGER.debug(MARKER, "Mapping elastic aggregations response to API taxonomy");
+        Taxonomy taxonomy = new Taxonomy();
+        return Observable.just(elasticResponse)
+                .filter(elasticResp -> {
+                    return elasticResponse.containsKey("aggregations");
+                })
+                .switchIfEmpty(Observable.error(new RuntimeException("no aggregations found")))
+                .flatMap(elasticResp -> {
+                    return Observable.from(elasticResp.getJsonObject("aggregations")
+                            .getJsonObject("superDepartments")
+                            .getJsonArray("buckets").getList().toArray());
+                })
+                .switchIfEmpty(Observable.error(new RuntimeException("SuperDepartments are empty")))
+                .flatMap(superDepartment -> {
+                    LOGGER.debug(MARKER, "Mapping superDepartments");
+                    JsonObject sd = new JsonObject(Json.encode(superDepartment));
+                    return Observable.from(sd.getJsonObject("departments").getJsonArray("buckets").getList().toArray())
+                            .switchIfEmpty(Observable.error(new RuntimeException("Departments are empty")))
+                            .flatMap(department -> {
+                                LOGGER.debug(MARKER, "Mapping departments");
+                                JsonObject dep = new JsonObject(Json.encode(department));
+                                return Observable.from(dep.getJsonObject("aisles").getJsonArray("buckets").getList().toArray())
+                                        .switchIfEmpty(Observable.error(new RuntimeException("Aisles are empty")))
+                                        .flatMap(aisle -> {
+                                            LOGGER.debug(MARKER, "Mapping aisles");
+                                            JsonObject jAisle = new JsonObject(Json.encode(aisle));
+                                            return Observable.from(jAisle.getJsonObject("shelves").getJsonArray("buckets").getList().toArray())
+                                                    .switchIfEmpty(Observable.error(new RuntimeException("Shelves are empty")))
+                                                    .map(shelf -> {
+                                                        LOGGER.debug(MARKER, "Mapping shelves");
+                                                        JsonObject jShelf = new JsonObject(Json.encode(shelf));
+                                                        return new Shelf(jShelf.getString("key"));
+                                                    })
+                                                    .collect(() -> new ArrayList<Shelf>(),
+                                                            (shelves, she) -> shelves.add(she))
+                                                    .map(shelves -> {
+                                                        return new Aisle(jAisle.getString("key")).addShelves(shelves);
+                                                    });
+                                        })
+                                        .collect(() -> new ArrayList<Aisle>(),
+                                                (aisles, aisle) -> aisles.add(aisle))
+                                        .map(aisles -> {
+                                            return new Department(dep.getString("key")).addAisles(aisles);
+                                        });
+                            })
+                            .collect(() -> new ArrayList<Department>(),
+                                    (departments, department) -> departments.add(department))
+                            .map(departments -> {
+                                return new SuperDepartment(sd.getString("key")).addDepartments(departments);
+                            })
+                            .collect(() -> new ArrayList<SuperDepartment>(),
+                                    (superDeps, superDep) -> superDeps.add(superDep))
+                            .map(supeDeps -> {
+                                return taxonomy.addSuperDepartments(supeDeps).toJson();
+                            });
+                })
+                .onErrorResumeNext(Observable.just(taxonomy.toJson()));
     }
 
     public void unregister() {

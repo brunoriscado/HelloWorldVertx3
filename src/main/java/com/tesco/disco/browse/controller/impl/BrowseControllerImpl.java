@@ -74,6 +74,97 @@ public class BrowseControllerImpl implements BrowseController {
         context.response().end("keepalive");
     }
 
+    private JsonObject handleParameters(RoutingContext context) {
+        JsonObject query = new JsonObject();
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("version"))) {
+            query.put("version", context.<Map<String, String>>get("decodedParams").get("version"));
+        }
+
+        validatePretty(context, query);
+        validateExplain(context, query);
+        validateResponseType(context, query);
+        validateOffset(context, query);
+        validateLimit(context, query);
+        validateResponseSet(context, query);
+        validateFields(context, query);
+        validateResponseType(context, query);
+        validateSort(context, query);
+        validateStore(context, query);
+
+
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("superDepartment"))) {
+            query.put("superDepartment", context.<Map<String, String>>get("decodedParams").get("superDepartment"));
+        }
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("department"))) {
+            query.put("department", context.<Map<String, String>>get("decodedParams").get("department"));
+        }
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("aisle"))) {
+            query.put("aisle", context.<Map<String, String>>get("decodedParams").get("aisle"));
+        }
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("shelf"))) {
+            query.put("shelf", context.<Map<String, String>>get("decodedParams").get("shelf"));
+        }
+        if (query.isEmpty()) {
+            query = null;
+        }
+        return query;
+    }
+
+    private void browseHandler(RoutingContext context) {
+        browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("index")) ?
+                        context.<Map<String, String>>get("decodedParams").get("index") : TAXONOMY_INDEX,
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("config")) ?
+                        context.<Map<String, String>>get("decodedParams").get("config") : TEMPLATE_ID_SUFIX,
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?
+                        context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
+                        context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
+                handleParameters(context),
+                context.response());
+    }
+
+    private void browseProductsHandler(RoutingContext context) {
+        browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("index")) ?
+                        context.<Map<String, String>>get("decodedParams").get("index") : PRODUCTS_INDEX,
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("config")) ?
+                        context.<Map<String, String>>get("decodedParams").get("config") : TEMPLATE_ID_SUFIX,
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?
+                        context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
+                        context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
+                handleParameters(context),
+                context.response());
+    }
+
+    //TODO - Annotate this method so that swagger definitions can be generated
+    public void browse(String index, String templateId, String geo, String distChannel, JsonObject payload, HttpServerResponse response) {
+        LOGGER.info(MARKER, "Handling browse request using query params: {}", payload != null ? payload.encode() : "");
+        ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
+        browseService.getBrowseResults(index, templateId, geo, distChannel, payload, handler.toHandler());
+        response.setChunked(true);
+        handler.flatMap(esResponse -> {
+                    if (esResponse.succeeded()) {
+                        return Observable.just(esResponse.result());
+                    } else {
+                        return Observable.error(esResponse.cause());
+                    }
+                })
+                .subscribe(
+                        next -> {
+                            LOGGER.debug(MARKER, "response from elastic browse service: {}", next.encode());
+                            response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
+                            response.write(next.encode());
+                        },
+                        error -> {
+                            LOGGER.error(MARKER, "error obtaining response from elastic browse service verticle: {}", error.getMessage());
+                            handlerError(error, response);
+                        },
+                        () -> {
+                            response.setStatusCode(200);
+                            response.end();
+                        });
+    }
+
     private void validateResponseType(RoutingContext context, JsonObject query) {
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("resType"))) {
             String resType = context.<Map<String, String>>get("decodedParams").get("resType");
@@ -167,112 +258,27 @@ public class BrowseControllerImpl implements BrowseController {
         }
     }
 
-//    private void validateSort(RoutingContext context, JsonObject query) {
-//
-//        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("sort"))) {
-//            String sort = context.<Map<String, String>>get("decodedParams").get("sort");
-//            if (sort.equals("price") || sort.equals("price:desc") || sort.equals("name") || sort.equals("name:desc"))
-//        } else {
-//
-//        }
-//    }
-
-    private JsonObject handleParameters(RoutingContext context) {
-        JsonObject query = new JsonObject();
-        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("version"))) {
-            query.put("version", context.<Map<String, String>>get("decodedParams").get("version"));
+    private void validateSort(RoutingContext context, JsonObject query) {
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("sort"))) {
+            String sort = context.<Map<String, String>>get("decodedParams").get("sort");
+            if (sort.equals("price") || sort.equals("price:desc") || sort.equals("name") || sort.equals("name:desc")) {
+                query.put("sort", sort);
+            }
         }
+    }
+
+    private void validateExplain(RoutingContext context, JsonObject query) {
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("explain"))) {
-            query.put("explain", context.<Map<String, String>>get("decodedParams").get("explain"));
+            boolean explain = Boolean.valueOf(context.<Map<String, String>>get("decodedParams").get("explain"));
+            query.put("explain", explain);
         }
+    }
+
+    private void validatePretty(RoutingContext context, JsonObject query) {
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("pretty"))) {
-            query.put("pretty", context.<Map<String, String>>get("decodedParams").get("pretty"));
+            boolean pretty = Boolean.valueOf(context.<Map<String, String>>get("decodedParams").get("pretty"));
+            query.put("pretty", pretty);
         }
-
-        validateResponseType(context, query);
-        validateOffset(context, query);
-        validateLimit(context, query);
-        validateResponseSet(context, query);
-        validateFields(context, query);
-        validateResponseSet(context, query);
-
-
-
-
-
-
-
-        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("superDepartment"))) {
-            query.put("superDepartment", context.<Map<String, String>>get("decodedParams").get("superDepartment"));
-        }
-        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("department"))) {
-            query.put("department", context.<Map<String, String>>get("decodedParams").get("department"));
-        }
-        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("aisle"))) {
-            query.put("aisle", context.<Map<String, String>>get("decodedParams").get("aisle"));
-        }
-        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("shelf"))) {
-            query.put("shelf", context.<Map<String, String>>get("decodedParams").get("shelf"));
-        }
-        if (query.isEmpty()) {
-            query = null;
-        }
-        return query;
-    }
-
-    private void browseHandler(RoutingContext context) {
-        browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("index")) ?
-                        context.<Map<String, String>>get("decodedParams").get("index") : TAXONOMY_INDEX,
-                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("config")) ?
-                        context.<Map<String, String>>get("decodedParams").get("config") : TEMPLATE_ID_SUFIX,
-                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?
-                        context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
-                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
-                        context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
-                handleParameters(context),
-                context.response());
-    }
-
-    private void browseProductsHandler(RoutingContext context) {
-        browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("index")) ?
-                        context.<Map<String, String>>get("decodedParams").get("index") : PRODUCTS_INDEX,
-                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("config")) ?
-                        context.<Map<String, String>>get("decodedParams").get("config") : TEMPLATE_ID_SUFIX,
-                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?
-                        context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
-                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
-                        context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
-                handleParameters(context),
-                context.response());
-    }
-
-    //TODO - Annotate this method so that swagger definitions can be generated
-    public void browse(String index, String templateId, String geo, String distChannel, JsonObject payload, HttpServerResponse response) {
-        LOGGER.info(MARKER, "Handling browse request using query params: {}", payload != null ? payload.encode() : "");
-        ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
-        browseService.getBrowseResults(index, templateId, geo, distChannel, payload, handler.toHandler());
-        response.setChunked(true);
-        handler.flatMap(esResponse -> {
-                    if (esResponse.succeeded()) {
-                        return Observable.just(esResponse.result());
-                    } else {
-                        return Observable.error(esResponse.cause());
-                    }
-                })
-                .subscribe(
-                        next -> {
-                            LOGGER.debug(MARKER, "response from elastic browse service: {}", next.encode());
-                            response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
-                            response.write(next.encode());
-                        },
-                        error -> {
-                            LOGGER.error(MARKER, "error obtaining response from elastic browse service verticle: {}", error.getMessage());
-                            handlerError(error, response);
-                        },
-                        () -> {
-                            response.setStatusCode(200);
-                            response.end();
-                        });
     }
 
     private void handlerError(Throwable error,  HttpServerResponse response) {
