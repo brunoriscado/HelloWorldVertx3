@@ -60,10 +60,10 @@ public class TestingUtilities {
         }
     }
 
-    public static String buildQuery(String name) {
+    public static String buildQuery(String folderPath, String name) {
         try {
-            String query = Utils.getJsonFile("src/test/resources/taxonomyTemplate/" + name + ".json").encodePrettily();
-            String template = fetchQueryTemplate(name);
+            String query = Utils.getJsonFile("src/test/resources/elasticTemplate/ghs.default.json").encodePrettily();
+            String template = fetchQueryTemplate(folderPath, name);
             template = StringEscapeUtils.escapeJava(template);
             return query.replace("{{template}}", template);
         } catch (IOException e) {
@@ -72,9 +72,9 @@ public class TestingUtilities {
         }
     }
 
-    public static String fetchQueryTemplate(String name) {
+    public static String fetchQueryTemplate(String folderPath, String name) {
         try {
-            return Utils.getFileContents("src/test/resources/taxonomyTemplate/" + name + ".json.template");
+            return Utils.getFileContents(folderPath + name + ".json.template");
         } catch (IOException e) {
             e.printStackTrace();
             return null;

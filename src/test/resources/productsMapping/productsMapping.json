@@ -1,0 +1,1472 @@
+{
+				"jobType": "SonettoXmlProducts",
+				"outputType": "flat",
+				"updateType": "full",
+				"providers": {
+								"api": [],
+								"files": [
+												{
+																"messageType": "Provider",
+																"source": "{{dataPath}}/ghs/xml/Products/",
+																"type": "application/xml",
+																"recursive": true
+												}
+								]
+				},
+				"splitters": {},
+				"decorators": {
+								"mapping": {
+												"keyval": {
+																"id": "ProductID",
+																"key": "PropertyName",
+																"value": "PropertyValue"
+												},
+												"fields": {
+																"id": "ProductID",
+																"store_price": "store_price",
+																"store_unitprice": "store_unitprice",
+																"store_availability": "store_availability",
+																"tpnb": "TPNB",
+																"popularity": "TPNB",
+																"trialrate": "TPNB",
+																"com_pop": "ProductID",
+																"common_search_1": "ProductID",
+																"common_search_2": "ProductID",
+																"common_search_3": "ProductID",
+																"common_search_4": "ProductID",
+																"common_search_5": "ProductID",
+																"common_search_6": "ProductID",
+																"common_search_7": "ProductID",
+																"common_search_8": "ProductID",
+																"common_search_9": "ProductID",
+																"common_search_10": "ProductID",
+																"name": "Title",
+																"brand": "Brand",
+																"image": "DefaultImage",
+																"normalPrice": "NormalPrice",
+																"salesrank": "SalesRank",
+																"ean": "EAN",
+																"origin": "CountryOfOriginName",
+																"IsNew": "IsNew",
+																"IsSpecialOffer": "IsSpecialOffer",
+																"new": "new",
+																"offer": "offer",
+																"description": "Description",
+																"usage": "UsageInformation",
+																"shelf": "TaxonomyID",
+																"aisle": "TaxonomyID",
+																"department": "TaxonomyID",
+																"superDepartment": "TaxonomyID",
+																"shelf_1": "TaxonomyID_1",
+																"aisle_1": "TaxonomyID_1",
+																"department_1": "TaxonomyID_1",
+																"superDepartment_1": "TaxonomyID_1",
+																"shelf_2": "TaxonomyID_2",
+																"aisle_2": "TaxonomyID_2",
+																"department_2": "TaxonomyID_2",
+																"superDepartment_2": "TaxonomyID_2",
+
+																"shelf_3": "TaxonomyID_3",
+																"aisle_3": "TaxonomyID_3",
+																"department_3": "TaxonomyID_3",
+																"superDepartment_3": "TaxonomyID_3",
+																"shelf_4": "TaxonomyID_4",
+																"aisle_4": "TaxonomyID_4",
+																"department_4": "TaxonomyID_4",
+																"superDepartment_4": "TaxonomyID_4",
+
+																"keywords": "Keywords",
+																"lifestyle": "FoodIcons",
+																"dietary": "FoodIcons",
+																"nutrition": "FoodIcons",
+																"ingredients": "Ingredients",
+																"storage": "Storage",
+																"PromotionId": "Promotions",
+																"PromotionDescription": "Promotions",
+																"PromotionIcon": "Promotions",
+																"PromotionStart": "Promotions",
+																"PromotionEnd": "Promotions",
+																"UnitQuantity": "UnitQuantity",
+																"UnitOfSale": "UnitOfSale",
+																"AverageSellingUnitWeight": "AverageSellingUnitWeight",
+																"ContentsMeasureType": "ContentsMeasureType",
+																"ContentsQuantity": "ContentsQuantity",
+																"Messages": "Messages",
+																"BulkBuyLimit": "Messages",
+																"DeliveryRestrictions": "DeliveryRestrictions",
+																"IsHiddenInFavorites": "IsHiddenInFavorites"
+												}
+								}
+				},
+				"transformers": {
+								"types": {
+												"tpnb": "integer",
+												"normalPrice": "double",
+												"popularity": "double",
+												"trialrate": "double",
+												"com_pop": "double",
+												"common_search_1": "string",
+												"common_search_2": "string",
+												"common_search_3": "string",
+												"common_search_4": "string",
+												"common_search_5": "string",
+												"common_search_6": "string",
+												"common_search_7": "string",
+												"common_search_8": "string",
+												"common_search_9": "string",
+												"common_search_10": "string",
+												"salesrank": "integer",
+												"keywords": "string",
+												"lifestyle": "array",
+												"dietary": "array",
+												"nutrition": "array",
+												"description": "array",
+												"ingredients": "array",
+												"storage": "array",
+												"usage": "array",
+												"IsNew": "csv",
+												"IsSpecialOffer": "csv",
+												"new": "csv",
+												"offer": "csv",
+												"PromotionId": "string",
+												"PromotionDescription": "string",
+												"PromotionIcon": "string",
+												"PromotionStart": "string",
+												"PromotionEnd": "string",
+												"UnitQuantity": "string",
+												"UnitOfSale": "integer",
+												"AverageSellingUnitWeight": "float",
+												"ContentsMeasureType": "string",
+												"ContentsQuantity": "float",
+												"BulkBuyLimit": "integer",
+												"IsHiddenInFavorites": "boolean",
+												"store_price": "notransform",
+												"store_unitprice": "notransform",
+												"store_availability": "notransform"
+								},
+								"xpaths": [
+												{"description": "//Description/Section"},
+												{"lifestyle": "//IconGroup[@name='Lifestyle']/Icon/@name"},
+												{"dietary": "//IconGroup[@name='Dietary']/Icon/@name"},
+												{"nutrition": "//IconGroup[@name='Nutrition']/Icon/@name"},
+												{"ingredients": "//Ingredients/Ingredient"},
+												{"storage": "//StorageInformation/Section"},
+												{"usage": "//UsageInformation/Section"},
+												{"PromotionId": "(//Promotions/Promotion/@promotionID)[1]"},
+												{"PromotionDescription": "(//Promotions/Promotion/@promotionDescription)[1]"},
+												{"PromotionIcon": "(//Promotions/Promotion/@icon)[1]"},
+												{"PromotionStart": "(//Promotions/Promotion/@startDate)[1]"},
+												{"PromotionEnd": "(//Promotions/Promotion/@endDate)[1]"},
+												{"BulkBuyLimit": "(//Messages/Message[@TypeCode='BulkBuyLimit']/@TriggerQuantity)[1]"}
+								],
+								"regexps": [
+												{
+																"OFF_image": {
+																				"\\\\": "/"
+																},
+																"OFF_IsNew": {
+																				"^((?!3060).)*$": "false",
+																				"^.*3060.*$": "true"
+																},
+																"OFF_IsSpecialOffer": {
+																				"^((?!3060).)*$": "false",
+																				"^.*3060.*$": "true"
+																},
+																"OFF_new": {
+																				"^((?!3060).)*$": "false",
+																				"^.*3060.*$": "true"
+																},
+																"OFF_offer": {
+																				"^((?!3060).)*$": "false",
+																				"^.*3060.*$": "true"
+																}
+												}
+								],
+								"templates": [
+												{
+																"image": "http://img.tesco.com/Groceries/pi/{{image}}"
+												}
+								],
+								"lookups": [
+
+												{"popularity": {"index": "dunnhumby.popularity", "type": "product", "property": "popularity"} },
+												{"trialrate": {"index": "dunnhumby.popularity", "type": "product", "property": "trialrate"} },
+												{"com_pop": {"index": "commercial_science.popularity", "type": "product", "property": "com_pop"} },
+												{"common_search_1": {"index": "commercial_science.keywords", "type": "product", "property": "common_search_1"} },
+												{"common_search_2": {"index": "commercial_science.keywords", "type": "product", "property": "common_search_2"} },
+												{"common_search_3": {"index": "commercial_science.keywords", "type": "product", "property": "common_search_3"} },
+												{"common_search_4": {"index": "commercial_science.keywords", "type": "product", "property": "common_search_4"} },
+												{"common_search_5": {"index": "commercial_science.keywords", "type": "product", "property": "common_search_5"} },
+												{"common_search_6": {"index": "commercial_science.keywords", "type": "product", "property": "common_search_6"} },
+												{"common_search_7": {"index": "commercial_science.keywords", "type": "product", "property": "common_search_7"} },
+												{"common_search_8": {"index": "commercial_science.keywords", "type": "product", "property": "common_search_8"} },
+												{"common_search_9": {"index": "commercial_science.keywords", "type": "product", "property": "common_search_9"} },
+												{"common_search_10": {"index": "commercial_science.keywords", "type": "product", "property": "common_search_10"} },
+												{"shelf": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "shelf"} },
+												{"aisle": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "aisle"} },
+												{"department": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "department"} },
+												{"superDepartment": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "superDepartment"} },
+												{"shelf_1": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "shelf"} },
+												{"aisle_1": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "aisle"} },
+												{"department_1": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "department"} },
+												{"superDepartment_1": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "superDepartment"} },
+												{"shelf_2": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "shelf"} },
+												{"aisle_2": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "aisle"} },
+												{"department_2": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "department"} },
+												{"superDepartment_2": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "superDepartment"} },
+												{"shelf_3": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "shelf"} },
+												{"aisle_3": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "aisle"} },
+												{"department_3": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "department"} },
+												{"superDepartment_3": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "superDepartment"} },
+												{"shelf_4": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "shelf"} },
+												{"aisle_4": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "aisle"} },
+												{"department_4": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "department"} },
+												{"superDepartment_4": {"index": "ghs.taxonomy", "type": "taxonomy", "property": "superDepartment"} }
+
+
+
+								],
+								"id": "id"
+				},
+				"indexers": {
+								"settings": {
+												"index": {
+																"analysis": {
+																				"analyzer": {
+																								"bi_str": {
+																												"tokenizer": "standard",
+																												"filter": [
+																																"lowercase",
+																																"shingle_filter",
+																																"stemmer_filter_str"
+																												]
+																								},
+																								"bi_str_concat": {
+																												"tokenizer": "standard",
+																												"filter": [
+																																"lowercase",
+																																"concat_filter",
+																																"stemmer_filter_str"
+																												]
+																								},
+																								"bi_noStem": {
+																												"type": "custom",
+																												"tokenizer": "standard",
+																												"filter": [
+																																"lowercase",
+																																"shingle_filter"
+																												]
+																								},
+																								"uni_str": {
+																												"type": "custom",
+																												"tokenizer": "whitespace",
+																												"filter": [
+																																"lowercase",
+																																"stemmer_filter_str"
+																												]
+																								},
+																								"uni_noStem": {
+																												"type": "custom",
+																												"tokenizer": "whitespace",
+																												"filter": ["lowercase"]
+																								},
+																								"bi_str_sym": {
+																												"tokenizer": "standard",
+																												"filter": [
+																																"lowercase",
+																																"shingle_filter",
+																																"synonym_ans",
+																																"stemmer_filter_str"
+																												]
+																								},
+																								"uni_str_sym": {
+																												"type": "custom",
+																												"tokenizer": "whitespace",
+																												"filter": [
+																																"lowercase",
+																																"synonym_ans",
+																																"stemmer_filter_str"
+																												]
+																								}
+																				},
+																				"filter": {
+																								"synonym_ans": {
+																												"tokenizer": "keyword",
+																												"type": "synonym",
+																												"synonyms_path": "synonyms/synonyms.txt"
+																								},
+																								"shingle_filter": {
+																												"type": "shingle",
+																												"min_shingle_size": 2,
+																												"max_shingle_size": 2,
+																												"output_unigrams": false
+																								},
+																								"concat_filter": {
+																												"type": "shingle",
+																												"min_shingle_size": 2,
+																												"max_shingle_size": 2,
+																												"output_unigrams": false,
+																												"token_separator": ""
+																								},
+																								"stemmer_filter_str": {
+																												"type": "stemmer",
+																												"name": "minimal_english"
+																								}
+																				}
+																}
+												}
+								},
+								"mappings": {
+												"product": {
+																"properties": {
+																				"name": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												}
+																								}
+																				},
+																				"shelf": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"aisle": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"department": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"superDepartment": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+
+
+																				"shelf_1": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"bi_str": {
+																																"type":"string",
+																																"analyzer":"bi_str"
+																												},
+																												"bi_noStem": {
+																																"type":"string",
+																																"analyzer":"bi_noStem"
+																												},
+																												"uni_str": {
+																																"type":"string",
+																																"analyzer":"uni_str"
+																												},
+																												"uni_noStem": {
+																																"type":"string",
+																																"analyzer":"uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type":"string",
+																																"analyzer":"bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type":"string",
+																																"analyzer":"uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"aisle_1": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"bi_str": {
+																																"type":"string",
+																																"analyzer":"bi_str"
+																												},
+																												"bi_noStem": {
+																																"type":"string",
+																																"analyzer":"bi_noStem"
+																												},
+																												"uni_str": {
+																																"type":"string",
+																																"analyzer":"uni_str"
+																												},
+																												"uni_noStem": {
+																																"type":"string",
+																																"analyzer":"uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type":"string",
+																																"analyzer":"bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type":"string",
+																																"analyzer":"uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"department_1": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"bi_str": {
+																																"type":"string",
+																																"analyzer":"bi_str"
+																												},
+																												"bi_noStem": {
+																																"type":"string",
+																																"analyzer":"bi_noStem"
+																												},
+																												"uni_str": {
+																																"type":"string",
+																																"analyzer":"uni_str"
+																												},
+																												"uni_noStem": {
+																																"type":"string",
+																																"analyzer":"uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type":"string",
+																																"analyzer":"bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type":"string",
+																																"analyzer":"uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"superDepartment_1": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"shelf_2": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"bi_str": {
+																																"type":"string",
+																																"analyzer":"bi_str"
+																												},
+																												"bi_noStem": {
+																																"type":"string",
+																																"analyzer":"bi_noStem"
+																												},
+																												"uni_str": {
+																																"type":"string",
+																																"analyzer":"uni_str"
+																												},
+																												"uni_noStem": {
+																																"type":"string",
+																																"analyzer":"uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type":"string",
+																																"analyzer":"bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type":"string",
+																																"analyzer":"uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"aisle_2": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"bi_str": {
+																																"type":"string",
+																																"analyzer":"bi_str"
+																												},
+																												"bi_noStem": {
+																																"type":"string",
+																																"analyzer":"bi_noStem"
+																												},
+																												"uni_str": {
+																																"type":"string",
+																																"analyzer":"uni_str"
+																												},
+																												"uni_noStem": {
+																																"type":"string",
+																																"analyzer":"uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type":"string",
+																																"analyzer":"bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type":"string",
+																																"analyzer":"uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"department_2": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"bi_str": {
+																																"type":"string",
+																																"analyzer":"bi_str"
+																												},
+																												"bi_noStem": {
+																																"type":"string",
+																																"analyzer":"bi_noStem"
+																												},
+																												"uni_str": {
+																																"type":"string",
+																																"analyzer":"uni_str"
+																												},
+																												"uni_noStem": {
+																																"type":"string",
+																																"analyzer":"uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type":"string",
+																																"analyzer":"bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type":"string",
+																																"analyzer":"uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"superDepartment_2": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"shelf_3": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"bi_str": {
+																																"type":"string",
+																																"analyzer":"bi_str"
+																												},
+																												"bi_noStem": {
+																																"type":"string",
+																																"analyzer":"bi_noStem"
+																												},
+																												"uni_str": {
+																																"type":"string",
+																																"analyzer":"uni_str"
+																												},
+																												"uni_noStem": {
+																																"type":"string",
+																																"analyzer":"uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type":"string",
+																																"analyzer":"bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type":"string",
+																																"analyzer":"uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"aisle_3": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"bi_str": {
+																																"type":"string",
+																																"analyzer":"bi_str"
+																												},
+																												"bi_noStem": {
+																																"type":"string",
+																																"analyzer":"bi_noStem"
+																												},
+																												"uni_str": {
+																																"type":"string",
+																																"analyzer":"uni_str"
+																												},
+																												"uni_noStem": {
+																																"type":"string",
+																																"analyzer":"uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type":"string",
+																																"analyzer":"bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type":"string",
+																																"analyzer":"uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"department_3": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"bi_str": {
+																																"type":"string",
+																																"analyzer":"bi_str"
+																												},
+																												"bi_noStem": {
+																																"type":"string",
+																																"analyzer":"bi_noStem"
+																												},
+																												"uni_str": {
+																																"type":"string",
+																																"analyzer":"uni_str"
+																												},
+																												"uni_noStem": {
+																																"type":"string",
+																																"analyzer":"uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type":"string",
+																																"analyzer":"bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type":"string",
+																																"analyzer":"uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"superDepartment_3": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"shelf_4": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"bi_str": {
+																																"type":"string",
+																																"analyzer":"bi_str"
+																												},
+																												"bi_noStem": {
+																																"type":"string",
+																																"analyzer":"bi_noStem"
+																												},
+																												"uni_str": {
+																																"type":"string",
+																																"analyzer":"uni_str"
+																												},
+																												"uni_noStem": {
+																																"type":"string",
+																																"analyzer":"uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type":"string",
+																																"analyzer":"bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type":"string",
+																																"analyzer":"uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"aisle_4": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"bi_str": {
+																																"type":"string",
+																																"analyzer":"bi_str"
+																												},
+																												"bi_noStem": {
+																																"type":"string",
+																																"analyzer":"bi_noStem"
+																												},
+																												"uni_str": {
+																																"type":"string",
+																																"analyzer":"uni_str"
+																												},
+																												"uni_noStem": {
+																																"type":"string",
+																																"analyzer":"uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type":"string",
+																																"analyzer":"bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type":"string",
+																																"analyzer":"uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"department_4": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"bi_str": {
+																																"type":"string",
+																																"analyzer":"bi_str"
+																												},
+																												"bi_noStem": {
+																																"type":"string",
+																																"analyzer":"bi_noStem"
+																												},
+																												"uni_str": {
+																																"type":"string",
+																																"analyzer":"uni_str"
+																												},
+																												"uni_noStem": {
+																																"type":"string",
+																																"analyzer":"uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type":"string",
+																																"analyzer":"bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type":"string",
+																																"analyzer":"uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"superDepartment_4": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type":"string",
+																																"analyzer":"standard"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+
+
+
+																				"brand": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												},
+																												"raw": {
+																																"type" : "string",
+																																"index" : "not_analyzed"
+																												}
+																								}
+																				},
+																				"description": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												}
+																								}
+																				},
+																				"common_search_1": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												}
+																								}
+																				},
+																				"common_search_2": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												}
+																								}
+																				},
+																				"common_search_3": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												}
+																								}
+																				},
+																				"common_search_4": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												}
+																								}
+																				},
+																				"common_search_5": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												}
+																								}
+																				},
+																				"common_search_6": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												}
+																								}
+																				},
+																				"common_search_7": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												}
+																								}
+																				},
+																				"common_search_8": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												}
+																								}
+																				},
+																				"common_search_9": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												}
+																								}
+																				},
+																				"common_search_10": {
+																								"type": "string",
+																								"analyzer": "standard",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"bi_str": {
+																																"type": "string",
+																																"analyzer": "bi_str"
+																												},
+																												"bi_noStem": {
+																																"type": "string",
+																																"analyzer": "bi_noStem"
+																												},
+																												"uni_str": {
+																																"type": "string",
+																																"analyzer": "uni_str"
+																												},
+																												"uni_noStem": {
+																																"type": "string",
+																																"analyzer": "uni_noStem"
+																												},
+																												"bi_str_sym": {
+																																"type": "string",
+																																"analyzer": "bi_str_sym"
+																												},
+																												"uni_str_sym": {
+																																"type": "string",
+																																"analyzer": "uni_str_sym"
+																												}
+																								}
+																				},
+																				"keywords": {
+																								"type": "string",
+																								"analyzer": "keyword",
+																								"fields": {
+																												"std": {
+																																"type": "string",
+																																"analyzer": "standard"
+																												},
+																												"key": {
+																																"type": "string",
+																																"analyzer": "keyword"
+																												}
+																								}
+																				},
+																				"store_price": {
+																								"properties": {
+																												"price": {
+																																"type": "double"
+																												},
+																												"store": {
+																																"type": "long"
+																												}
+																								}
+																				},
+																				"store_unitprice": {
+																								"properties": {
+																												"unitprice": {
+																																"type": "double"
+																												},
+																												"store": {
+																																"type": "long"
+																												}
+																								}
+																				},
+																				"store_availability": {
+																								"properties": {
+																												"availability": {
+																																"type": "double"
+																												},
+																												"store": {
+																																"type": "long"
+																												}
+																								}
+																				}
+																}
+												}
+								},
+								"index": "ghs.products",
+								"type": "product",
+								"key": "id"
+				},
+				"options": {
+								"autoSwitchAlias": false,
+								"postSwitchScript": "/opt/discoIndexer/invalidate-cache.sh",
+								"preSwitchScriptTargetIndex": true,
+								"completionWaitTime": 300000,
+								"postIndexTestSwitch": true
+
+				}
+}

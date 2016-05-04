@@ -3,11 +3,11 @@ package com.tesco.disco.browse.controller.impl;
 import com.tesco.disco.browse.controller.BrowseController;
 import com.tesco.disco.browse.exceptions.ClientException;
 import com.tesco.disco.browse.model.enumerations.FieldsEnum;
+import com.tesco.disco.browse.model.enumerations.IndicesEnum;
 import com.tesco.disco.browse.service.BrowseService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.impl.MimeMapping;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rx.java.ObservableHandler;
 import io.vertx.rx.java.RxHelper;
@@ -35,8 +35,6 @@ import java.util.Map;
 public class BrowseControllerImpl implements BrowseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseControllerImpl.class.getName());
     private static final Marker MARKER = MarkerFactory.getMarker("CONTROLLER");
-    private static final String TAXONOMY_INDEX = "ghs.taxonomy";
-    private static final String PRODUCTS_INDEX = "ghs.products";
     private static final String TEMPLATE_ID_SUFIX = "default";
     private Vertx vertx;
     private BrowseService browseService;
@@ -110,7 +108,7 @@ public class BrowseControllerImpl implements BrowseController {
 
     private void browseHandler(RoutingContext context) {
         browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("index")) ?
-                        context.<Map<String, String>>get("decodedParams").get("index") : TAXONOMY_INDEX,
+                        context.<Map<String, String>>get("decodedParams").get("index") : IndicesEnum.GHS_TAXONOMY.getIndex(),
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("config")) ?
                         context.<Map<String, String>>get("decodedParams").get("config") : TEMPLATE_ID_SUFIX,
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?
@@ -124,7 +122,7 @@ public class BrowseControllerImpl implements BrowseController {
 
     private void browseProductsHandler(RoutingContext context) {
         browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("index")) ?
-                        context.<Map<String, String>>get("decodedParams").get("index") : PRODUCTS_INDEX,
+                        context.<Map<String, String>>get("decodedParams").get("index") : IndicesEnum.GHS_PRODUCTS.getIndex(),
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("config")) ?
                         context.<Map<String, String>>get("decodedParams").get("config") : TEMPLATE_ID_SUFIX,
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?

@@ -1,0 +1,4 @@
+{
+  "description": "Matches on name and boosts product search by salesrank",
+  "template": "{{template}}"
+}

@@ -2,6 +2,7 @@ package com.tesco.disco.browse.service.impl;
 
 import com.tesco.disco.browse.exceptions.ServiceException;
 import com.tesco.disco.browse.model.enumerations.FieldsEnum;
+import com.tesco.disco.browse.model.enumerations.IndicesEnum;
 import com.tesco.disco.browse.model.enumerations.ResponseTypesEnum;
 import com.tesco.disco.browse.model.taxonomy.*;
 import com.tesco.disco.browse.service.BrowseService;
@@ -36,7 +37,6 @@ import java.util.stream.Collectors;
 public class BrowseServiceImpl implements BrowseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BrowseServiceImpl.class);
     private static final Marker MARKER = MarkerFactory.getMarker("SERVICE");
-    private static final String TEMPLATE_ID_PREFIX = "ghs.taxonomy.";
     private MessageConsumer<JsonObject> consumer;
     private TransportClient client;
     private Vertx vertx;
@@ -65,7 +65,7 @@ public class BrowseServiceImpl implements BrowseService {
             JsonObject result = null;
             SearchResponse res = client.prepareSearch()
                     .setIndices(index)
-                    .setTemplateName(TEMPLATE_ID_PREFIX + templateId)
+                    .setTemplateName(IndicesEnum.getByIndexName(index).getIndex() + "." + templateId)
                     .setTemplateType(ScriptService.ScriptType.INDEXED)
                     .setTemplateParams(query == null ? new HashMap<String, Object>() : convertJsonArrays(query))
                     .execute().actionGet();
@@ -336,7 +336,7 @@ public class BrowseServiceImpl implements BrowseService {
      */
     private Map<String, Object> convertJsonArrays(JsonObject query) {
         Map<String, Object> resultingQuery = null;
-        if (!query.isEmpty()) {
+        if (query != null && !query.isEmpty()) {
             resultingQuery = new HashMap<String, Object>(query.size());
             for (Iterator<Map.Entry<String, Object>> it = query.<Map.Entry<String, Object>>iterator(); it.hasNext();) {
                 Map.Entry<String, Object> entry = it.next();
