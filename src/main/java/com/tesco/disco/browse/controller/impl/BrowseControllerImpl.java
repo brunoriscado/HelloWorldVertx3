@@ -82,12 +82,10 @@ public class BrowseControllerImpl implements BrowseController {
 
         validatePretty(context, query);
         validateExplain(context, query);
-        validateResponseType(context, query);
         validateOffset(context, query);
         validateLimit(context, query);
         validateResponseSet(context, query);
         validateFields(context, query);
-        validateResponseType(context, query);
         validateSort(context, query);
         validateStore(context, query);
 
@@ -119,6 +117,7 @@ public class BrowseControllerImpl implements BrowseController {
                         context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
                         context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
+                validateResponseType(context),
                 handleParameters(context),
                 context.response());
     }
@@ -132,15 +131,16 @@ public class BrowseControllerImpl implements BrowseController {
                         context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
                         context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
+                validateResponseType(context),
                 handleParameters(context),
                 context.response());
     }
 
     //TODO - Annotate this method so that swagger definitions can be generated
-    public void browse(String index, String templateId, String geo, String distChannel, JsonObject payload, HttpServerResponse response) {
+    public void browse(String index, String templateId, String geo, String distChannel, String responseType, JsonObject payload, HttpServerResponse response) {
         LOGGER.info(MARKER, "Handling browse request using query params: {}", payload != null ? payload.encode() : "");
         ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
-        browseService.getBrowseResults(index, templateId, geo, distChannel, payload, handler.toHandler());
+        browseService.getBrowseResults(index, templateId, geo, distChannel, responseType, payload, handler.toHandler());
         response.setChunked(true);
         handler.flatMap(esResponse -> {
                     if (esResponse.succeeded()) {
@@ -165,47 +165,51 @@ public class BrowseControllerImpl implements BrowseController {
                         });
     }
 
-    private void validateResponseType(RoutingContext context, JsonObject query) {
+    private String validateResponseType(RoutingContext context) {
+        String responseType = null;
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("resType"))) {
             String resType = context.<Map<String, String>>get("decodedParams").get("resType");
-            if (resType.equals("products") || resType.equals("terms")) {
-                query.put("resType", context.<Map<String, String>>get("decodedParams").get("resType"));
+            if (resType.equals("products") || resType.equals("terms") || resType.equals("taxonomy")) {
+                responseType = context.<Map<String, String>>get("decodedParams").get("resType");
             } else {
                 throw new ClientException("Incorrect resType type!");
             }
         } else {
-            query.put("resType", "products");
+            responseType = "taxonomy";
         }
+        return responseType;
     }
 
     private void validateFields(RoutingContext context, JsonObject query) {
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("fields"))) {
-            JsonArray array = new JsonArray();
+//            JsonArray array = new JsonArray();
             List<String> fields = Arrays.asList(context.<Map<String, String>>get("decodedParams").get("fields").split(","));
-            fields.forEach(field -> {
-                if (FieldsEnum.getField(field) != null) {
-                    array.add(field);
-                }
-            });
-            query.put("fields", array);
+//            fields.forEach(field -> {
+//                if (FieldsEnum.getByName(field, null) != null) {
+//                    array.add(field);
+//                }
+//            });
+            query.put("fields", fields);
         } else {
-            query.put("fields", new JsonArray().add(FieldsEnum.TPNB.getName()));
+            String[] defaultFields = {FieldsEnum.TPNB.getName()};
+            query.put("fields", Arrays.asList(defaultFields));
         }
     }
 
     private void validateResponseSet(RoutingContext context, JsonObject query) {
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("responseSet"))) {
             String responseSet = context.<Map<String, String>>get("decodedParams").get("responseSet");
-            JsonArray array = new JsonArray();
+//            JsonArray array = new JsonArray();
             List<String> set = Arrays.asList(context.<Map<String, String>>get("decodedParams").get("responseSet").split(","));
-            set.forEach(res -> {
-                if (res.equals("results") || res.equals("totals") || res.equals("suggestions") || res.equals("taxonomy")) {
-                    array.add(res);
-                }
-            });
-            query.put("responseSet", array);
+//            set.forEach(res -> {
+//                if (res.equals("results") || res.equals("totals") || res.equals("suggestions") || res.equals("taxonomy")) {
+//                    array.add(res);
+//                }
+//            });
+            query.put("responseSet", set);
         } else {
-            query.put("resType", new JsonArray().add("results").add("totals").add("suggestions"));
+            String [] defaultResponseSet = {"results", "totals", "suggestions"};
+            query.put("responseSet", Arrays.asList(defaultResponseSet));
         }
     }
 

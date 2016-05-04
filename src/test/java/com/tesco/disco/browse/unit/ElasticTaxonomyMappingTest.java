@@ -42,7 +42,7 @@ public class ElasticTaxonomyMappingTest {
 				@Test
 				public void testMappingFromElasticResponseRX() {
 								BrowseServiceImpl browseServiceImpl = Mockito.spy(BrowseServiceImpl.class);
-								JsonObject result = browseServiceImpl.getBrowsingTaxonomyRx(new JsonObject(ELASTIC_PAYLOAD_MOCK)).toBlocking().single();
+								JsonObject result = browseServiceImpl.getBrowsingTaxonomy(new JsonObject(ELASTIC_PAYLOAD_MOCK)).toBlocking().single();
 								Assert.assertEquals(EXPECTED_PAYLOAD_RESULT, result.encode());
 				}
 }
