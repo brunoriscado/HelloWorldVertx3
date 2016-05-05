@@ -5,6 +5,7 @@ import com.tesco.disco.browse.exceptions.ClientException;
 import com.tesco.disco.browse.model.enumerations.FieldsEnum;
 import com.tesco.disco.browse.model.enumerations.IndicesEnum;
 import com.tesco.disco.browse.model.enumerations.ResponseSetEnum;
+import com.tesco.disco.browse.model.enumerations.ResponseTypesEnum;
 import com.tesco.disco.browse.service.BrowseService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.http.HttpHeaders;
@@ -25,7 +26,10 @@ import org.slf4j.MarkerFactory;
 import rx.Observable;
 
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by bruno on 20/04/16.
@@ -48,8 +52,8 @@ public class BrowseControllerImpl implements BrowseController {
         Router subRouter = Router.router(vertx);
         subRouter.route().handler(this::queryStringDecoder);
 
-        subRouter.get("/browse/*").handler(this::browseHandler);
         subRouter.get("/browse/products").handler(this::browseProductsHandler);
+        subRouter.get("/browse/*").handler(this::browseHandler);
         subRouter.get("/_status").handler(this::statusHandler);
 
         router.mountSubRouter("/", subRouter);
@@ -113,7 +117,7 @@ public class BrowseControllerImpl implements BrowseController {
                         context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
                         context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
-                validateResponseType(context),
+                validateResponseType(context,  ResponseTypesEnum.TAXONOMY.getType()),
                 handleParameters(context),
                 context.response());
     }
@@ -127,7 +131,7 @@ public class BrowseControllerImpl implements BrowseController {
                         context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
                         context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
-                validateResponseType(context),
+                validateResponseType(context, ResponseTypesEnum.PRODUCTS.getType()),
                 handleParameters(context),
                 context.response());
     }
@@ -161,7 +165,7 @@ public class BrowseControllerImpl implements BrowseController {
                         });
     }
 
-    private String validateResponseType(RoutingContext context) {
+    private String validateResponseType(RoutingContext context, String defaultResponseType) {
         String responseType = null;
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("resType"))) {
             String resType = context.<Map<String, String>>get("decodedParams").get("resType");
@@ -171,7 +175,7 @@ public class BrowseControllerImpl implements BrowseController {
                 throw new ClientException("Incorrect resType type!");
             }
         } else {
-            responseType = "taxonomy";
+            responseType = defaultResponseType;
         }
         return responseType;
     }
@@ -182,12 +186,12 @@ public class BrowseControllerImpl implements BrowseController {
             List<String> fields = Arrays.asList(context.<Map<String, String>>get("decodedParams").get("fields").split(","));
             fields.forEach(field -> {
                 if (FieldsEnum.getByName(field, null) != null) {
-                    csvFields.append("\\\"").append(field).append("\\\"").append(",");
+                    csvFields.append("\"").append(field).append("\"").append(",");
                 }
             });
-            query.put("fields", StringUtils.substring("\"" + csvFields.toString() + "\"", 0, csvFields.length()-1));
+            query.put("fields", StringUtils.substring(csvFields.toString(), 0, csvFields.length()-1));
         } else {
-            query.put("fields", "\"\\\"" + FieldsEnum.TPNB.getName() + "\\\"\"");
+            query.put("fields", "\"" + FieldsEnum.TPNB.getName() + "\"");
         }
     }
 

@@ -9,9 +9,15 @@
   "size": "0",
   {{/results}}
   {{#price}} "sort": [{"price": {"order": "{{price}}", "mode": "min"} }], {{/price}}
-  {{#taxonomy}}
   "aggs": {
-    "superDepartments": {
+    "new": {
+      "filter" : { "term": { "new": "{{store}}" } }
+    },
+    "offer": {
+      "filter" : { "term": { "offer": "{{store}}" } }
+    }
+    {{#taxonomy}}
+    ,"superDepartments": {
       "aggs": {
         "departments": {
           "aggs": {
@@ -37,8 +43,16 @@
         "field": "superDepartment.raw"
       }
     }
+    {{/taxonomy}}
+    {{#filters}}
+    ,"brands": {
+      "terms": {
+        "field": "brand.raw",
+        "size": 0
+      }
+    }
+    {{/filters}}
   },
-  {{/taxonomy}}
   {{#suggestions}}
   "suggest": {
     "text": "{{{query}}}",
@@ -1077,6 +1091,18 @@
                       "term" : { "shelf.raw" : "{{.}}" }
                     },
                     {{/shelf}}
+                    {}
+                  ]
+                }
+              },
+              {
+                "or": {
+                  "filters": [
+                    {{#brands}}
+                    {
+                      "term" : { "brand.raw" : "{{.}}" }
+                    },
+                    {{/brands}}
                     {}
                   ]
                 }

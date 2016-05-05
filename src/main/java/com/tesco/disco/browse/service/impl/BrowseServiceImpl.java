@@ -28,8 +28,10 @@ import org.slf4j.MarkerFactory;
 import rx.Observable;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by bruno on 20/04/16.
@@ -61,13 +63,22 @@ public class BrowseServiceImpl implements BrowseService {
             Handler<AsyncResult<JsonObject>> response) {
         LOGGER.info(MARKER, "Fetching browse results for index: {}, templateId: {} - using query params: {} ",
                 index, templateId, query != null ? query.encode() : "");
+        JsonObject params = new JsonObject()
+                .put("geo", geo)
+                .put("index", index)
+                .put("config", templateId)
+                .put("distChannel", distChannel)
+                .put("resType", responseType);
+        if (query != null) {
+            params.mergeIn(query);
+        }
         vertx.<JsonObject>executeBlockingObservable(handleBlocking -> {
             JsonObject result = null;
             SearchResponse res = client.prepareSearch()
                     .setIndices(index)
                     .setTemplateName(IndicesEnum.getByIndexName(index).getIndex() + "." + templateId)
                     .setTemplateType(ScriptService.ScriptType.INDEXED)
-                    .setTemplateParams(query == null ? new HashMap<String, Object>() : convertJsonArrays(query))
+                    .setTemplateParams(query == null ? new HashMap<String, Object>() : convertJsonArrays(params))
                     .execute().actionGet();
             try {
                 XContentBuilder builder = XContentFactory.jsonBuilder();
@@ -81,15 +92,6 @@ public class BrowseServiceImpl implements BrowseService {
             handleBlocking.complete(result);
         })
         .flatMap(elasticResponse -> {
-            JsonObject params = new JsonObject()
-                    .put("geo", geo)
-                    .put("index", index)
-                    .put("config", templateId)
-                    .put("distChannel", distChannel)
-                    .put("resType", responseType);
-            if (query != null) {
-                params.mergeIn(query);
-            }
             return getApiResponse(elasticResponse, params);
         })
         .subscribe(

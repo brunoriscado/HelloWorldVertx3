@@ -3,6 +3,7 @@ package com.tesco.disco.browse.integration.browse.service;
 import com.tesco.disco.browse.integration.AbstractElasticsearchTestVerticle;
 import com.tesco.disco.browse.integration.browse.BrowseTest;
 import com.tesco.disco.browse.model.enumerations.DistributionChannelsEnum;
+import com.tesco.disco.browse.model.enumerations.FieldsEnum;
 import com.tesco.disco.browse.model.enumerations.IndicesEnum;
 import com.tesco.disco.browse.model.enumerations.ResponseTypesEnum;
 import com.tesco.disco.browse.service.BrowseService;
@@ -16,10 +17,7 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import io.vertx.rxjava.core.Vertx;
 import org.apache.commons.io.IOUtils;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,10 +73,11 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
     @Before
     public void startServices() {
         browseService = context.getBrowseService();
-//        defaults = new JsonObject("{\"limit\":10,\"store\":3060,\"offset\":0,\"fields\":\"\\\"tpnb\\\"\",\"results\":true,\"totals\":true,\"suggestions\":true}");
-        defaults = new JsonObject("{\"limit\":\"10\",\"store\":\"3060\",\"offset\":\"0\",\"fields\":\"\\\"name\\\",\\\"store_price\\\"\"," +
-                "\"results\":\"true\",\"totals\":\"true\",\"suggestions\":\"true\",\"geo\":\"uk\",\"distChannel\":\"ghs\",\"index\":\"ghs.products\",\"resType\":\"products\"" +
-                ",\"config\":\"default\"}");
+        defaults = new JsonObject("{\"limit\":\"10\",\"store\":\"3060\",\"offset\":\"0\"," +
+                "\"results\":\"true\",\"totals\":\"true\"," +
+                "\"suggestions\":\"true\",\"geo\":\"uk\",\"distChannel\":\"ghs\",\"index\":\"ghs.products\"," +
+                "\"resType\":\"products\",\"config\":\"default\"}");
+        defaults.put("fields", "\"" + "tpnb" + "\"");
     }
 
     @Test
@@ -383,43 +382,16 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                 defaults,
                 handle -> {
                     JsonObject response = handle.result();
-                    response.getJsonObject("uk")
-                            .getJsonObject("ghs")
-                            .getJsonObject("taxonomy")
-                            .getJsonArray("superDepartments")
-                            .forEach(superDepartment -> {
-                                JsonObject superDep = new JsonObject(Json.encode(superDepartment));
-                                superDep.getJsonArray("departments")
-                                        .forEach(department -> {
-                                            JsonObject jsonDep = new JsonObject(Json.encode(department));
-                                            jsonDep.getJsonArray("aisles")
-                                                    .forEach(aisle -> {
-                                                        JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
-                                                        jsonAisle.getJsonArray("shelves")
-                                                                .forEach(shelf -> {
-                                                                    shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
-                                                                });
-                                                    });
-                                        });
-                            });
-                    testContext.assertEquals(shelves.size(), 9);
-                    List<String> expected = new ArrayList<String>();
-                    expected.add("Tesco Shower Gel");
-                    expected.add("Travel Sizes");
-                    expected.add("Womens Gift Sets");
-                    expected.add("Colour Conditioner");
-                    expected.add("Professional Shampoo");
-                    expected.add("Anti Dandruff Shampoo");
-                    expected.add("Kids Shampoo");
-                    expected.add("Professional Styling");
-                    expected.add("Blonde Shampoo & Conditioner");
-                    testContext.assertTrue(shelves.containsAll(expected));
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs").getJsonObject("products")
+                            .getJsonObject("totals")
+                            .getInteger("all"), 369);
                     async.complete();
                 });
     }
 
     @AfterClass
     public static void tearDown() {
-//        shutdownEmbeddedElasticsearchServer();
+        shutdownEmbeddedElasticsearchServer();
     }
 }

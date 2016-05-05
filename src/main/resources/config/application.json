@@ -13,7 +13,7 @@
                 "port": 9300
               }
             ],
-            "cluster.name": "elasticsearch",
+            "cluster.name": "vagrant",
             "client.transport.sniff": true
           }
         }

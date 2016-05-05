@@ -45,6 +45,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
                 async.complete();
             } else {
                 LOGGER.debug("Deployment failed!");
+                async.complete();
             }
         });
         String testConfig = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResource("config/application-test.json"));
@@ -59,6 +60,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
                 asyncService.complete();
             } else {
                 LOGGER.debug("Deployment failed!");
+                asyncService.complete();
             }
         });
 
@@ -70,6 +72,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
                 asyncController.complete();
             } else {
                 LOGGER.debug("Deployment failed!");
+                asyncController.complete();
             }
         });
     }
@@ -191,5 +194,15 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
                         hasItems("Tesco Shower Gel"))
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[1].aisles[2].shelves.name",
                         hasItems("Travel Sizes"));
+    }
+
+    @Test
+    public void testBrowseWithProductsResultsDefaultQuery(TestContext testContext) {
+        String body = given().port(9003)
+                .when().get("/browse/products/?fields=name&responseSet=results,taxonomy").andReturn().body().prettyPrint();
+        testContext.assertTrue(!new JsonObject(body)
+                .getJsonObject("uk")
+                .getJsonObject("ghs")
+                .getJsonObject("products").getJsonArray("results").isEmpty());
     }
 }
