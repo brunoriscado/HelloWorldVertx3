@@ -19,4 +19,7 @@ test-output
 test-results
 test-tmp
 *.class
-vertx_classpath.txt
+.vertx/
+logs/
+src/main/java/generated-src/
+
