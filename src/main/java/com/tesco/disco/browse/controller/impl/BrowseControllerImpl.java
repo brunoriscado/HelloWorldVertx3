@@ -231,7 +231,7 @@ public class BrowseControllerImpl implements BrowseController {
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("limit"))) {
             try {
                 int limit = Integer.valueOf(context.<Map<String, String>>get("decodedParams").get("limit"));
-                if (limit <= 0 && limit <= 100) {
+                if (limit >= 0 && limit <= 100) {
                     query.put("limit", String.valueOf(limit));
                 } else {
                     throw new ClientException("Incorrect limit type!");

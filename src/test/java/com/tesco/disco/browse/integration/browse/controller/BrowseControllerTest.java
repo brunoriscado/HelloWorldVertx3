@@ -14,17 +14,17 @@ import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.http.HttpClient;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.*;
 
 /**
  * Created by bruno on 21/04/16.
@@ -205,4 +205,305 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
                 .getJsonObject("ghs")
                 .getJsonObject("products").getJsonArray("results").isEmpty());
     }
+
+    @Test
+    public void testDefaultRequestWithFullResponseSet() {
+        given().port(9003)
+                .when().get("/browse/products/?fields=name,price&limit=10&responseSet=results,totals,suggestions,taxonomy")
+                .then()
+                .body("uk.ghs.products.totals.all", is(369))
+                .body("uk.ghs.products.results.size()", is(10));
+    }
+
+//    @Test
+//    public void testRequestFilteringNonMatchingSuperDepartment() {
+//        String uri = "/search/?query=milk&fields=name,price&limit=10&superDepartment=Some+String&responseSet=results,totals,suggestions,taxonomy";
+//
+//        HttpClientRequest req = vertx.createHttpClient().setPort(PORT).get(uri, (response) -> {
+//            response.exceptionHandler(throwable -> {
+//                fail("Error handling request! - " + throwable.getMessage());
+//            });
+//
+//            assertEquals(200, response.statusCode());
+//
+//            response.bodyHandler((buffer) -> {
+//                try {
+//                    JsonObject responseBody = new JsonObject(buffer.toString());
+//                    if (responseBody.getObject("uk").getObject("ghs").getObject("products").containsField("taxonomy")) {
+//                        if (responseBody.getObject("uk").getObject("ghs").getObject("products").getObject("taxonomy").size() == 0) {
+//                            testComplete();
+//                        } else {
+//                            fail("Taxonomy doesn't contain the expected results!");
+//                        }
+//                    } else {
+//                        fail("No taxonomy returned from the search!");
+//                    }
+//                } catch (Exception e) {
+//                    fail("Error handling request! - " + e.getMessage());
+//                }
+//            });
+//        });
+//        req.headers().set("content-type", "application/json");
+//        req.end();
+//    }
+//
+//    @Test
+//    public void testRequestFilteringMatchingSuperDepartment() {
+//        String uri = "/search/?query=milk&fields=name,price&limit=10&superDepartment=Fresh+Food&responseSet=results,totals,suggestions,taxonomy";
+//
+//        HttpClientRequest req = vertx.createHttpClient().setPort(PORT).get(uri, (response) -> {
+//            response.exceptionHandler(throwable -> {
+//                fail("Error handling request! - " + throwable.getMessage());
+//            });
+//
+//            assertEquals(200, response.statusCode());
+//
+//            response.bodyHandler((buffer) -> {
+//                try {
+//                    JsonObject responseBody = new JsonObject(buffer.toString());
+//                    if (responseBody.getObject("uk").getObject("ghs").getObject("products").containsField("taxonomy")) {
+//                        if (responseBody.getObject("uk").getObject("ghs").getObject("products").getObject("taxonomy").getArray("superDepartments").size() == 1) {
+//                            testComplete();
+//                        } else {
+//                            fail("Taxonomy doesn't contain the expected results!");
+//                        }
+//                    } else {
+//                        fail("No taxonomy returned from the search!");
+//                    }
+//                } catch (Exception e) {
+//                    fail("Error handling request! - " + e.getMessage());
+//                }
+//            });
+//        });
+//        req.headers().set("content-type", "application/json");
+//        req.end();
+//    }
+//
+//    @Test
+//    public void testRequestFilteringMatchingShelf() {
+//        String uri = "/search/?query=milk&fields=name,price&limit=10&shelf=Whole+Milk&responseSet=results,totals,suggestions,taxonomy";
+//
+//        HttpClientRequest req = vertx.createHttpClient().setPort(PORT).get(uri, (response) -> {
+//            response.exceptionHandler(throwable -> {
+//                fail("Error handling request! - " + throwable.getMessage());
+//            });
+//
+//            assertEquals(200, response.statusCode());
+//
+//            response.bodyHandler((buffer) -> {
+//                try {
+//                    JsonObject responseBody = new JsonObject(buffer.toString());
+//                    if (responseBody.getObject("uk").getObject("ghs").getObject("products").containsField("taxonomy")) {
+//                        if (responseBody.getObject("uk").getObject("ghs").getObject("products").getObject("taxonomy").getArray("superDepartments").size() > 0) {
+//                            JsonArray sds = responseBody.getObject("uk").getObject("ghs").getObject("products").getObject("taxonomy").getArray("superDepartments");
+//                            for (Iterator it = sds.iterator(); it.hasNext();) {
+//                                SuperDepartment sd = Json.decodeValue(((JsonObject)it.next()).encode(), SuperDepartment.class);
+//                                sd.getDepartments().forEach(dep -> {
+//                                    dep.getAisles().forEach(aisle -> {
+//                                        aisle.getShelves().forEach(shelf -> {
+//                                            if (shelf.getName().equals("Whole Milk")) {
+//                                                testComplete();
+//                                            }
+//                                        });
+//                                    });
+//                                });
+//                            }
+//                            fail("Taxonomy doesn't contain the expected results!");
+//                        } else {
+//                            fail("Taxonomy doesn't contain the expected results!");
+//                        }
+//                    } else {
+//                        fail("No taxonomy returned from the search!");
+//                    }
+//                } catch (Exception e) {
+//                    fail("Error handling request! - " + e.getMessage());
+//                }
+//            });
+//        });
+//        req.headers().set("content-type", "application/json");
+//        req.end();
+//    }
+//
+//    //TODO - uncomment this test for multiple filters being passed in, as well as the TODO on Parameter.class -> convertMultiStrings
+//    @Test
+//    @Ignore
+//    public void testRequestFilteringMatchingTwoSuperDepartment() {
+//        String uri = "/search/?query=milk&fields=name,price&limit=10&superDepartment=Fresh+Food,Baby&responseSet=results,totals,suggestions,taxonomy";
+//
+//        HttpClientRequest req = vertx.createHttpClient().setPort(PORT).get(uri, (response) -> {
+//            response.exceptionHandler(throwable -> {
+//                fail("Error handling request! - " + throwable.getMessage());
+//            });
+//
+//            assertEquals(200, response.statusCode());
+//
+//            response.bodyHandler((buffer) -> {
+//                try {
+//                    JsonObject responseBody = new JsonObject(buffer.toString());
+//                    if (responseBody.getObject("uk").getObject("ghs").getObject("products").containsField("taxonomy")) {
+//                        if (responseBody.getObject("uk").getObject("ghs").getObject("products").getObject("taxonomy").getArray("superDepartments").size() == 2) {
+//                            testComplete();
+//                        } else {
+//                            fail("Taxonomy doesn't contain the expected results!");
+//                        }
+//                    } else {
+//                        fail("No taxonomy returned from the search!");
+//                    }
+//                } catch (Exception e) {
+//                    fail("Error handling request! - " + e.getMessage());
+//                }
+//            });
+//        });
+//        req.headers().set("content-type", "application/json");
+//        req.end();
+//    }
+//
+//    @Test
+//    public void testRequestWithoutTaxonomy() {
+//        String uri = "/search/?query=milk&fields=name,price&limit=10&shelf=stuff&responseSet=results,totals,suggestions";
+//
+//        HttpClientRequest req = vertx.createHttpClient().setPort(PORT).get(uri, (response) -> {
+//            response.exceptionHandler(throwable -> {
+//                fail("Error handling request! - " + throwable.getMessage());
+//            });
+//
+//            assertEquals(200, response.statusCode());
+//            response.bodyHandler((buffer) -> {
+//                JsonObject responseBody =  new JsonObject(buffer.toString());
+//                if (responseBody.containsField("taxonomy")) {
+//                    fail("There shouldn't be any taxonomy in the result set!");
+//                } else {
+//                    testComplete();
+//                }
+//            });
+//        });
+//        req.headers().set("content-type", "application/json");
+//        req.end();
+//    }
+//
+//    @Test
+//    public void testRequestWithoutResults() {
+//        String uri = "/search/?query=milk&fields=name,price&limit=10&shelf=stuff&responseSet=taxonomy,totals,suggestions";
+//
+//        HttpClientRequest req = vertx.createHttpClient().setPort(PORT).get(uri, (response) -> {
+//            response.exceptionHandler(throwable -> {
+//                fail("Error handling request! - " + throwable.getMessage());
+//            });
+//
+//            assertEquals(200, response.statusCode());
+//            response.bodyHandler((buffer) -> {
+//                JsonObject responseBody =  new JsonObject(buffer.toString());
+//                if (responseBody.containsField("results")) {
+//                    fail("There shouldn't be any taxonomy in the result set!");
+//                } else {
+//                    testComplete();
+//                }
+//            });
+//        });
+//        req.headers().set("content-type", "application/json");
+//        req.end();
+//    }
+//
+//    @Test
+//    public void testRequestWithoutTotals() {
+//        String uri = "/search/?query=milk&fields=name,price&limit=10&shelf=stuff&responseSet=results,taxonomy,suggestions";
+//
+//        HttpClientRequest req = vertx.createHttpClient().setPort(PORT).get(uri, (response) -> {
+//            response.exceptionHandler(throwable -> {
+//                fail("Error handling request! - " + throwable.getMessage());
+//            });
+//
+//            assertEquals(200, response.statusCode());
+//            response.bodyHandler((buffer) -> {
+//                JsonObject responseBody =  new JsonObject(buffer.toString());
+//                if (responseBody.containsField("totals")) {
+//                    fail("There shouldn't be any taxonomy in the result set!");
+//                } else {
+//                    testComplete();
+//                }
+//            });
+//        });
+//        req.headers().set("content-type", "application/json");
+//        req.end();
+//    }
+//
+//    @Test
+//    public void testRequestWithoutSuggestions() {
+//        String uri = "/search/?query=milk&fields=name,price&limit=10&shelf=stuff&responseSet=results,totals,taxonomy";
+//
+//        HttpClientRequest req = vertx.createHttpClient().setPort(PORT).get(uri, (response) -> {
+//            response.exceptionHandler(throwable -> {
+//                fail("Error handling request! - " + throwable.getMessage());
+//            });
+//
+//            assertEquals(200, response.statusCode());
+//            response.bodyHandler((buffer) -> {
+//                JsonObject responseBody =  new JsonObject(buffer.toString());
+//                if (responseBody.containsField("suggestions")) {
+//                    fail("There shouldn't be any taxonomy in the result set!");
+//                } else {
+//                    testComplete();
+//                }
+//            });
+//        });
+//        req.headers().set("content-type", "application/json");
+//        req.end();
+//    }
+//
+//    @Test
+//    public void testRequestNoQueryNoFilter() {
+//        String uri = "/search/";
+//
+//        HttpClientRequest req = vertx.createHttpClient().setPort(PORT).get(uri, (response) -> {
+//            response.exceptionHandler(throwable -> {
+//                fail("Error handling request! - " + throwable.getMessage());
+//            });
+//
+//            assertEquals(400, response.statusCode());
+//
+//            response.bodyHandler((buffer) -> {
+//                try {
+//                    JsonObject responseBody = new JsonObject(buffer.toString());
+//                    Assert.assertEquals("error", responseBody.getString("status"));
+//                    testComplete();
+//                } catch (Exception e) {
+//                    fail("Error handling request! - " + e.getMessage());
+//                }
+//            });
+//        });
+//        req.headers().set("content-type", "application/json");
+//        req.end();
+//    }
+//
+//    @Test
+//    public void testRequestNoQueryWithFilter() {
+//        String uri = "/search/?fields=name,price&limit=10&superDepartment=Fresh+Food&responseSet=results,totals,suggestions,taxonomy";
+//
+//        HttpClientRequest req = vertx.createHttpClient().setPort(PORT).get(uri, (response) -> {
+//            response.exceptionHandler(throwable -> {
+//                fail("Error handling request! - " + throwable.getMessage());
+//            });
+//
+//            assertEquals(200, response.statusCode());
+//
+//            response.bodyHandler((buffer) -> {
+//                try {
+//                    JsonObject responseBody = new JsonObject(buffer.toString());
+//                    if (responseBody.getObject("uk").getObject("ghs").getObject("products").containsField("taxonomy")) {
+//                        if (responseBody.getObject("uk").getObject("ghs").getObject("products").getObject("taxonomy").size() > 0) {
+//                            testComplete();
+//                        } else {
+//                            fail("Taxonomy doesn't contain the expected results!");
+//                        }
+//                    } else {
+//                        fail("No taxonomy returned from the search!");
+//                    }
+//                } catch (Exception e) {
+//                    fail("Error handling request! - " + e.getMessage());
+//                }
+//            });
+//        });
+//        req.headers().set("content-type", "application/json");
+//        req.end();
+//    }
 }

@@ -142,7 +142,7 @@ public class BrowseServiceImpl implements BrowseService {
                 })
                 .flatMap(apiResult -> {
                     if (type.equals(ResponseTypesEnum.PRODUCTS) && Boolean.valueOf(params.getString("taxonomy", "false"))) {
-                        return getBrowsingTaxonomy(elasticsearchResponse)
+                        return getBrowsingTaxonomy(elasticsearchResponse, type)
                                 .map(taxonomyResponse -> {
                                     apiResult.getJsonObject(params.getString("geo"))
                                             .getJsonObject(params.getString("distChannel"))
@@ -151,7 +151,7 @@ public class BrowseServiceImpl implements BrowseService {
                                     return apiResult;
                                 });
                     } else if (type.equals(ResponseTypesEnum.TAXONOMY)) {
-                        return getBrowsingTaxonomy(elasticsearchResponse)
+                        return getBrowsingTaxonomy(elasticsearchResponse, type)
                                 .map(taxonomyResponse -> {
                                     apiResult.getJsonObject(params.getString("geo"))
                                             .getJsonObject(params.getString("distChannel"))
@@ -269,7 +269,7 @@ public class BrowseServiceImpl implements BrowseService {
      * @param elasticResponse
      * @return
      */
-    public Observable<JsonObject> getBrowsingTaxonomy(JsonObject elasticResponse) {
+    public Observable<JsonObject> getBrowsingTaxonomy(JsonObject elasticResponse, ResponseTypesEnum respType) {
         LOGGER.debug(MARKER, "Mapping elastic aggregations response to API taxonomy");
         Taxonomy taxonomy = new Taxonomy();
         return Observable.just(elasticResponse)
@@ -305,24 +305,40 @@ public class BrowseServiceImpl implements BrowseService {
                                                     .map(shelf -> {
                                                         LOGGER.debug(MARKER, "Mapping shelves");
                                                         JsonObject jShelf = new JsonObject(Json.encode(shelf));
-                                                        return new Shelf(jShelf.getString("key"));
+                                                        if (respType.equals(ResponseTypesEnum.TAXONOMY)) {
+                                                            return new Shelf(jShelf.getString("key"));
+                                                        } else {
+                                                            return new Shelf(jShelf.getString("key"), jShelf.getLong("doc_count"));
+                                                        }
                                                     })
                                                     .collect(() -> new ArrayList<Shelf>(),
                                                             (shelves, she) -> shelves.add(she))
                                                     .map(shelves -> {
-                                                        return new Aisle(jAisle.getString("key")).addShelves(shelves);
+                                                        if (respType.equals(ResponseTypesEnum.TAXONOMY)) {
+                                                            return new Aisle(jAisle.getString("key")).addShelves(shelves);
+                                                        } else {
+                                                            return new Aisle(jAisle.getString("key"), jAisle.getLong("doc_count")).addShelves(shelves);
+                                                        }
                                                     });
                                         })
                                         .collect(() -> new ArrayList<Aisle>(),
                                                 (aisles, aisle) -> aisles.add(aisle))
                                         .map(aisles -> {
-                                            return new Department(dep.getString("key")).addAisles(aisles);
+                                            if (respType.equals(ResponseTypesEnum.TAXONOMY)) {
+                                                return new Department(dep.getString("key")).addAisles(aisles);
+                                            } else {
+                                                return new Department(dep.getString("key"), dep.getLong("doc_count")).addAisles(aisles);
+                                            }
                                         });
                             })
                             .collect(() -> new ArrayList<Department>(),
                                     (departments, department) -> departments.add(department))
                             .map(departments -> {
-                                return new SuperDepartment(sd.getString("key")).addDepartments(departments);
+                                if (respType.equals(ResponseTypesEnum.TAXONOMY)) {
+                                    return new SuperDepartment(sd.getString("key")).addDepartments(departments);
+                                } else {
+                                    return new SuperDepartment(sd.getString("key"), sd.getLong("doc_count")).addDepartments(departments);
+                                }
                             })
                             .collect(() -> new ArrayList<SuperDepartment>(),
                                     (superDeps, superDep) -> superDeps.add(superDep))
