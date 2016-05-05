@@ -1,0 +1,311 @@
+{
+  "id" : "250364693",
+  "store_price" : [ {
+    "price" : 4.25,
+    "store" : 2560
+  }, {
+    "price" : 4.25,
+    "store" : 3009
+  }, {
+    "price" : 4.25,
+    "store" : 2179
+  }, {
+    "price" : 4.25,
+    "store" : 2313
+  }, {
+    "price" : 4.25,
+    "store" : 4362
+  }, {
+    "price" : 4.25,
+    "store" : 2187
+  }, {
+    "price" : 4.25,
+    "store" : 2699
+  }, {
+    "price" : 4.25,
+    "store" : 2126
+  }, {
+    "price" : 4.25,
+    "store" : 5135
+  }, {
+    "price" : 4.25,
+    "store" : 2065
+  }, {
+    "price" : 4.25,
+    "store" : 5330
+  }, {
+    "price" : 4.25,
+    "store" : 5331
+  }, {
+    "price" : 4.25,
+    "store" : 2071
+  }, {
+    "price" : 4.25,
+    "store" : 6810
+  }, {
+    "price" : 4.25,
+    "store" : 2394
+  }, {
+    "price" : 4.25,
+    "store" : 5851
+  }, {
+    "price" : 4.25,
+    "store" : 2015
+  }, {
+    "price" : 4.25,
+    "store" : 2340
+  }, {
+    "price" : 4.25,
+    "store" : 3433
+  }, {
+    "price" : 4.25,
+    "store" : 3178
+  }, {
+    "price" : 4.25,
+    "store" : 2098
+  }, {
+    "price" : 4.25,
+    "store" : 6002
+  }, {
+    "price" : 4.25,
+    "store" : 5363
+  }, {
+    "price" : 4.25,
+    "store" : 2164
+  }, {
+    "price" : 4.25,
+    "store" : 2676
+  }, {
+    "price" : 4.25,
+    "store" : 6264
+  }, {
+    "price" : 4.25,
+    "store" : 2744
+  }, {
+    "price" : 4.25,
+    "store" : 3193
+  }, {
+    "price" : 4.25,
+    "store" : 6781
+  }, {
+    "price" : 4.25,
+    "store" : 2047
+  }, {
+    "price" : 4.25,
+    "store" : 6271
+  } ],
+  "store_unitprice" : [ {
+    "store" : 2560,
+    "unitprice" : 4.25
+  }, {
+    "store" : 3009,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2179,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2313,
+    "unitprice" : 4.25
+  }, {
+    "store" : 4362,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2187,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2699,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2126,
+    "unitprice" : 4.25
+  }, {
+    "store" : 5135,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2065,
+    "unitprice" : 4.25
+  }, {
+    "store" : 5330,
+    "unitprice" : 4.25
+  }, {
+    "store" : 5331,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2071,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2394,
+    "unitprice" : 4.25
+  }, {
+    "store" : 6810,
+    "unitprice" : 4.25
+  }, {
+    "store" : 5851,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2015,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2340,
+    "unitprice" : 4.25
+  }, {
+    "store" : 3433,
+    "unitprice" : 4.25
+  }, {
+    "store" : 3178,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2098,
+    "unitprice" : 4.25
+  }, {
+    "store" : 6002,
+    "unitprice" : 4.25
+  }, {
+    "store" : 5363,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2164,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2676,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2744,
+    "unitprice" : 4.25
+  }, {
+    "store" : 6264,
+    "unitprice" : 4.25
+  }, {
+    "store" : 3193,
+    "unitprice" : 4.25
+  }, {
+    "store" : 6781,
+    "unitprice" : 4.25
+  }, {
+    "store" : 6271,
+    "unitprice" : 4.25
+  }, {
+    "store" : 2047,
+    "unitprice" : 4.25
+  } ],
+  "store_availability" : [ {
+    "store" : 2560,
+    "availability" : 1
+  }, {
+    "store" : 3009,
+    "availability" : 1
+  }, {
+    "store" : 2179,
+    "availability" : 1
+  }, {
+    "store" : 2313,
+    "availability" : 1
+  }, {
+    "store" : 4362,
+    "availability" : 1
+  }, {
+    "store" : 2187,
+    "availability" : 1
+  }, {
+    "store" : 2699,
+    "availability" : 1
+  }, {
+    "store" : 2126,
+    "availability" : 1
+  }, {
+    "store" : 5135,
+    "availability" : 1
+  }, {
+    "store" : 2065,
+    "availability" : 1
+  }, {
+    "store" : 5330,
+    "availability" : 1
+  }, {
+    "store" : 5331,
+    "availability" : 1
+  }, {
+    "store" : 2071,
+    "availability" : 1
+  }, {
+    "store" : 2394,
+    "availability" : 1
+  }, {
+    "store" : 6810,
+    "availability" : 1
+  }, {
+    "store" : 5851,
+    "availability" : 1
+  }, {
+    "store" : 2015,
+    "availability" : 1
+  }, {
+    "store" : 2340,
+    "availability" : 1
+  }, {
+    "store" : 3433,
+    "availability" : 1
+  }, {
+    "store" : 3178,
+    "availability" : 1
+  }, {
+    "store" : 2098,
+    "availability" : 1
+  }, {
+    "store" : 6002,
+    "availability" : 1
+  }, {
+    "store" : 5363,
+    "availability" : 1
+  }, {
+    "store" : 2164,
+    "availability" : 1
+  }, {
+    "store" : 2676,
+    "availability" : 1
+  }, {
+    "store" : 6264,
+    "availability" : 1
+  }, {
+    "store" : 2744,
+    "availability" : 1
+  }, {
+    "store" : 3193,
+    "availability" : 1
+  }, {
+    "store" : 6781,
+    "availability" : 1
+  }, {
+    "store" : 2047,
+    "availability" : 1
+  }, {
+    "store" : 6271,
+    "availability" : 1
+  } ],
+  "tpnb" : "058912998",
+  "popularity" : null,
+  "trialrate" : null,
+  "name" : "Fortean Times",
+  "brand" : "Whs",
+  "image" : "http://img.tesco.com/Groceries/pi/224/9770308589224/IDShot_90x90.jpg",
+  "normalPrice" : 4.25,
+  "salesrank" : 0,
+  "ean" : "0000000000000",
+  "origin" : "UNITED KINGDOM",
+  "shelf" : "News, Science and History",
+  "aisle" : "Lifestyle & Interests",
+  "department" : "Magazines",
+  "superDepartment" : "Home & Ents",
+  "PromotionId" : "Z-GCDXX",
+  "PromotionDescription" : "25 extra points on any newspaper or magazine",
+  "PromotionIcon" : [ ],
+  "PromotionStart" : "2015-03-23",
+  "PromotionEnd" : "2015-05-17",
+  "UnitQuantity" : "EACH",
+  "UnitOfSale" : 1,
+  "AverageSellingUnitWeight" : 0.1,
+  "ContentsMeasureType" : "SNGL",
+  "ContentsQuantity" : 1.0,
+  "Messages" : "<Messages>      <Message TypeCode=\"ShortShelfLife\" PageReference=\"http://www.tesco.com/groceries/zones/default.aspx?name=magazine-shop&amp;=MM_ICID\" Description=\"This cover may not represent the latest issue and price, your grocery delivery will reflect the latest issue and current in-store price\">        <Stores all=\"true\" />      </Message>      <Message TypeCode=\"BulkBuyLimit\" TriggerQuantity=\"99\" GroupId=\"NOT_MAPPED\" Description=\"Sorry, there is a limit of 99 on this product\">        <Stores all=\"true\" />      </Message>    </Messages>",
+  "BulkBuyLimit" : 99
+}

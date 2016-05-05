@@ -1,0 +1,124 @@
+{
+  "id" : "253178511",
+  "store_price" : [ {
+    "price" : 2.85,
+    "store" : 5168
+  }, {
+    "price" : 2.85,
+    "store" : 2850
+  }, {
+    "price" : 2.85,
+    "store" : 3378
+  }, {
+    "price" : 2.85,
+    "store" : 5378
+  }, {
+    "price" : 2.85,
+    "store" : 5124
+  }, {
+    "price" : 2.85,
+    "store" : 2551
+  }, {
+    "price" : 2.85,
+    "store" : 3243
+  }, {
+    "price" : 2.85,
+    "store" : 2286
+  }, {
+    "price" : 2.85,
+    "store" : 5182
+  }, {
+    "price" : 2.85,
+    "store" : 3439
+  } ],
+  "store_unitprice" : [ {
+    "store" : 5168,
+    "unitprice" : 0.285
+  }, {
+    "store" : 2850,
+    "unitprice" : 0.285
+  }, {
+    "store" : 3378,
+    "unitprice" : 0.285
+  }, {
+    "store" : 5378,
+    "unitprice" : 0.285
+  }, {
+    "store" : 5124,
+    "unitprice" : 0.285
+  }, {
+    "store" : 2551,
+    "unitprice" : 0.285
+  }, {
+    "store" : 3243,
+    "unitprice" : 0.285
+  }, {
+    "store" : 2286,
+    "unitprice" : 0.285
+  }, {
+    "store" : 5182,
+    "unitprice" : 0.285
+  }, {
+    "store" : 3439,
+    "unitprice" : 0.285
+  } ],
+  "store_availability" : [ {
+    "store" : 5168,
+    "availability" : 1
+  }, {
+    "store" : 2850,
+    "availability" : 1
+  }, {
+    "store" : 3378,
+    "availability" : 1
+  }, {
+    "store" : 5378,
+    "availability" : 1
+  }, {
+    "store" : 5124,
+    "availability" : 1
+  }, {
+    "store" : 2551,
+    "availability" : 1
+  }, {
+    "store" : 3243,
+    "availability" : 1
+  }, {
+    "store" : 2286,
+    "availability" : 1
+  }, {
+    "store" : 5182,
+    "availability" : 1
+  }, {
+    "store" : 3439,
+    "availability" : 1
+  } ],
+  "tpnb" : "052903022",
+  "popularity" : 1.065246E-4,
+  "trialrate" : 1.26392E-5,
+  "name" : "Bradwell's Old Fashioned Vanilla 1Ltr (L)",
+  "brand" : "Local Bradwells",
+  "image" : "http://img.tesco.com/Groceries/pi/014/5025001000014/IDShot_90x90.jpg",
+  "normalPrice" : 2.85,
+  "salesrank" : 9,
+  "ean" : "0000000000000",
+  "origin" : "UNITED KINGDOM",
+  "description" : [ "Vanilla flavour ice cream, smooth, rich and buttery", "Bradwell's Ice Cream lovingly made in the Peak District since 1899.", "The Butter Rich Classic Dairy Ice Cream Range from Bradwells.", "Bradwells Dairy Ice Creams' original founder Hannah, lovingly made all her legendary ice cream, by hand with the finest ingredients, in her front parlour. At  a time when there was no electricity, she used ice, brought in by trains from Sheffield to the Peak District village of Bradwell. Today over a hundred years later, Bradwells Ice Cream is locally produced in the village and enjoyed across Derbyshire and Yorkshire.", "Also available in the Classic Range 1L:", "Chocolate, Raspberry Ripple, Creamy Strawberry, Butterscotch, Toffee Fudge, Rum & Raisin and Chocolate Mint." ],
+  "shelf" : "Local & Regional Ice Cream Tubs",
+  "aisle" : "Ice Cream Tubs",
+  "department" : "Ice Cream & Frozen Yoghurt",
+  "superDepartment" : "Frozen Food",
+  "ingredients" : [ "Reconsituted Skimmed Milk", "Sugar", "Butter (10%)", "Corn Starch", "Emulisfier: Mono and Di-Glycerides of Fatty Acids", "Stabilisers (Carob Gum, Guar Gum, Sodium Alginate, Carrageenan)", "Colours (Curcumin, Annatto)", "Flavouring" ],
+  "PromotionId" : "S00013887",
+  "PromotionDescription" : "50p off Tesco branded ice cream and gelato (includes Tesco finest* and Everyday Value)",
+  "PromotionIcon" : [ ],
+  "PromotionStart" : "2015-03-30",
+  "PromotionEnd" : "2015-07-20",
+  "UnitQuantity" : "100ML",
+  "UnitOfSale" : 1,
+  "AverageSellingUnitWeight" : 0.473,
+  "ContentsMeasureType" : "L",
+  "ContentsQuantity" : 1.0,
+  "Messages" : "<Messages>      <Message TypeCode=\"BulkBuyLimit\" TriggerQuantity=\"99\" GroupId=\"NOT_MAPPED\" Description=\"Sorry, there is a limit of 99 on this product\">        <Stores all=\"true\" />      </Message>    </Messages>",
+  "BulkBuyLimit" : 99
+}

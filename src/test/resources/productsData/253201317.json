@@ -1,0 +1,37 @@
+{
+  "id" : "253201317",
+  "store_price" : [ {
+    "price" : 0.81,
+    "store" : 3333
+  } ],
+  "store_unitprice" : [ {
+    "store" : 3333,
+    "unitprice" : 0.108
+  } ],
+  "store_availability" : [ {
+    "store" : 3333,
+    "availability" : 1
+  } ],
+  "tpnb" : "054353467",
+  "popularity" : 5.619696E-4,
+  "trialrate" : 1.516706E-4,
+  "name" : "Vittel Still Still Mineral Water 750Ml",
+  "brand" : "Vittel",
+  "image" : "http://img.tesco.com/Groceries/pi/996/3179730257996/IDShot_90x90.jpg",
+  "salesrank" : 0,
+  "ean" : "0000000000000",
+  "origin" : "FRANCE",
+  "description" : [ "Move, Enjoy, Exercise, Work, reVittelise  Play, Run." ],
+  "usage" : [ "<Cooking_Instructions><Preparation_and_Usage>1. Pull the seal.2. Lift the cap.Cap not suitable for children under 36 months as it contains small parts.</Preparation_and_Usage></Cooking_Instructions>" ],
+  "shelf" : "Sports & Individual Bottles",
+  "aisle" : "Sports & Individual Bottles",
+  "department" : "Bottled Water",
+  "superDepartment" : "Drinks",
+  "UnitQuantity" : "100ML",
+  "UnitOfSale" : 1,
+  "AverageSellingUnitWeight" : 0.813,
+  "ContentsMeasureType" : "ML",
+  "ContentsQuantity" : 750.0,
+  "Messages" : "<Messages>      <Message TypeCode=\"BulkBuyLimit\" TriggerQuantity=\"99\" GroupId=\"NOT_MAPPED\" Description=\"Sorry, there is a limit of 99 on this product\">        <Stores all=\"true\" />      </Message>    </Messages>",
+  "BulkBuyLimit" : 99
+}

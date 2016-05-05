@@ -4,6 +4,7 @@ import com.tesco.disco.browse.controller.BrowseController;
 import com.tesco.disco.browse.exceptions.ClientException;
 import com.tesco.disco.browse.model.enumerations.FieldsEnum;
 import com.tesco.disco.browse.model.enumerations.IndicesEnum;
+import com.tesco.disco.browse.model.enumerations.ResponseSetEnum;
 import com.tesco.disco.browse.service.BrowseService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.http.HttpHeaders;
@@ -24,10 +25,7 @@ import org.slf4j.MarkerFactory;
 import rx.Observable;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by bruno on 20/04/16.
@@ -180,34 +178,30 @@ public class BrowseControllerImpl implements BrowseController {
 
     private void validateFields(RoutingContext context, JsonObject query) {
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("fields"))) {
-//            JsonArray array = new JsonArray();
+            StringBuffer csvFields = new StringBuffer();
             List<String> fields = Arrays.asList(context.<Map<String, String>>get("decodedParams").get("fields").split(","));
-//            fields.forEach(field -> {
-//                if (FieldsEnum.getByName(field, null) != null) {
-//                    array.add(field);
-//                }
-//            });
-            query.put("fields", fields);
+            fields.forEach(field -> {
+                if (FieldsEnum.getByName(field, null) != null) {
+                    csvFields.append("\\\"").append(field).append("\\\"").append(",");
+                }
+            });
+            query.put("fields", StringUtils.substring("\"" + csvFields.toString() + "\"", 0, csvFields.length()-1));
         } else {
-            String[] defaultFields = {FieldsEnum.TPNB.getName()};
-            query.put("fields", Arrays.asList(defaultFields));
+            query.put("fields", "\"\\\"" + FieldsEnum.TPNB.getName() + "\\\"\"");
         }
     }
 
     private void validateResponseSet(RoutingContext context, JsonObject query) {
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("responseSet"))) {
-            String responseSet = context.<Map<String, String>>get("decodedParams").get("responseSet");
-//            JsonArray array = new JsonArray();
-            List<String> set = Arrays.asList(context.<Map<String, String>>get("decodedParams").get("responseSet").split(","));
-//            set.forEach(res -> {
-//                if (res.equals("results") || res.equals("totals") || res.equals("suggestions") || res.equals("taxonomy")) {
-//                    array.add(res);
-//                }
-//            });
-            query.put("responseSet", set);
+            Arrays.asList(context.<Map<String, String>>get("decodedParams").get("responseSet").split(",")).forEach(res -> {
+                if (ResponseSetEnum.getBySetName(res) != null) {
+                    query.put(res, String.valueOf(true));
+                }
+            });
         } else {
-            String [] defaultResponseSet = {"results", "totals", "suggestions"};
-            query.put("responseSet", Arrays.asList(defaultResponseSet));
+            query.put(ResponseSetEnum.RESULTS.getSetName(), String.valueOf(true));
+            query.put(ResponseSetEnum.TOTALS.getSetName(), String.valueOf(true));
+            query.put(ResponseSetEnum.SUGGESTIONS.getSetName(), String.valueOf(true));
         }
     }
 
@@ -216,7 +210,7 @@ public class BrowseControllerImpl implements BrowseController {
             try {
                 int offset = Integer.valueOf(context.<Map<String, String>>get("decodedParams").get("offset"));
                 if (offset <= 0 && offset <= 100000) {
-                    query.put("offset", offset);
+                    query.put("offset", String.valueOf(offset));
                 } else {
                     throw new ClientException("Incorrect offset type!");
                 }
@@ -225,7 +219,7 @@ public class BrowseControllerImpl implements BrowseController {
                 throw new ClientException("Incorrect offset type!");
             }
         } else {
-            query.put("offset", 0);
+            query.put("offset", String.valueOf(0));
         }
     }
 
@@ -234,7 +228,7 @@ public class BrowseControllerImpl implements BrowseController {
             try {
                 int limit = Integer.valueOf(context.<Map<String, String>>get("decodedParams").get("limit"));
                 if (limit <= 0 && limit <= 100) {
-                    query.put("limit", limit);
+                    query.put("limit", String.valueOf(limit));
                 } else {
                     throw new ClientException("Incorrect limit type!");
                 }
@@ -243,7 +237,7 @@ public class BrowseControllerImpl implements BrowseController {
                 throw new ClientException("Incorrect limit type!");
             }
         } else {
-            query.put("limit", 10);
+            query.put("limit", String.valueOf(10));
         }
     }
 
@@ -251,12 +245,12 @@ public class BrowseControllerImpl implements BrowseController {
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("store"))) {
             try {
                 int store = Integer.valueOf(context.<Map<String, String>>get("decodedParams").get("store"));
-                query.put("store", store);
+                query.put("store", String.valueOf(store));
             } catch (NumberFormatException e) {
                 throw new ClientException("Incorrect store type!");
             }
         } else {
-            query.put("store", 3060);
+            query.put("store", String.valueOf(3060));
         }
     }
 

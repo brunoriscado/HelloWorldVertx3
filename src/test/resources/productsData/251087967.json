@@ -1,0 +1,92 @@
+{
+  "id" : "251087967",
+  "store_price" : [ {
+    "price" : 7.0,
+    "store" : 5249
+  }, {
+    "price" : 7.0,
+    "store" : 2835
+  }, {
+    "price" : 7.0,
+    "store" : 3219
+  }, {
+    "price" : 7.0,
+    "store" : 2647
+  }, {
+    "price" : 7.0,
+    "store" : 3433
+  }, {
+    "price" : 7.0,
+    "store" : 5194
+  } ],
+  "store_unitprice" : [ {
+    "store" : 5249,
+    "unitprice" : 7.0
+  }, {
+    "store" : 2835,
+    "unitprice" : 7.0
+  }, {
+    "store" : 3219,
+    "unitprice" : 7.0
+  }, {
+    "store" : 2647,
+    "unitprice" : 7.0
+  }, {
+    "store" : 3433,
+    "unitprice" : 7.0
+  }, {
+    "store" : 5194,
+    "unitprice" : 7.0
+  } ],
+  "store_availability" : [ {
+    "store" : 5249,
+    "availability" : 1
+  }, {
+    "store" : 2835,
+    "availability" : 1
+  }, {
+    "store" : 3219,
+    "availability" : 1
+  }, {
+    "store" : 2647,
+    "availability" : 1
+  }, {
+    "store" : 3433,
+    "availability" : 1
+  }, {
+    "store" : 5194,
+    "availability" : 1
+  } ],
+  "tpnb" : "052567972",
+  "popularity" : 7.397847E-4,
+  "trialrate" : 2.21186E-5,
+  "name" : "Tesco Lamb Half Shoulder Welsh",
+  "brand" : "Tesco",
+  "image" : "http://img.tesco.com/Groceries/pi/000/0237780000000/IDShot_90x90.jpg",
+  "normalPrice" : 7.0,
+  "salesrank" : 8,
+  "ean" : "0000000000000",
+  "origin" : "NOT KNOWN",
+  "description" : [ "Lamb Half Shoulder" ],
+  "usage" : [ "<Cooking_Instructions><Oven><Temperature F=\"350&#176;F\" G=\"Gas 4\" C=\"180&#176;C\" /><Instructions>Remove all packaging.Place in a roasting tray in the centre of a pre-heated oven.Calculate the cooking time at 25 minutes per 500g plus 25 minutes (medium) or 30 minutes per 500g plus 30 minutes (well done).</Instructions></Oven><Microwave><Item23 LineNumber=\"1\" Step=\"\" T650=\"\" T750=\"\" T850=\"\" /></Microwave><Barbeque /><Grill /><Shallow_Fry /><Deep_Fry /><Stir_Fry /><Steam /><Poach /><Hob /><Boil_In_The_Bag /><Other_Instructions>Alternatively slow roast for 3 hours until thoroughly cooked and tender.Allow joint to rest in a warm place for 10 minutes before serving.</Other_Instructions><Oven_From_Frozen><Temperature F=\"\" G=\"\" C=\"\" /></Oven_From_Frozen><Microwave_From_Frozen><Item24 LineNumber=\"1\" Step=\"\" T650=\"\" T750=\"\" T850=\"\" /></Microwave_From_Frozen><Cooking_Precautions>Adjust times according to your particular oven. For fan assisted ovens cooking times should be reduced.All appliances vary these are guidelines only.If you prefer a rare product reduce cooking times accordingly. If cooked rare there is a small risk that harmful bacteria may be present.Tesco recommend that all meat products are cooked thoroughly.Not suitable for microwave cooking.Not suitable for cooking from frozen.</Cooking_Precautions><Preparation_Guidelines>For more information about our strict welfare and quality standards visit www.tesco.com/realfood</Preparation_Guidelines></Cooking_Instructions><Freezing_Instructions><Freezing_Guidelines>Freeze on day of purchase. Use within one month.</Freezing_Guidelines><Defrosting>Defrost thoroughly for a minimum of 24 hours in the refrigerator.IMPORTANT: If food has thawed, do not refreeze.</Defrosting></Freezing_Instructions>" ],
+  "shelf" : "Lamb Joints",
+  "aisle" : "Fresh Lamb",
+  "department" : "Fresh Meat",
+  "superDepartment" : "Fresh Food",
+  "keywords" : [ "lamb" ],
+  "lifestyle" : [ ],
+  "dietary" : [ ],
+  "nutrition" : [ ],
+  "PromotionId" : "Z-GCJLL",
+  "PromotionDescription" : "Save &pound;2.50 on a Tesco lamb joint Excludes counters &amp; Everyday Value",
+  "PromotionIcon" : [ ],
+  "PromotionStart" : "2015-03-23",
+  "PromotionEnd" : "2015-05-17",
+  "UnitQuantity" : "KG",
+  "UnitOfSale" : 4,
+  "AverageSellingUnitWeight" : 1.302,
+  "ContentsMeasureType" : "KG",
+  "ContentsQuantity" : 1.0,
+  "Messages" : "<Messages>      <Message TypeCode=\"ShortShelfLife\" PageReference=\"http://www.tesco.com/groceries/zones/default.aspx?name=quality-and-freshness&amp;ICID=MM_freshness\" Description=\"Delivering the freshest food to your door- Find out more &gt;\">        <Stores all=\"true\" />      </Message>      <Message TypeCode=\"BulkBuyLimit\" TriggerQuantity=\"99\" GroupId=\"NOT_MAPPED\" Description=\"Sorry, there is a limit of 99 on this product\">        <Stores all=\"true\" />      </Message>    </Messages>",
+  "BulkBuyLimit" : 99
+}

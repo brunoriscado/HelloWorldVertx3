@@ -75,7 +75,7 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.refresh(true);
         loadData(bulkRequest, "ghs.taxonomy", "taxonomy", "taxonomyData/taxonomy.json");
-        loadData(bulkRequest, "ghs.products", "products", "productsData/products.json");
+        loadSplitData(bulkRequest, "ghs.products", "products", "src/test/resources/productsData");
 
         // load query
         bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.taxonomy.default").source(
@@ -92,6 +92,11 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
 
         JsonObject schema = Utils.getJsonFile(mappingPath);
 
+        if (schema.containsKey("indexers") && schema.getJsonObject("indexers").containsKey("settings")) {
+            JsonObject settings = schema.getJsonObject("indexers").getJsonObject("settings");
+            createIndexRequestBuilder.setSettings(settings.encodePrettily());
+        }
+
         // apply mappings
         if (schema.containsKey("mappings")) {
             JsonObject mappings = new JsonObject().put("mappings", schema.getJsonObject("mappings"));
@@ -107,13 +112,35 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
     }
 
     public BulkRequest loadData(BulkRequest bulkRequest, String index, String indexType, String productsDataPath) throws IOException, InterruptedException, ExecutionException {
-        JsonArray taxonomy = new JsonArray(IOUtils.toString(Thread.currentThread().getContextClassLoader().getResource(productsDataPath)));
-        taxonomy.forEach(entry -> {
+        JsonArray data = new JsonArray(IOUtils.toString(Thread.currentThread().getContextClassLoader().getResource(productsDataPath)));
+        data.forEach(entry -> {
             JsonObject doc = new JsonObject(Json.encode(entry));
             String id = doc.getString("id");
             doc.remove("id");
             bulkRequest.add(new IndexRequest(index, indexType, id).source(doc.encode()));
         });
+        return bulkRequest;
+    }
+
+    public BulkRequest loadSplitData(BulkRequest bulkRequest, String index, String indexType, String productsDataPath) throws IOException, InterruptedException, ExecutionException {
+
+
+        String[] files = Utils.getFiles(productsDataPath);
+        Integer productLength = files.length;
+
+        // to test a different index, change the size of it by half
+        if(!index.equals(index)){ productLength=(files.length / 2); }
+
+        for (Integer i=0; i < productLength; i++) {
+            if (!files[i].substring(0,1).equals(".")) {
+                try {
+                    JsonObject document = Utils.getJsonFile(productsDataPath + "/" + files[i]);
+                    bulkRequest.add(new IndexRequest(index, indexType, document.getString("id")).source(document.encode()));
+                } catch (Exception e) {
+                    logger.warn("Failed to add " + files[i] + "\n" + e.getMessage());
+                }
+            }
+        }
         return bulkRequest;
     }
 

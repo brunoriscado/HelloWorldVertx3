@@ -122,13 +122,13 @@ public class BrowseServiceImpl implements BrowseService {
                 .map(apiResult -> {
                     JsonObject resType = new JsonObject();
                     if (type.equals(ResponseTypesEnum.PRODUCTS)) {
-                        if (params.getBoolean("totals", false)) {
+                        if (Boolean.valueOf(params.getString("totals", "false"))) {
                             resType.put("totals", getResultsSet(elasticsearchResponse));
                         }
-                        if (params.getBoolean("results", false)) {
+                        if (Boolean.valueOf(params.getString("results", "false"))) {
                             resType.put("results", parseResults(elasticsearchResponse, params));
                         }
-                        if (params.getBoolean("suggestions", false)) {
+                        if (Boolean.valueOf(params.getString("suggestions", "false"))) {
                             resType.put("suggestions", parseDidYouMeanResults(elasticsearchResponse));
                         }
                     }
@@ -139,7 +139,7 @@ public class BrowseServiceImpl implements BrowseService {
                     return apiResult.put(params.getString("geo"), geo);
                 })
                 .flatMap(apiResult -> {
-                    if (type.equals(ResponseTypesEnum.PRODUCTS) && params.getBoolean("taxonomy", false)) {
+                    if (type.equals(ResponseTypesEnum.PRODUCTS) && Boolean.valueOf(params.getString("taxonomy", "false"))) {
                         return getBrowsingTaxonomy(elasticsearchResponse)
                                 .map(taxonomyResponse -> {
                                     apiResult.getJsonObject(params.getString("geo"))

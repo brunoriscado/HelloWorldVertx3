@@ -1,0 +1,23 @@
+{
+  "id" : "252454028",
+  "tpnb" : "050888589",
+  "popularity" : 1.439233E-4,
+  "trialrate" : 2.1065359E-6,
+  "name" : "Tesco Grater/Storer Coloured",
+  "brand" : "Tesco",
+  "image" : "http://img.tesco.com/Groceries/pi/215/5000358285215/IDShot_90x90.jpg",
+  "salesrank" : 1,
+  "ean" : "0000000000000",
+  "origin" : "CHINA",
+  "shelf" : "Food Preparation",
+  "aisle" : "Cookware",
+  "department" : "Cooking & Dining",
+  "superDepartment" : "Home & Ents",
+  "UnitQuantity" : "EACH",
+  "UnitOfSale" : 1,
+  "AverageSellingUnitWeight" : 3.294,
+  "ContentsMeasureType" : "SNGL",
+  "ContentsQuantity" : 1.0,
+  "Messages" : "<Messages>      <Message TypeCode=\"BulkBuyLimit\" TriggerQuantity=\"99\" GroupId=\"NOT_MAPPED\" Description=\"Sorry, there is a limit of 99 on this product\">        <Stores all=\"true\" />      </Message>    </Messages>",
+  "BulkBuyLimit" : 99
+}

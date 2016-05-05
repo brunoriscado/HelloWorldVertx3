@@ -1,0 +1,161 @@
+{
+  "id" : "250286998",
+  "store_price" : [ {
+    "price" : 1.99,
+    "store" : 5031
+  }, {
+    "price" : 1.99,
+    "store" : 6506
+  }, {
+    "price" : 1.99,
+    "store" : 5131
+  }, {
+    "price" : 1.99,
+    "store" : 2797
+  }, {
+    "price" : 1.99,
+    "store" : 5422
+  }, {
+    "price" : 1.99,
+    "store" : 5137
+  }, {
+    "price" : 1.99,
+    "store" : 2195
+  }, {
+    "price" : 1.99,
+    "store" : 2294
+  }, {
+    "price" : 1.99,
+    "store" : 2838
+  }, {
+    "price" : 1.99,
+    "store" : 5335
+  }, {
+    "price" : 1.99,
+    "store" : 2840
+  }, {
+    "price" : 1.99,
+    "store" : 2715
+  }, {
+    "price" : 1.99,
+    "store" : 6270
+  }, {
+    "price" : 1.99,
+    "store" : 6271
+  } ],
+  "store_unitprice" : [ {
+    "store" : 5031,
+    "unitprice" : 4.39
+  }, {
+    "store" : 6506,
+    "unitprice" : 4.39
+  }, {
+    "store" : 5131,
+    "unitprice" : 4.39
+  }, {
+    "store" : 2797,
+    "unitprice" : 4.39
+  }, {
+    "store" : 5422,
+    "unitprice" : 4.39
+  }, {
+    "store" : 5137,
+    "unitprice" : 4.39
+  }, {
+    "store" : 2195,
+    "unitprice" : 4.39
+  }, {
+    "store" : 2838,
+    "unitprice" : 4.39
+  }, {
+    "store" : 2294,
+    "unitprice" : 4.39
+  }, {
+    "store" : 5335,
+    "unitprice" : 4.39
+  }, {
+    "store" : 2840,
+    "unitprice" : 4.39
+  }, {
+    "store" : 2715,
+    "unitprice" : 4.39
+  }, {
+    "store" : 6270,
+    "unitprice" : 4.39
+  }, {
+    "store" : 6271,
+    "unitprice" : 4.39
+  } ],
+  "store_availability" : [ {
+    "store" : 5031,
+    "availability" : 1
+  }, {
+    "store" : 6506,
+    "availability" : 1
+  }, {
+    "store" : 5131,
+    "availability" : 1
+  }, {
+    "store" : 2797,
+    "availability" : 1
+  }, {
+    "store" : 5422,
+    "availability" : 1
+  }, {
+    "store" : 5137,
+    "availability" : 1
+  }, {
+    "store" : 2195,
+    "availability" : 1
+  }, {
+    "store" : 2838,
+    "availability" : 1
+  }, {
+    "store" : 2294,
+    "availability" : 1
+  }, {
+    "store" : 5335,
+    "availability" : 1
+  }, {
+    "store" : 2840,
+    "availability" : 1
+  }, {
+    "store" : 2715,
+    "availability" : 1
+  }, {
+    "store" : 6270,
+    "availability" : 1
+  }, {
+    "store" : 6271,
+    "availability" : 1
+  } ],
+  "tpnb" : "053824782",
+  "popularity" : null,
+  "trialrate" : null,
+  "name" : "Denny Pork Sausage Meat 454G",
+  "brand" : "Local Denny",
+  "image" : "http://img.tesco.com/Groceries/pi/308/5011069001308/IDShot_90x90.jpg",
+  "normalPrice" : 1.99,
+  "salesrank" : 47,
+  "ean" : "0000000000000",
+  "origin" : "NORTHERN IRELAND",
+  "description" : [ "Pork Sausage Meat" ],
+  "usage" : [ "<Cooking_Instructions><Number_Of_Uses>18 This pack contains 18 servings</Number_Of_Uses></Cooking_Instructions>" ],
+  "shelf" : null,
+  "aisle" : null,
+  "department" : null,
+  "superDepartment" : null,
+  "ingredients" : [ "Pork (60%)", "Water", "Rusk (<strong>Wheatflour</strong>, Salt)", "Starch (<strong>Wheat</strong>)", "Pork Fat", "Pork Rind", "Salt", "Yeast Extract", "Stabiliser (Sodium Triphosphate)", "Dextrose", "Flavour Enhancer (Monosodium Glutamate)", "Spices", "Preservative (Sodium <strong>Metabisulphite</strong>)", "Antioxidant (Sodium Ascorbate)", "Colour (Carmine)", "Maltodextrin" ],
+  "PromotionId" : "Z-GC6GG",
+  "PromotionDescription" : "50 extra points on any fresh pre-packed sausages",
+  "PromotionIcon" : [ ],
+  "PromotionStart" : "2015-03-23",
+  "PromotionEnd" : "2015-05-17",
+  "UnitQuantity" : "KG",
+  "UnitOfSale" : 1,
+  "AverageSellingUnitWeight" : 0.477,
+  "ContentsMeasureType" : "G",
+  "ContentsQuantity" : 454.0,
+  "Messages" : "<Messages>      <Message TypeCode=\"ShortShelfLife\" PageReference=\"http://www.tesco.com/groceries/zones/default.aspx?name=quality-and-freshness&amp;ICID=MM_freshness\" Description=\"Delivering the freshest food to your door- Find out more &gt;\">        <Stores all=\"true\" />      </Message>      <Message TypeCode=\"BulkBuyLimit\" TriggerQuantity=\"99\" GroupId=\"NOT_MAPPED\" Description=\"Sorry, there is a limit of 99 on this product\">        <Stores all=\"true\" />      </Message>    </Messages>",
+  "BulkBuyLimit" : 99
+}

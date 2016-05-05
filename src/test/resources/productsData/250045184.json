@@ -1,0 +1,44 @@
+{
+  "id" : "250045184",
+  "store_price" : [ {
+    "price" : 1.79,
+    "store" : 2396
+  } ],
+  "store_unitprice" : [ {
+    "store" : 2396,
+    "unitprice" : 0.224
+  } ],
+  "store_availability" : [ {
+    "store" : 2396,
+    "availability" : 1
+  } ],
+  "tpnb" : "054835744",
+  "popularity" : null,
+  "trialrate" : null,
+  "name" : "Ramsey Bakery Harvester 800G",
+  "brand" : "Local Ramsey",
+  "image" : "http://img.tesco.com/Groceries/pi/588/5011434111588/IDShot_90x90.jpg",
+  "normalPrice" : 1.79,
+  "salesrank" : 10,
+  "ean" : "0000000000000",
+  "origin" : "GREAT BRITAIN",
+  "description" : [ "SWISS BAKE.", "Made with a special blend of malted wheatgrains with wholemeal and malt flakes for a delicious nutty malt flavour.", "Malted Wheatgrain.", "Brown Bread.", "Baked to a unique Swiss recipe.", "Baked Fresh Every Day on The Isle of Man." ],
+  "usage" : [ "<Cooking_Instructions><Preparation_and_Usage>Made with GM-FREE Ingredients.No Animal Fats Used.Suitable for Vegetarians.</Preparation_and_Usage></Cooking_Instructions>" ],
+  "shelf" : "Local Bread",
+  "aisle" : "Local Bread",
+  "department" : "Local Bakery",
+  "superDepartment" : "Bakery",
+  "ingredients" : [ "Wheatflour", "Water", "Kibbled Rye", "Kibbled Wheat", "Oat Bran", "Malted Wheat Grains", "Yeast", "Salt", "Fibre", "Vegetable Fat", "Malt", "Soya Flour", "Calcium prorionate (as a Mould Inhibitor)", "Emulsifiers E471, E472(e)", "Flour Treatment Agent - Ascorbic Acid" ],
+  "PromotionId" : "S00013181",
+  "PromotionDescription" : "1p off when you spend 10p on Bread/Bakery &amp; Rest",
+  "PromotionIcon" : [ ],
+  "PromotionStart" : "2014-12-09",
+  "PromotionEnd" : "2016-01-31",
+  "UnitQuantity" : "100G",
+  "UnitOfSale" : 1,
+  "AverageSellingUnitWeight" : 5.2,
+  "ContentsMeasureType" : "G",
+  "ContentsQuantity" : 800.0,
+  "Messages" : "<Messages>      <Message TypeCode=\"BulkBuyLimit\" TriggerQuantity=\"99\" GroupId=\"NOT_MAPPED\" Description=\"Sorry, there is a limit of 99 on this product\">        <Stores all=\"true\" />      </Message>    </Messages>",
+  "BulkBuyLimit" : 99
+}

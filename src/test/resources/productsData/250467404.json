@@ -1,0 +1,2726 @@
+{
+  "id" : "250467404",
+  "store_price" : [ {
+    "price" : 8.5,
+    "store" : 2560
+  }, {
+    "price" : 8.5,
+    "store" : 2049
+  }, {
+    "price" : 8.5,
+    "store" : 3074
+  }, {
+    "price" : 8.5,
+    "store" : 5124
+  }, {
+    "price" : 8.5,
+    "store" : 5125
+  }, {
+    "price" : 8.5,
+    "store" : 2055
+  }, {
+    "price" : 8.5,
+    "store" : 5128
+  }, {
+    "price" : 8.5,
+    "store" : 5132
+  }, {
+    "price" : 8.5,
+    "store" : 5133
+  }, {
+    "price" : 8.5,
+    "store" : 2574
+  }, {
+    "price" : 8.5,
+    "store" : 5135
+  }, {
+    "price" : 8.5,
+    "store" : 2064
+  }, {
+    "price" : 8.5,
+    "store" : 5137
+  }, {
+    "price" : 8.5,
+    "store" : 2065
+  }, {
+    "price" : 8.5,
+    "store" : 6161
+  }, {
+    "price" : 8.5,
+    "store" : 5138
+  }, {
+    "price" : 8.5,
+    "store" : 2067
+  }, {
+    "price" : 8.5,
+    "store" : 5652
+  }, {
+    "price" : 8.5,
+    "store" : 3095
+  }, {
+    "price" : 8.5,
+    "store" : 2073
+  }, {
+    "price" : 8.5,
+    "store" : 2587
+  }, {
+    "price" : 8.5,
+    "store" : 2078
+  }, {
+    "price" : 8.5,
+    "store" : 2080
+  }, {
+    "price" : 8.5,
+    "store" : 2083
+  }, {
+    "price" : 8.5,
+    "store" : 3108
+  }, {
+    "price" : 8.5,
+    "store" : 2087
+  }, {
+    "price" : 8.5,
+    "store" : 3115
+  }, {
+    "price" : 8.5,
+    "store" : 5168
+  }, {
+    "price" : 8.5,
+    "store" : 2096
+  }, {
+    "price" : 8.5,
+    "store" : 6193
+  }, {
+    "price" : 8.5,
+    "store" : 5170
+  }, {
+    "price" : 8.5,
+    "store" : 2098
+  }, {
+    "price" : 8.5,
+    "store" : 5171
+  }, {
+    "price" : 8.5,
+    "store" : 2101
+  }, {
+    "price" : 8.5,
+    "store" : 6197
+  }, {
+    "price" : 8.5,
+    "store" : 2102
+  }, {
+    "price" : 8.5,
+    "store" : 2103
+  }, {
+    "price" : 8.5,
+    "store" : 2104
+  }, {
+    "price" : 8.5,
+    "store" : 2105
+  }, {
+    "price" : 8.5,
+    "store" : 2108
+  }, {
+    "price" : 8.5,
+    "store" : 3133
+  }, {
+    "price" : 8.5,
+    "store" : 5182
+  }, {
+    "price" : 8.5,
+    "store" : 5184
+  }, {
+    "price" : 8.5,
+    "store" : 3137
+  }, {
+    "price" : 8.5,
+    "store" : 3145
+  }, {
+    "price" : 8.5,
+    "store" : 2122
+  }, {
+    "price" : 8.5,
+    "store" : 5194
+  }, {
+    "price" : 8.5,
+    "store" : 3149
+  }, {
+    "price" : 8.5,
+    "store" : 2126
+  }, {
+    "price" : 8.5,
+    "store" : 2639
+  }, {
+    "price" : 8.5,
+    "store" : 6225
+  }, {
+    "price" : 8.5,
+    "store" : 2642
+  }, {
+    "price" : 8.5,
+    "store" : 2132
+  }, {
+    "price" : 8.5,
+    "store" : 2647
+  }, {
+    "price" : 8.5,
+    "store" : 2136
+  }, {
+    "price" : 8.5,
+    "store" : 2654
+  }, {
+    "price" : 8.5,
+    "store" : 5731
+  }, {
+    "price" : 8.5,
+    "store" : 2152
+  }, {
+    "price" : 8.5,
+    "store" : 3177
+  }, {
+    "price" : 8.5,
+    "store" : 3178
+  }, {
+    "price" : 8.5,
+    "store" : 2667
+  }, {
+    "price" : 8.5,
+    "store" : 3181
+  }, {
+    "price" : 8.5,
+    "store" : 2160
+  }, {
+    "price" : 8.5,
+    "store" : 5745
+  }, {
+    "price" : 8.5,
+    "store" : 2162
+  }, {
+    "price" : 8.5,
+    "store" : 2675
+  }, {
+    "price" : 8.5,
+    "store" : 2163
+  }, {
+    "price" : 8.5,
+    "store" : 3188
+  }, {
+    "price" : 8.5,
+    "store" : 2676
+  }, {
+    "price" : 8.5,
+    "store" : 2166
+  }, {
+    "price" : 8.5,
+    "store" : 3190
+  }, {
+    "price" : 8.5,
+    "store" : 6264
+  }, {
+    "price" : 8.5,
+    "store" : 2168
+  }, {
+    "price" : 8.5,
+    "store" : 3193
+  }, {
+    "price" : 8.5,
+    "store" : 6265
+  }, {
+    "price" : 8.5,
+    "store" : 2172
+  }, {
+    "price" : 8.5,
+    "store" : 6269
+  }, {
+    "price" : 8.5,
+    "store" : 6781
+  }, {
+    "price" : 8.5,
+    "store" : 2174
+  }, {
+    "price" : 8.5,
+    "store" : 6270
+  }, {
+    "price" : 8.5,
+    "store" : 6271
+  }, {
+    "price" : 8.5,
+    "store" : 5249
+  }, {
+    "price" : 8.5,
+    "store" : 3202
+  }, {
+    "price" : 8.5,
+    "store" : 5762
+  }, {
+    "price" : 8.5,
+    "store" : 2179
+  }, {
+    "price" : 8.5,
+    "store" : 2693
+  }, {
+    "price" : 8.5,
+    "store" : 2694
+  }, {
+    "price" : 8.5,
+    "store" : 5769
+  }, {
+    "price" : 8.5,
+    "store" : 2186
+  }, {
+    "price" : 8.5,
+    "store" : 2699
+  }, {
+    "price" : 8.5,
+    "store" : 3212
+  }, {
+    "price" : 8.5,
+    "store" : 3213
+  }, {
+    "price" : 8.5,
+    "store" : 3219
+  }, {
+    "price" : 8.5,
+    "store" : 3220
+  }, {
+    "price" : 8.5,
+    "store" : 2200
+  }, {
+    "price" : 8.5,
+    "store" : 2715
+  }, {
+    "price" : 8.5,
+    "store" : 3230
+  }, {
+    "price" : 8.5,
+    "store" : 6814
+  }, {
+    "price" : 8.5,
+    "store" : 3234
+  }, {
+    "price" : 8.5,
+    "store" : 3237
+  }, {
+    "price" : 8.5,
+    "store" : 3239
+  }, {
+    "price" : 8.5,
+    "store" : 3240
+  }, {
+    "price" : 8.5,
+    "store" : 5290
+  }, {
+    "price" : 8.5,
+    "store" : 3243
+  }, {
+    "price" : 8.5,
+    "store" : 5293
+  }, {
+    "price" : 8.5,
+    "store" : 2222
+  }, {
+    "price" : 8.5,
+    "store" : 2736
+  }, {
+    "price" : 8.5,
+    "store" : 2737
+  }, {
+    "price" : 8.5,
+    "store" : 2230
+  }, {
+    "price" : 8.5,
+    "store" : 6329
+  }, {
+    "price" : 8.5,
+    "store" : 5307
+  }, {
+    "price" : 8.5,
+    "store" : 2748
+  }, {
+    "price" : 8.5,
+    "store" : 2248
+  }, {
+    "price" : 8.5,
+    "store" : 5326
+  }, {
+    "price" : 8.5,
+    "store" : 2767
+  }, {
+    "price" : 8.5,
+    "store" : 5330
+  }, {
+    "price" : 8.5,
+    "store" : 2770
+  }, {
+    "price" : 8.5,
+    "store" : 5331
+  }, {
+    "price" : 8.5,
+    "store" : 5332
+  }, {
+    "price" : 8.5,
+    "store" : 5333
+  }, {
+    "price" : 8.5,
+    "store" : 5335
+  }, {
+    "price" : 8.5,
+    "store" : 3290
+  }, {
+    "price" : 8.5,
+    "store" : 2266
+  }, {
+    "price" : 8.5,
+    "store" : 5851
+  }, {
+    "price" : 8.5,
+    "store" : 3297
+  }, {
+    "price" : 8.5,
+    "store" : 2275
+  }, {
+    "price" : 8.5,
+    "store" : 3301
+  }, {
+    "price" : 8.5,
+    "store" : 2279
+  }, {
+    "price" : 8.5,
+    "store" : 2280
+  }, {
+    "price" : 8.5,
+    "store" : 2797
+  }, {
+    "price" : 8.5,
+    "store" : 3310
+  }, {
+    "price" : 8.5,
+    "store" : 2799
+  }, {
+    "price" : 8.5,
+    "store" : 2800
+  }, {
+    "price" : 8.5,
+    "store" : 2801
+  }, {
+    "price" : 8.5,
+    "store" : 3316
+  }, {
+    "price" : 8.5,
+    "store" : 2804
+  }, {
+    "price" : 8.5,
+    "store" : 2294
+  }, {
+    "price" : 8.5,
+    "store" : 2806
+  }, {
+    "price" : 8.5,
+    "store" : 2296
+  }, {
+    "price" : 8.5,
+    "store" : 2808
+  }, {
+    "price" : 8.5,
+    "store" : 3324
+  }, {
+    "price" : 8.5,
+    "store" : 6401
+  }, {
+    "price" : 8.5,
+    "store" : 6913
+  }, {
+    "price" : 8.5,
+    "store" : 5378
+  }, {
+    "price" : 8.5,
+    "store" : 6914
+  }, {
+    "price" : 8.5,
+    "store" : 6915
+  }, {
+    "price" : 8.5,
+    "store" : 5379
+  }, {
+    "price" : 8.5,
+    "store" : 6916
+  }, {
+    "price" : 8.5,
+    "store" : 3333
+  }, {
+    "price" : 8.5,
+    "store" : 6917
+  }, {
+    "price" : 8.5,
+    "store" : 6918
+  }, {
+    "price" : 8.5,
+    "store" : 2310
+  }, {
+    "price" : 8.5,
+    "store" : 6919
+  }, {
+    "price" : 8.5,
+    "store" : 2825
+  }, {
+    "price" : 8.5,
+    "store" : 2313
+  }, {
+    "price" : 8.5,
+    "store" : 4362
+  }, {
+    "price" : 8.5,
+    "store" : 3344
+  }, {
+    "price" : 8.5,
+    "store" : 3345
+  }, {
+    "price" : 8.5,
+    "store" : 2835
+  }, {
+    "price" : 8.5,
+    "store" : 6419
+  }, {
+    "price" : 8.5,
+    "store" : 6420
+  }, {
+    "price" : 8.5,
+    "store" : 2838
+  }, {
+    "price" : 8.5,
+    "store" : 2326
+  }, {
+    "price" : 8.5,
+    "store" : 4375
+  }, {
+    "price" : 8.5,
+    "store" : 2840
+  }, {
+    "price" : 8.5,
+    "store" : 2328
+  }, {
+    "price" : 8.5,
+    "store" : 2329
+  }, {
+    "price" : 8.5,
+    "store" : 2330
+  }, {
+    "price" : 8.5,
+    "store" : 3356
+  }, {
+    "price" : 8.5,
+    "store" : 2846
+  }, {
+    "price" : 8.5,
+    "store" : 2335
+  }, {
+    "price" : 8.5,
+    "store" : 2848
+  }, {
+    "price" : 8.5,
+    "store" : 2849
+  }, {
+    "price" : 8.5,
+    "store" : 2850
+  }, {
+    "price" : 8.5,
+    "store" : 6440
+  }, {
+    "price" : 8.5,
+    "store" : 3372
+  }, {
+    "price" : 8.5,
+    "store" : 5422
+  }, {
+    "price" : 8.5,
+    "store" : 3377
+  }, {
+    "price" : 8.5,
+    "store" : 3378
+  }, {
+    "price" : 8.5,
+    "store" : 5939
+  }, {
+    "price" : 8.5,
+    "store" : 3380
+  }, {
+    "price" : 8.5,
+    "store" : 2361
+  }, {
+    "price" : 8.5,
+    "store" : 6457
+  }, {
+    "price" : 8.5,
+    "store" : 6459
+  }, {
+    "price" : 8.5,
+    "store" : 2876
+  }, {
+    "price" : 8.5,
+    "store" : 2877
+  }, {
+    "price" : 8.5,
+    "store" : 5438
+  }, {
+    "price" : 8.5,
+    "store" : 2880
+  }, {
+    "price" : 8.5,
+    "store" : 5441
+  }, {
+    "price" : 8.5,
+    "store" : 2882
+  }, {
+    "price" : 8.5,
+    "store" : 2371
+  }, {
+    "price" : 8.5,
+    "store" : 6467
+  }, {
+    "price" : 8.5,
+    "store" : 3398
+  }, {
+    "price" : 8.5,
+    "store" : 6471
+  }, {
+    "price" : 8.5,
+    "store" : 4425
+  }, {
+    "price" : 8.5,
+    "store" : 3401
+  }, {
+    "price" : 8.5,
+    "store" : 6473
+  }, {
+    "price" : 8.5,
+    "store" : 3406
+  }, {
+    "price" : 8.5,
+    "store" : 5456
+  }, {
+    "price" : 8.5,
+    "store" : 2898
+  }, {
+    "price" : 8.5,
+    "store" : 5458
+  }, {
+    "price" : 8.5,
+    "store" : 3411
+  }, {
+    "price" : 8.5,
+    "store" : 2387
+  }, {
+    "price" : 8.5,
+    "store" : 2388
+  }, {
+    "price" : 8.5,
+    "store" : 2900
+  }, {
+    "price" : 8.5,
+    "store" : 6997
+  }, {
+    "price" : 8.5,
+    "store" : 2389
+  }, {
+    "price" : 8.5,
+    "store" : 2392
+  }, {
+    "price" : 8.5,
+    "store" : 2394
+  }, {
+    "price" : 8.5,
+    "store" : 2907
+  }, {
+    "price" : 8.93,
+    "store" : 2396
+  }, {
+    "price" : 8.5,
+    "store" : 2397
+  }, {
+    "price" : 8.5,
+    "store" : 5982
+  }, {
+    "price" : 8.5,
+    "store" : 3426
+  }, {
+    "price" : 8.5,
+    "store" : 2404
+  }, {
+    "price" : 8.5,
+    "store" : 2917
+  }, {
+    "price" : 8.5,
+    "store" : 3430
+  }, {
+    "price" : 8.5,
+    "store" : 2406
+  }, {
+    "price" : 8.5,
+    "store" : 2919
+  }, {
+    "price" : 8.5,
+    "store" : 5992
+  }, {
+    "price" : 8.5,
+    "store" : 2920
+  }, {
+    "price" : 8.5,
+    "store" : 6505
+  }, {
+    "price" : 8.5,
+    "store" : 6506
+  }, {
+    "price" : 8.5,
+    "store" : 2924
+  }, {
+    "price" : 8.5,
+    "store" : 5998
+  }, {
+    "price" : 8.5,
+    "store" : 3439
+  }, {
+    "price" : 8.5,
+    "store" : 3440
+  }, {
+    "price" : 8.5,
+    "store" : 6002
+  }, {
+    "price" : 8.5,
+    "store" : 2933
+  }, {
+    "price" : 8.5,
+    "store" : 2934
+  }, {
+    "price" : 8.5,
+    "store" : 2422
+  }, {
+    "price" : 8.5,
+    "store" : 2941
+  }, {
+    "price" : 8.5,
+    "store" : 2429
+  }, {
+    "price" : 8.5,
+    "store" : 5504
+  }, {
+    "price" : 8.5,
+    "store" : 6017
+  }, {
+    "price" : 8.5,
+    "store" : 2947
+  }, {
+    "price" : 8.5,
+    "store" : 2436
+  }, {
+    "price" : 8.5,
+    "store" : 2949
+  }, {
+    "price" : 8.5,
+    "store" : 2952
+  }, {
+    "price" : 8.5,
+    "store" : 2955
+  }, {
+    "price" : 8.5,
+    "store" : 2444
+  }, {
+    "price" : 8.5,
+    "store" : 3470
+  }, {
+    "price" : 8.5,
+    "store" : 2962
+  }, {
+    "price" : 8.5,
+    "store" : 2450
+  }, {
+    "price" : 8.5,
+    "store" : 5014
+  }, {
+    "price" : 8.5,
+    "store" : 3480
+  }, {
+    "price" : 8.5,
+    "store" : 5528
+  }, {
+    "price" : 8.5,
+    "store" : 2969
+  }, {
+    "price" : 8.5,
+    "store" : 6553
+  }, {
+    "price" : 8.5,
+    "store" : 4505
+  }, {
+    "price" : 8.5,
+    "store" : 4506
+  }, {
+    "price" : 8.5,
+    "store" : 2461
+  }, {
+    "price" : 8.5,
+    "store" : 3488
+  }, {
+    "price" : 8.5,
+    "store" : 3490
+  }, {
+    "price" : 8.5,
+    "store" : 3493
+  }, {
+    "price" : 8.5,
+    "store" : 2470
+  }, {
+    "price" : 8.5,
+    "store" : 5031
+  }, {
+    "price" : 8.5,
+    "store" : 6056
+  }, {
+    "price" : 8.5,
+    "store" : 2992
+  }, {
+    "price" : 8.5,
+    "store" : 2994
+  }, {
+    "price" : 8.5,
+    "store" : 2487
+  }, {
+    "price" : 8.5,
+    "store" : 5566
+  }, {
+    "price" : 8.5,
+    "store" : 5567
+  }, {
+    "price" : 8.5,
+    "store" : 3009
+  }, {
+    "price" : 8.5,
+    "store" : 2007
+  }, {
+    "price" : 8.5,
+    "store" : 2008
+  }, {
+    "price" : 8.5,
+    "store" : 3036
+  }, {
+    "price" : 8.5,
+    "store" : 6109
+  }, {
+    "price" : 8.5,
+    "store" : 3039
+  }, {
+    "price" : 8.5,
+    "store" : 2015
+  }, {
+    "price" : 8.5,
+    "store" : 3040
+  }, {
+    "price" : 8.5,
+    "store" : 3041
+  }, {
+    "price" : 8.5,
+    "store" : 5601
+  }, {
+    "price" : 8.5,
+    "store" : 2019
+  }, {
+    "price" : 8.5,
+    "store" : 2020
+  }, {
+    "price" : 8.5,
+    "store" : 2022
+  }, {
+    "price" : 8.5,
+    "store" : 2535
+  }, {
+    "price" : 8.5,
+    "store" : 2025
+  }, {
+    "price" : 8.5,
+    "store" : 2538
+  }, {
+    "price" : 8.5,
+    "store" : 2030
+  }, {
+    "price" : 8.5,
+    "store" : 3055
+  }, {
+    "price" : 8.5,
+    "store" : 2031
+  }, {
+    "price" : 8.5,
+    "store" : 3060
+  }, {
+    "price" : 8.5,
+    "store" : 2549
+  }, {
+    "price" : 8.5,
+    "store" : 2038
+  }, {
+    "price" : 8.5,
+    "store" : 5110
+  }, {
+    "price" : 8.5,
+    "store" : 2550
+  }, {
+    "price" : 8.5,
+    "store" : 2551
+  }, {
+    "price" : 8.5,
+    "store" : 3063
+  }, {
+    "price" : 8.5,
+    "store" : 6647
+  }, {
+    "price" : 8.5,
+    "store" : 2039
+  }, {
+    "price" : 8.5,
+    "store" : 2041
+  }, {
+    "price" : 8.5,
+    "store" : 3065
+  }, {
+    "price" : 8.5,
+    "store" : 3066
+  }, {
+    "price" : 8.5,
+    "store" : 2042
+  }, {
+    "price" : 8.5,
+    "store" : 2555
+  }, {
+    "price" : 8.5,
+    "store" : 2044
+  }, {
+    "price" : 8.5,
+    "store" : 6653
+  }, {
+    "price" : 8.5,
+    "store" : 2047
+  } ],
+  "store_unitprice" : [ {
+    "store" : 2560,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2049,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3074,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5124,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5125,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2055,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5128,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5132,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5133,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2574,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5135,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2064,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2065,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6161,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5137,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5138,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2067,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5652,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3095,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2073,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2587,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2078,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2080,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2083,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3108,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2087,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3115,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2096,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5168,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6193,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2098,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5170,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5171,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2101,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6197,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2102,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2103,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2104,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2105,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2108,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3133,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5182,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5184,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3137,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3145,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5194,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2122,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3149,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2126,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2639,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6225,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2642,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2132,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2647,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2136,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2654,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5731,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2152,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3177,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3178,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2667,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3181,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2160,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5745,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2162,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2675,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2163,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2676,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3188,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2166,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3190,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2168,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6264,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6265,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3193,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2172,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6781,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6269,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2174,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6270,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6271,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5249,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3202,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5762,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2179,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2693,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2694,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5769,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2186,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2699,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3212,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3213,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3219,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3220,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2200,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2715,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6814,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3230,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3234,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3237,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3239,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3240,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5290,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3243,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5293,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2222,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2736,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2737,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2230,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6329,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5307,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2748,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2248,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5326,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2767,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5330,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2770,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5331,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5332,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5333,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5335,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3290,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2266,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5851,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3297,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2275,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3301,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2279,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2280,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2797,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3310,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2799,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2800,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2801,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2804,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3316,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2294,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2806,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2296,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2808,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3324,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6913,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6401,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5378,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6914,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6915,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5379,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6916,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3333,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6917,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6918,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2310,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6919,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2313,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2825,
+    "unitprice" : 2.4
+  }, {
+    "store" : 4362,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3344,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3345,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6419,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2835,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6420,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2326,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2838,
+    "unitprice" : 2.4
+  }, {
+    "store" : 4375,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2840,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2328,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2329,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2330,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3356,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2846,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2335,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2848,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2849,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2850,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6440,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3372,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5422,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3377,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3378,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5939,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3380,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2361,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6457,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6459,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2876,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2877,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5438,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2880,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5441,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2882,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2371,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6467,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3398,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6471,
+    "unitprice" : 2.4
+  }, {
+    "store" : 4425,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6473,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3401,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3406,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5456,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5458,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2898,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2387,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3411,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2388,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2900,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6997,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2389,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2392,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2394,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2907,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2396,
+    "unitprice" : 2.52
+  }, {
+    "store" : 2397,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5982,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3426,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2404,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2917,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2406,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3430,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2919,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5992,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2920,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6505,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6506,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2924,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5998,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3439,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3440,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6002,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2933,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2422,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2934,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2429,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2941,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5504,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6017,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2947,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2436,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2949,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2952,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2955,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2444,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3470,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2450,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2962,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5014,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5528,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3480,
+    "unitprice" : 2.4
+  }, {
+    "store" : 4505,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6553,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2969,
+    "unitprice" : 2.4
+  }, {
+    "store" : 4506,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2461,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3488,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3490,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3493,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2470,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5031,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6056,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2992,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2994,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2487,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5566,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5567,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3009,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2007,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2008,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3036,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6109,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2015,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3039,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3040,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5601,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3041,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2019,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2020,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2022,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2535,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2025,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2538,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2030,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3055,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2031,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3060,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2549,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2038,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2550,
+    "unitprice" : 2.4
+  }, {
+    "store" : 5110,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2039,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2551,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3063,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6647,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2041,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3065,
+    "unitprice" : 2.4
+  }, {
+    "store" : 3066,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2042,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2555,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2044,
+    "unitprice" : 2.4
+  }, {
+    "store" : 6653,
+    "unitprice" : 2.4
+  }, {
+    "store" : 2047,
+    "unitprice" : 2.4
+  } ],
+  "store_availability" : [ {
+    "store" : 2560,
+    "availability" : 1
+  }, {
+    "store" : 2049,
+    "availability" : 1
+  }, {
+    "store" : 3074,
+    "availability" : 1
+  }, {
+    "store" : 5124,
+    "availability" : 1
+  }, {
+    "store" : 5125,
+    "availability" : 1
+  }, {
+    "store" : 2055,
+    "availability" : 1
+  }, {
+    "store" : 5128,
+    "availability" : 1
+  }, {
+    "store" : 5132,
+    "availability" : 1
+  }, {
+    "store" : 5133,
+    "availability" : 1
+  }, {
+    "store" : 2574,
+    "availability" : 1
+  }, {
+    "store" : 5135,
+    "availability" : 1
+  }, {
+    "store" : 2064,
+    "availability" : 1
+  }, {
+    "store" : 2065,
+    "availability" : 1
+  }, {
+    "store" : 5137,
+    "availability" : 1
+  }, {
+    "store" : 6161,
+    "availability" : 1
+  }, {
+    "store" : 5138,
+    "availability" : 1
+  }, {
+    "store" : 2067,
+    "availability" : 1
+  }, {
+    "store" : 5652,
+    "availability" : 1
+  }, {
+    "store" : 3095,
+    "availability" : 1
+  }, {
+    "store" : 2073,
+    "availability" : 1
+  }, {
+    "store" : 2587,
+    "availability" : 1
+  }, {
+    "store" : 2078,
+    "availability" : 1
+  }, {
+    "store" : 2080,
+    "availability" : 1
+  }, {
+    "store" : 2083,
+    "availability" : 1
+  }, {
+    "store" : 3108,
+    "availability" : 1
+  }, {
+    "store" : 2087,
+    "availability" : 1
+  }, {
+    "store" : 3115,
+    "availability" : 1
+  }, {
+    "store" : 2096,
+    "availability" : 1
+  }, {
+    "store" : 5168,
+    "availability" : 1
+  }, {
+    "store" : 6193,
+    "availability" : 1
+  }, {
+    "store" : 2098,
+    "availability" : 1
+  }, {
+    "store" : 5170,
+    "availability" : 1
+  }, {
+    "store" : 5171,
+    "availability" : 1
+  }, {
+    "store" : 2101,
+    "availability" : 1
+  }, {
+    "store" : 6197,
+    "availability" : 1
+  }, {
+    "store" : 2102,
+    "availability" : 1
+  }, {
+    "store" : 2103,
+    "availability" : 1
+  }, {
+    "store" : 2104,
+    "availability" : 1
+  }, {
+    "store" : 2105,
+    "availability" : 1
+  }, {
+    "store" : 2108,
+    "availability" : 1
+  }, {
+    "store" : 3133,
+    "availability" : 1
+  }, {
+    "store" : 5182,
+    "availability" : 1
+  }, {
+    "store" : 5184,
+    "availability" : 1
+  }, {
+    "store" : 3137,
+    "availability" : 1
+  }, {
+    "store" : 3145,
+    "availability" : 1
+  }, {
+    "store" : 2122,
+    "availability" : 1
+  }, {
+    "store" : 5194,
+    "availability" : 1
+  }, {
+    "store" : 3149,
+    "availability" : 1
+  }, {
+    "store" : 2126,
+    "availability" : 1
+  }, {
+    "store" : 2639,
+    "availability" : 1
+  }, {
+    "store" : 6225,
+    "availability" : 1
+  }, {
+    "store" : 2642,
+    "availability" : 1
+  }, {
+    "store" : 2132,
+    "availability" : 1
+  }, {
+    "store" : 2647,
+    "availability" : 1
+  }, {
+    "store" : 2136,
+    "availability" : 1
+  }, {
+    "store" : 2654,
+    "availability" : 1
+  }, {
+    "store" : 5731,
+    "availability" : 1
+  }, {
+    "store" : 2152,
+    "availability" : 1
+  }, {
+    "store" : 3177,
+    "availability" : 1
+  }, {
+    "store" : 3178,
+    "availability" : 1
+  }, {
+    "store" : 2667,
+    "availability" : 1
+  }, {
+    "store" : 3181,
+    "availability" : 1
+  }, {
+    "store" : 2160,
+    "availability" : 1
+  }, {
+    "store" : 5745,
+    "availability" : 1
+  }, {
+    "store" : 2162,
+    "availability" : 1
+  }, {
+    "store" : 2163,
+    "availability" : 1
+  }, {
+    "store" : 2675,
+    "availability" : 1
+  }, {
+    "store" : 2676,
+    "availability" : 1
+  }, {
+    "store" : 3188,
+    "availability" : 1
+  }, {
+    "store" : 2166,
+    "availability" : 1
+  }, {
+    "store" : 3190,
+    "availability" : 1
+  }, {
+    "store" : 2168,
+    "availability" : 1
+  }, {
+    "store" : 6264,
+    "availability" : 1
+  }, {
+    "store" : 3193,
+    "availability" : 1
+  }, {
+    "store" : 6265,
+    "availability" : 1
+  }, {
+    "store" : 2172,
+    "availability" : 1
+  }, {
+    "store" : 6269,
+    "availability" : 1
+  }, {
+    "store" : 6781,
+    "availability" : 1
+  }, {
+    "store" : 2174,
+    "availability" : 1
+  }, {
+    "store" : 6270,
+    "availability" : 1
+  }, {
+    "store" : 6271,
+    "availability" : 1
+  }, {
+    "store" : 5249,
+    "availability" : 1
+  }, {
+    "store" : 3202,
+    "availability" : 1
+  }, {
+    "store" : 5762,
+    "availability" : 1
+  }, {
+    "store" : 2179,
+    "availability" : 1
+  }, {
+    "store" : 2693,
+    "availability" : 1
+  }, {
+    "store" : 2694,
+    "availability" : 1
+  }, {
+    "store" : 5769,
+    "availability" : 1
+  }, {
+    "store" : 2186,
+    "availability" : 1
+  }, {
+    "store" : 2699,
+    "availability" : 1
+  }, {
+    "store" : 3212,
+    "availability" : 1
+  }, {
+    "store" : 3213,
+    "availability" : 1
+  }, {
+    "store" : 3219,
+    "availability" : 1
+  }, {
+    "store" : 3220,
+    "availability" : 1
+  }, {
+    "store" : 2200,
+    "availability" : 1
+  }, {
+    "store" : 2715,
+    "availability" : 1
+  }, {
+    "store" : 3230,
+    "availability" : 1
+  }, {
+    "store" : 6814,
+    "availability" : 1
+  }, {
+    "store" : 3234,
+    "availability" : 1
+  }, {
+    "store" : 3237,
+    "availability" : 1
+  }, {
+    "store" : 3239,
+    "availability" : 1
+  }, {
+    "store" : 3240,
+    "availability" : 1
+  }, {
+    "store" : 5290,
+    "availability" : 1
+  }, {
+    "store" : 3243,
+    "availability" : 1
+  }, {
+    "store" : 5293,
+    "availability" : 1
+  }, {
+    "store" : 2222,
+    "availability" : 1
+  }, {
+    "store" : 2736,
+    "availability" : 1
+  }, {
+    "store" : 2737,
+    "availability" : 1
+  }, {
+    "store" : 2230,
+    "availability" : 1
+  }, {
+    "store" : 6329,
+    "availability" : 1
+  }, {
+    "store" : 5307,
+    "availability" : 1
+  }, {
+    "store" : 2748,
+    "availability" : 1
+  }, {
+    "store" : 2248,
+    "availability" : 1
+  }, {
+    "store" : 5326,
+    "availability" : 1
+  }, {
+    "store" : 2767,
+    "availability" : 1
+  }, {
+    "store" : 2770,
+    "availability" : 1
+  }, {
+    "store" : 5330,
+    "availability" : 1
+  }, {
+    "store" : 5331,
+    "availability" : 1
+  }, {
+    "store" : 5332,
+    "availability" : 1
+  }, {
+    "store" : 5333,
+    "availability" : 1
+  }, {
+    "store" : 5335,
+    "availability" : 1
+  }, {
+    "store" : 2266,
+    "availability" : 1
+  }, {
+    "store" : 3290,
+    "availability" : 1
+  }, {
+    "store" : 5851,
+    "availability" : 1
+  }, {
+    "store" : 3297,
+    "availability" : 1
+  }, {
+    "store" : 2275,
+    "availability" : 1
+  }, {
+    "store" : 3301,
+    "availability" : 1
+  }, {
+    "store" : 2279,
+    "availability" : 1
+  }, {
+    "store" : 2280,
+    "availability" : 1
+  }, {
+    "store" : 2797,
+    "availability" : 1
+  }, {
+    "store" : 3310,
+    "availability" : 1
+  }, {
+    "store" : 2799,
+    "availability" : 1
+  }, {
+    "store" : 2800,
+    "availability" : 1
+  }, {
+    "store" : 2801,
+    "availability" : 1
+  }, {
+    "store" : 2804,
+    "availability" : 1
+  }, {
+    "store" : 3316,
+    "availability" : 1
+  }, {
+    "store" : 2294,
+    "availability" : 1
+  }, {
+    "store" : 2806,
+    "availability" : 1
+  }, {
+    "store" : 2296,
+    "availability" : 1
+  }, {
+    "store" : 2808,
+    "availability" : 1
+  }, {
+    "store" : 3324,
+    "availability" : 1
+  }, {
+    "store" : 6401,
+    "availability" : 1
+  }, {
+    "store" : 6913,
+    "availability" : 1
+  }, {
+    "store" : 5378,
+    "availability" : 1
+  }, {
+    "store" : 6914,
+    "availability" : 1
+  }, {
+    "store" : 5379,
+    "availability" : 1
+  }, {
+    "store" : 6915,
+    "availability" : 1
+  }, {
+    "store" : 6916,
+    "availability" : 1
+  }, {
+    "store" : 3333,
+    "availability" : 1
+  }, {
+    "store" : 6917,
+    "availability" : 1
+  }, {
+    "store" : 2310,
+    "availability" : 1
+  }, {
+    "store" : 6918,
+    "availability" : 1
+  }, {
+    "store" : 6919,
+    "availability" : 1
+  }, {
+    "store" : 2313,
+    "availability" : 1
+  }, {
+    "store" : 2825,
+    "availability" : 1
+  }, {
+    "store" : 4362,
+    "availability" : 1
+  }, {
+    "store" : 3344,
+    "availability" : 1
+  }, {
+    "store" : 3345,
+    "availability" : 1
+  }, {
+    "store" : 2835,
+    "availability" : 1
+  }, {
+    "store" : 6419,
+    "availability" : 1
+  }, {
+    "store" : 6420,
+    "availability" : 1
+  }, {
+    "store" : 2326,
+    "availability" : 1
+  }, {
+    "store" : 2838,
+    "availability" : 1
+  }, {
+    "store" : 4375,
+    "availability" : 1
+  }, {
+    "store" : 2328,
+    "availability" : 1
+  }, {
+    "store" : 2840,
+    "availability" : 1
+  }, {
+    "store" : 2329,
+    "availability" : 1
+  }, {
+    "store" : 2330,
+    "availability" : 1
+  }, {
+    "store" : 3356,
+    "availability" : 1
+  }, {
+    "store" : 2846,
+    "availability" : 1
+  }, {
+    "store" : 2335,
+    "availability" : 1
+  }, {
+    "store" : 2848,
+    "availability" : 1
+  }, {
+    "store" : 2849,
+    "availability" : 1
+  }, {
+    "store" : 2850,
+    "availability" : 1
+  }, {
+    "store" : 6440,
+    "availability" : 1
+  }, {
+    "store" : 3372,
+    "availability" : 1
+  }, {
+    "store" : 5422,
+    "availability" : 1
+  }, {
+    "store" : 3377,
+    "availability" : 1
+  }, {
+    "store" : 3378,
+    "availability" : 1
+  }, {
+    "store" : 5939,
+    "availability" : 1
+  }, {
+    "store" : 3380,
+    "availability" : 1
+  }, {
+    "store" : 2361,
+    "availability" : 1
+  }, {
+    "store" : 6457,
+    "availability" : 1
+  }, {
+    "store" : 6459,
+    "availability" : 1
+  }, {
+    "store" : 2876,
+    "availability" : 1
+  }, {
+    "store" : 2877,
+    "availability" : 1
+  }, {
+    "store" : 5438,
+    "availability" : 1
+  }, {
+    "store" : 2880,
+    "availability" : 1
+  }, {
+    "store" : 5441,
+    "availability" : 1
+  }, {
+    "store" : 2882,
+    "availability" : 1
+  }, {
+    "store" : 2371,
+    "availability" : 1
+  }, {
+    "store" : 6467,
+    "availability" : 1
+  }, {
+    "store" : 3398,
+    "availability" : 1
+  }, {
+    "store" : 6471,
+    "availability" : 1
+  }, {
+    "store" : 3401,
+    "availability" : 1
+  }, {
+    "store" : 4425,
+    "availability" : 1
+  }, {
+    "store" : 6473,
+    "availability" : 1
+  }, {
+    "store" : 3406,
+    "availability" : 1
+  }, {
+    "store" : 5456,
+    "availability" : 1
+  }, {
+    "store" : 2898,
+    "availability" : 1
+  }, {
+    "store" : 5458,
+    "availability" : 1
+  }, {
+    "store" : 2387,
+    "availability" : 1
+  }, {
+    "store" : 3411,
+    "availability" : 1
+  }, {
+    "store" : 2388,
+    "availability" : 1
+  }, {
+    "store" : 2900,
+    "availability" : 1
+  }, {
+    "store" : 2389,
+    "availability" : 1
+  }, {
+    "store" : 6997,
+    "availability" : 1
+  }, {
+    "store" : 2392,
+    "availability" : 1
+  }, {
+    "store" : 2394,
+    "availability" : 1
+  }, {
+    "store" : 2907,
+    "availability" : 1
+  }, {
+    "store" : 2396,
+    "availability" : 1
+  }, {
+    "store" : 2397,
+    "availability" : 1
+  }, {
+    "store" : 5982,
+    "availability" : 1
+  }, {
+    "store" : 3426,
+    "availability" : 1
+  }, {
+    "store" : 2404,
+    "availability" : 1
+  }, {
+    "store" : 2917,
+    "availability" : 1
+  }, {
+    "store" : 2406,
+    "availability" : 1
+  }, {
+    "store" : 3430,
+    "availability" : 1
+  }, {
+    "store" : 2919,
+    "availability" : 1
+  }, {
+    "store" : 2920,
+    "availability" : 1
+  }, {
+    "store" : 5992,
+    "availability" : 1
+  }, {
+    "store" : 6505,
+    "availability" : 1
+  }, {
+    "store" : 6506,
+    "availability" : 1
+  }, {
+    "store" : 2924,
+    "availability" : 1
+  }, {
+    "store" : 5998,
+    "availability" : 1
+  }, {
+    "store" : 3439,
+    "availability" : 1
+  }, {
+    "store" : 3440,
+    "availability" : 1
+  }, {
+    "store" : 6002,
+    "availability" : 1
+  }, {
+    "store" : 2933,
+    "availability" : 1
+  }, {
+    "store" : 2422,
+    "availability" : 1
+  }, {
+    "store" : 2934,
+    "availability" : 1
+  }, {
+    "store" : 2429,
+    "availability" : 1
+  }, {
+    "store" : 2941,
+    "availability" : 1
+  }, {
+    "store" : 5504,
+    "availability" : 1
+  }, {
+    "store" : 6017,
+    "availability" : 1
+  }, {
+    "store" : 2947,
+    "availability" : 1
+  }, {
+    "store" : 2436,
+    "availability" : 1
+  }, {
+    "store" : 2949,
+    "availability" : 1
+  }, {
+    "store" : 2952,
+    "availability" : 1
+  }, {
+    "store" : 2955,
+    "availability" : 1
+  }, {
+    "store" : 2444,
+    "availability" : 1
+  }, {
+    "store" : 3470,
+    "availability" : 1
+  }, {
+    "store" : 2450,
+    "availability" : 1
+  }, {
+    "store" : 2962,
+    "availability" : 1
+  }, {
+    "store" : 5014,
+    "availability" : 1
+  }, {
+    "store" : 3480,
+    "availability" : 1
+  }, {
+    "store" : 5528,
+    "availability" : 1
+  }, {
+    "store" : 2969,
+    "availability" : 1
+  }, {
+    "store" : 4505,
+    "availability" : 1
+  }, {
+    "store" : 6553,
+    "availability" : 1
+  }, {
+    "store" : 4506,
+    "availability" : 1
+  }, {
+    "store" : 2461,
+    "availability" : 1
+  }, {
+    "store" : 3488,
+    "availability" : 1
+  }, {
+    "store" : 3490,
+    "availability" : 1
+  }, {
+    "store" : 3493,
+    "availability" : 1
+  }, {
+    "store" : 2470,
+    "availability" : 1
+  }, {
+    "store" : 5031,
+    "availability" : 1
+  }, {
+    "store" : 6056,
+    "availability" : 1
+  }, {
+    "store" : 2992,
+    "availability" : 1
+  }, {
+    "store" : 2994,
+    "availability" : 1
+  }, {
+    "store" : 2487,
+    "availability" : 1
+  }, {
+    "store" : 5566,
+    "availability" : 1
+  }, {
+    "store" : 5567,
+    "availability" : 1
+  }, {
+    "store" : 3009,
+    "availability" : 1
+  }, {
+    "store" : 2007,
+    "availability" : 1
+  }, {
+    "store" : 2008,
+    "availability" : 1
+  }, {
+    "store" : 3036,
+    "availability" : 1
+  }, {
+    "store" : 6109,
+    "availability" : 1
+  }, {
+    "store" : 2015,
+    "availability" : 1
+  }, {
+    "store" : 3039,
+    "availability" : 1
+  }, {
+    "store" : 3040,
+    "availability" : 1
+  }, {
+    "store" : 3041,
+    "availability" : 1
+  }, {
+    "store" : 5601,
+    "availability" : 1
+  }, {
+    "store" : 2019,
+    "availability" : 1
+  }, {
+    "store" : 2020,
+    "availability" : 1
+  }, {
+    "store" : 2022,
+    "availability" : 1
+  }, {
+    "store" : 2535,
+    "availability" : 1
+  }, {
+    "store" : 2025,
+    "availability" : 1
+  }, {
+    "store" : 2538,
+    "availability" : 1
+  }, {
+    "store" : 2030,
+    "availability" : 1
+  }, {
+    "store" : 2031,
+    "availability" : 1
+  }, {
+    "store" : 3055,
+    "availability" : 1
+  }, {
+    "store" : 3060,
+    "availability" : 1
+  }, {
+    "store" : 2549,
+    "availability" : 1
+  }, {
+    "store" : 2038,
+    "availability" : 1
+  }, {
+    "store" : 2550,
+    "availability" : 1
+  }, {
+    "store" : 5110,
+    "availability" : 1
+  }, {
+    "store" : 2039,
+    "availability" : 1
+  }, {
+    "store" : 2551,
+    "availability" : 1
+  }, {
+    "store" : 3063,
+    "availability" : 1
+  }, {
+    "store" : 6647,
+    "availability" : 1
+  }, {
+    "store" : 2041,
+    "availability" : 1
+  }, {
+    "store" : 3065,
+    "availability" : 1
+  }, {
+    "store" : 2042,
+    "availability" : 1
+  }, {
+    "store" : 3066,
+    "availability" : 1
+  }, {
+    "store" : 2555,
+    "availability" : 1
+  }, {
+    "store" : 2044,
+    "availability" : 1
+  }, {
+    "store" : 6653,
+    "availability" : 1
+  }, {
+    "store" : 2047,
+    "availability" : 1
+  } ],
+  "tpnb" : "055063745",
+  "popularity" : 5.74618E-5,
+  "trialrate" : 1.5799E-5,
+  "name" : "Opti-Free Express Solution 355Ml",
+  "brand" : "Opti-Free",
+  "image" : "http://img.tesco.com/Groceries/pi/668/5015664003668/IDShot_90x90.jpg",
+  "normalPrice" : 6.5,
+  "salesrank" : 104,
+  "ean" : "0000000000000",
+  "origin" : "UNITED KINGDOM",
+  "description" : [ "MULTI PURPOSE DISINFECTING SOLUTION.", "NO RUB.", "COMFORT THAT LASTS ALL DAY.", "CLEANS, RINSES, DISINFECTS, REWETS & STORES.", "REMOVES PROTEIN DAILY FOR ALL SOFT CONTACT LENSES INCLUDING SILICONE HYDROGELS.", "No separate enzyme cleaner required.", "Alcon®.", "OPTI FREE® EXPRESS® Multi Purpose Disinfecting Solution keeps your lenses clean and comfortable. It is all you need for daily care for any soft contact lenses.", "Fungicidal.", "Bactericidal.", "Kills Acanthamoeba.", "TETRONIC® = Registered trademark of BASF." ],
+  "usage" : [ "<Cooking_Instructions><Preparation_and_Usage>TAMPER EVIDENT:Do not use if the security seal is damaged or missing.Do not use if package was opened or damaged.See inside of carton for complete instructions and important safety information.Not for use with heat (thermal) disinfection.Use before the expiration date marked in the product.Discard any remaining solution six months after first opening.</Preparation_and_Usage></Cooking_Instructions>" ],
+  "shelf" : "Contact Lens Solutions",
+  "aisle" : "Eye Care",
+  "department" : "Healthcare",
+  "superDepartment" : "Health & Beauty",
+  "ingredients" : [ "Citrate", "Tetronic®* 1304 (Poloxamine) and Aminomethylpropanol", "Sodium Chloride", "Boric Acid", "Sorbitol", "Aminomethylpropanol and Edetate Disodium", "POLYQUAD® (Polidronium Chloride) 0.001% and ALDOX® (Myristamidopropyl Dimethylamine) 0.0005%" ],
+  "PromotionId" : "Z-GC6JV",
+  "PromotionDescription" : "Save &pound;2.50 on Bausch &amp; Lomb Biotrue, ReNu, Boston or EasySept contact lens solution Excludes sensitive eyes &amp; flight pack",
+  "PromotionIcon" : [ ],
+  "PromotionStart" : "2015-03-23",
+  "PromotionEnd" : "2015-05-17",
+  "UnitQuantity" : "100ML",
+  "UnitOfSale" : 1,
+  "AverageSellingUnitWeight" : 0.425,
+  "ContentsMeasureType" : "ML",
+  "ContentsQuantity" : 355.0,
+  "Messages" : "<Messages>      <Message TypeCode=\"BulkBuyLimit\" TriggerQuantity=\"99\" GroupId=\"NOT_MAPPED\" Description=\"Sorry, there is a limit of 99 on this product\">        <Stores all=\"true\" />      </Message>    </Messages>",
+  "BulkBuyLimit" : 99
+}

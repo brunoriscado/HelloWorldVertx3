@@ -1,0 +1,23 @@
+{
+  "id" : "251199921",
+  "tpnb" : "051642493",
+  "popularity" : 0.0,
+  "trialrate" : 0.0,
+  "name" : "Dorchester Smooth Superkings 20 Pack",
+  "brand" : "Dorchester",
+  "image" : "http://img.tesco.com/Groceries/pi//noimage.jpg",
+  "salesrank" : 0,
+  "ean" : "0000000000000",
+  "origin" : "UNITED KINGDOM",
+  "shelf" : "Cigarettes 10/20 Pack",
+  "aisle" : "Cigarettes",
+  "department" : "Tobacconist",
+  "superDepartment" : "Home & Ents",
+  "UnitQuantity" : "EACH",
+  "UnitOfSale" : 1,
+  "AverageSellingUnitWeight" : 0.1,
+  "ContentsMeasureType" : "SNGL",
+  "ContentsQuantity" : 20.0,
+  "Messages" : "<Messages>      <Message TypeCode=\"BulkBuyLimit\" TriggerQuantity=\"99\" GroupId=\"NOT_MAPPED\" Description=\"Sorry, there is a limit of 99 on this product\">        <Stores all=\"true\" />      </Message>    </Messages>",
+  "BulkBuyLimit" : 99
+}

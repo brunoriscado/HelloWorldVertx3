@@ -9,15 +9,9 @@
   "size": "0",
   {{/results}}
   {{#price}} "sort": [{"price": {"order": "{{price}}", "mode": "min"} }], {{/price}}
+  {{#taxonomy}}
   "aggs": {
-    "new": {
-      "filter" : { "term": { "new": "{{store}}" } }
-    },
-    "offer": {
-      "filter" : { "term": { "offer": "{{store}}" } }
-    }
-    {{#taxonomy}}
-    ,"superDepartments": {
+    "superDepartments": {
       "aggs": {
         "departments": {
           "aggs": {
@@ -25,38 +19,26 @@
               "aggs": {
                 "shelves": {
                   "terms": {
-                    "field": "shelf.raw",
-                    "size": 0
+                    "field": "shelf.raw"
                   }
                 }
               },
               "terms": {
-                "field": "aisle.raw",
-                "size": 0
+                "field": "aisle.raw"
               }
             }
           },
           "terms": {
-            "field": "department.raw",
-            "size": 0
+            "field": "department.raw"
           }
         }
       },
       "terms": {
-        "field": "superDepartment.raw",
-        "size": 0
+        "field": "superDepartment.raw"
       }
     }
-    {{/taxonomy}}
-    {{#filters}}
-    ,"brands": {
-      "terms": {
-        "field": "brand.raw",
-        "size": 0
-      }
-    }
-    {{/filters}}
   },
+  {{/taxonomy}}
   {{#suggestions}}
   "suggest": {
     "text": "{{{query}}}",
@@ -1095,18 +1077,6 @@
                       "term" : { "shelf.raw" : "{{.}}" }
                     },
                     {{/shelf}}
-                    {}
-                  ]
-                }
-              },
-              {
-                "or": {
-                  "filters": [
-                    {{#brands}}
-                    {
-                      "term" : { "brand.raw" : "{{.}}" }
-                    },
-                    {{/brands}}
                     {}
                   ]
                 }

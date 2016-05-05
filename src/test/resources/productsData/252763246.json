@@ -1,0 +1,521 @@
+{
+  "id" : "252763246",
+  "store_price" : [ {
+    "price" : 1.35,
+    "store" : 5124
+  }, {
+    "price" : 1.35,
+    "store" : 2310
+  }, {
+    "price" : 1.35,
+    "store" : 5128
+  }, {
+    "price" : 1.35,
+    "store" : 3212
+  }, {
+    "price" : 1.35,
+    "store" : 5133
+  }, {
+    "price" : 1.35,
+    "store" : 6797
+  }, {
+    "price" : 1.35,
+    "store" : 2962
+  }, {
+    "price" : 1.35,
+    "store" : 5138
+  }, {
+    "price" : 1.35,
+    "store" : 2836
+  }, {
+    "price" : 1.35,
+    "store" : 5014
+  }, {
+    "price" : 1.35,
+    "store" : 3356
+  }, {
+    "price" : 1.35,
+    "store" : 2078
+  }, {
+    "price" : 1.35,
+    "store" : 6814
+  }, {
+    "price" : 1.35,
+    "store" : 2849
+  }, {
+    "price" : 1.35,
+    "store" : 2340
+  }, {
+    "price" : 1.35,
+    "store" : 3239
+  }, {
+    "price" : 1.35,
+    "store" : 2087
+  }, {
+    "price" : 1.35,
+    "store" : 2856
+  }, {
+    "price" : 1.35,
+    "store" : 2222
+  }, {
+    "price" : 1.35,
+    "store" : 3120
+  }, {
+    "price" : 1.35,
+    "store" : 3380
+  }, {
+    "price" : 1.35,
+    "store" : 2102
+  }, {
+    "price" : 1.35,
+    "store" : 6457
+  }, {
+    "price" : 1.35,
+    "store" : 3387
+  }, {
+    "price" : 1.35,
+    "store" : 2108
+  }, {
+    "price" : 1.35,
+    "store" : 5182
+  }, {
+    "price" : 1.35,
+    "store" : 3008
+  }, {
+    "price" : 1.35,
+    "store" : 3137
+  }, {
+    "price" : 1.35,
+    "store" : 5441
+  }, {
+    "price" : 1.35,
+    "store" : 2371
+  }, {
+    "price" : 1.35,
+    "store" : 6467
+  }, {
+    "price" : 1.35,
+    "store" : 6471
+  }, {
+    "price" : 1.35,
+    "store" : 2770
+  }, {
+    "price" : 1.35,
+    "store" : 5331
+  }, {
+    "price" : 1.35,
+    "store" : 2900
+  }, {
+    "price" : 1.35,
+    "store" : 2647
+  }, {
+    "price" : 1.35,
+    "store" : 5335
+  }, {
+    "price" : 1.35,
+    "store" : 2136
+  }, {
+    "price" : 1.35,
+    "store" : 5982
+  }, {
+    "price" : 1.35,
+    "store" : 2020
+  }, {
+    "price" : 1.35,
+    "store" : 3301
+  }, {
+    "price" : 1.35,
+    "store" : 2025
+  }, {
+    "price" : 1.35,
+    "store" : 6505
+  }, {
+    "price" : 1.35,
+    "store" : 3181
+  }, {
+    "price" : 1.35,
+    "store" : 2800
+  }, {
+    "price" : 1.35,
+    "store" : 5745
+  }, {
+    "price" : 1.35,
+    "store" : 2163
+  }, {
+    "price" : 1.35,
+    "store" : 2166
+  }, {
+    "price" : 1.35,
+    "store" : 6264
+  }, {
+    "price" : 1.35,
+    "store" : 2041
+  }, {
+    "price" : 1.35,
+    "store" : 3066
+  }, {
+    "price" : 1.35,
+    "store" : 2429
+  }, {
+    "price" : 1.35,
+    "store" : 6269
+  }, {
+    "price" : 1.35,
+    "store" : 6653
+  } ],
+  "store_unitprice" : [ {
+    "store" : 5124,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2310,
+    "unitprice" : 9.0
+  }, {
+    "store" : 5128,
+    "unitprice" : 9.0
+  }, {
+    "store" : 3212,
+    "unitprice" : 9.0
+  }, {
+    "store" : 5133,
+    "unitprice" : 9.0
+  }, {
+    "store" : 6797,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2962,
+    "unitprice" : 9.0
+  }, {
+    "store" : 5138,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2836,
+    "unitprice" : 9.0
+  }, {
+    "store" : 5014,
+    "unitprice" : 9.0
+  }, {
+    "store" : 3356,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2078,
+    "unitprice" : 9.0
+  }, {
+    "store" : 6814,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2849,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2340,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2087,
+    "unitprice" : 9.0
+  }, {
+    "store" : 3239,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2856,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2222,
+    "unitprice" : 9.0
+  }, {
+    "store" : 3120,
+    "unitprice" : 9.0
+  }, {
+    "store" : 3380,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2102,
+    "unitprice" : 9.0
+  }, {
+    "store" : 6457,
+    "unitprice" : 9.0
+  }, {
+    "store" : 3387,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2108,
+    "unitprice" : 9.0
+  }, {
+    "store" : 5182,
+    "unitprice" : 9.0
+  }, {
+    "store" : 3008,
+    "unitprice" : 9.0
+  }, {
+    "store" : 3137,
+    "unitprice" : 9.0
+  }, {
+    "store" : 5441,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2371,
+    "unitprice" : 9.0
+  }, {
+    "store" : 6467,
+    "unitprice" : 9.0
+  }, {
+    "store" : 6471,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2770,
+    "unitprice" : 9.0
+  }, {
+    "store" : 5331,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2900,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2647,
+    "unitprice" : 9.0
+  }, {
+    "store" : 5335,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2136,
+    "unitprice" : 9.0
+  }, {
+    "store" : 5982,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2020,
+    "unitprice" : 9.0
+  }, {
+    "store" : 3301,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2025,
+    "unitprice" : 9.0
+  }, {
+    "store" : 6505,
+    "unitprice" : 9.0
+  }, {
+    "store" : 3181,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2800,
+    "unitprice" : 9.0
+  }, {
+    "store" : 5745,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2163,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2166,
+    "unitprice" : 9.0
+  }, {
+    "store" : 6264,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2041,
+    "unitprice" : 9.0
+  }, {
+    "store" : 3066,
+    "unitprice" : 9.0
+  }, {
+    "store" : 2429,
+    "unitprice" : 9.0
+  }, {
+    "store" : 6269,
+    "unitprice" : 9.0
+  }, {
+    "store" : 6653,
+    "unitprice" : 9.0
+  } ],
+  "store_availability" : [ {
+    "store" : 5124,
+    "availability" : 1
+  }, {
+    "store" : 2310,
+    "availability" : 1
+  }, {
+    "store" : 5128,
+    "availability" : 1
+  }, {
+    "store" : 3212,
+    "availability" : 1
+  }, {
+    "store" : 6797,
+    "availability" : 1
+  }, {
+    "store" : 5133,
+    "availability" : 1
+  }, {
+    "store" : 2962,
+    "availability" : 1
+  }, {
+    "store" : 5138,
+    "availability" : 1
+  }, {
+    "store" : 2836,
+    "availability" : 1
+  }, {
+    "store" : 5014,
+    "availability" : 1
+  }, {
+    "store" : 3356,
+    "availability" : 1
+  }, {
+    "store" : 2078,
+    "availability" : 1
+  }, {
+    "store" : 6814,
+    "availability" : 1
+  }, {
+    "store" : 2849,
+    "availability" : 1
+  }, {
+    "store" : 2340,
+    "availability" : 1
+  }, {
+    "store" : 2087,
+    "availability" : 1
+  }, {
+    "store" : 3239,
+    "availability" : 1
+  }, {
+    "store" : 2856,
+    "availability" : 1
+  }, {
+    "store" : 2222,
+    "availability" : 1
+  }, {
+    "store" : 3120,
+    "availability" : 1
+  }, {
+    "store" : 3380,
+    "availability" : 1
+  }, {
+    "store" : 2102,
+    "availability" : 1
+  }, {
+    "store" : 6457,
+    "availability" : 1
+  }, {
+    "store" : 3387,
+    "availability" : 1
+  }, {
+    "store" : 2108,
+    "availability" : 1
+  }, {
+    "store" : 5182,
+    "availability" : 1
+  }, {
+    "store" : 3008,
+    "availability" : 1
+  }, {
+    "store" : 3137,
+    "availability" : 1
+  }, {
+    "store" : 5441,
+    "availability" : 1
+  }, {
+    "store" : 2371,
+    "availability" : 1
+  }, {
+    "store" : 6467,
+    "availability" : 1
+  }, {
+    "store" : 6471,
+    "availability" : 1
+  }, {
+    "store" : 2770,
+    "availability" : 1
+  }, {
+    "store" : 5331,
+    "availability" : 1
+  }, {
+    "store" : 2900,
+    "availability" : 1
+  }, {
+    "store" : 2647,
+    "availability" : 1
+  }, {
+    "store" : 5335,
+    "availability" : 1
+  }, {
+    "store" : 2136,
+    "availability" : 1
+  }, {
+    "store" : 5982,
+    "availability" : 1
+  }, {
+    "store" : 2020,
+    "availability" : 1
+  }, {
+    "store" : 3301,
+    "availability" : 1
+  }, {
+    "store" : 2025,
+    "availability" : 1
+  }, {
+    "store" : 6505,
+    "availability" : 1
+  }, {
+    "store" : 3181,
+    "availability" : 1
+  }, {
+    "store" : 2800,
+    "availability" : 1
+  }, {
+    "store" : 5745,
+    "availability" : 1
+  }, {
+    "store" : 2163,
+    "availability" : 1
+  }, {
+    "store" : 2166,
+    "availability" : 1
+  }, {
+    "store" : 6264,
+    "availability" : 1
+  }, {
+    "store" : 2041,
+    "availability" : 1
+  }, {
+    "store" : 3066,
+    "availability" : 1
+  }, {
+    "store" : 2429,
+    "availability" : 1
+  }, {
+    "store" : 6269,
+    "availability" : 1
+  }, {
+    "store" : 6653,
+    "availability" : 1
+  } ],
+  "tpnb" : "054278660",
+  "popularity" : 2.764615E-4,
+  "trialrate" : 2.011742E-4,
+  "name" : "Paxo Celebration Chestnut And Cranberry 150G",
+  "brand" : "Paxo",
+  "image" : "http://img.tesco.com/Groceries/pi/337/5036040142337/IDShot_90x90.jpg",
+  "normalPrice" : 1.35,
+  "salesrank" : 36,
+  "ean" : "0000000000000",
+  "origin" : "UNITED KINGDOM",
+  "IsNew" : [ "2047", "2096", "2105", "2164", "2200", "2230", "2272", "2296", "2326", "2361", "2388", "2569", "2587", "2642", "2736", "2737", "2742", "2767", "2819", "2835", "3009", "3032", "3060", "3133", "3213", "3243", "3333", "3433", "5132", "5249", "6017", "6225", "6329", "6401", "6553" ],
+  "usage" : [ "<Cooking_Instructions><Preparation_and_Usage>There's so much so can do with Paxo...Whether it's baking in a tray, mixing together with sausage meat or rolling into stuffing balls, Paxo makes your meals go further. Paxo offers a great way to add texture and flavour to all kinds of dishes. Sprinkle into soups, stews and casseroles to add a delicious flavour and texture. It's also great on top of pasta bakes, chops, steaks and fish adding a delicious crunch and flavour.To Oven Bake1 Pre-heat oven to 220°C, fan oven to 200°C, Gas Mark 7.2 Empty the sachet into a bowl, adding 300ml of boiling water, mixing well. Add a large knob of butter if desired.3 Leave to stand for 5 minutes then place the stuffing into either an ovenproof dish or alternatively form into stuffing balls on a greased baking sheet and bake for 25-30 minutes until piping hot.To Microwave1 Repeat step 2 from oven bake instructions. Leave it to stand for 2 minutes.2 Place the stuffing in a non-metallic dish. Microwave on full power for 2 minutes until piping hot (800w, Cat E). Adjust time accordingly for different ovens.3 For a crispy topping, brown under a preheated grill for 2 minutes or until golden.</Preparation_and_Usage></Cooking_Instructions>" ],
+  "shelf" : "Stuffing",
+  "aisle" : "Breadcrumbs & Stuffing",
+  "department" : "Cooking Ingredients",
+  "superDepartment" : "Food Cupboard",
+  "ingredients" : [ "WHEAT Flour", "Dried Chestnuts (10%)", "Dried Onion", "Sugar", "Vegetable Oils (Palm, Sunflower)", "Dried Cranberries (3%)", "Salt", "Dried Rosemary", "Raising Agents (Ammonium Carbonate, Sodium Hydrogen Carbonate)", "Flavouring", "Dried Tomato", "Dried Parsley", "Yeast", "Glucose", "Yeast Extract (from WHEAT and BARLEY)", "Black Pepper", "BARLEY Malt Extract", "Citric Acid", "Colour (Sulphite Ammonia Caramel)", "For allergens, including Cereals containing Gluten, please see capitalised ingredients", "May also contain Milk" ],
+  "PromotionId" : "Z-GCCGL",
+  "PromotionDescription" : "Save 20p on any 3 Tesco Everyday Value stuffing mix, stock cubes, herbs, spices, black pepper or salt",
+  "PromotionIcon" : [ ],
+  "PromotionStart" : "2015-03-23",
+  "PromotionEnd" : "2015-05-17",
+  "UnitQuantity" : "KG",
+  "UnitOfSale" : 1,
+  "AverageSellingUnitWeight" : 0.178,
+  "ContentsMeasureType" : "G",
+  "ContentsQuantity" : 150.0,
+  "Messages" : "<Messages>      <Message TypeCode=\"BulkBuyLimit\" TriggerQuantity=\"99\" GroupId=\"NOT_MAPPED\" Description=\"Sorry, there is a limit of 99 on this product\">        <Stores all=\"true\" />      </Message>    </Messages>",
+  "BulkBuyLimit" : 99
+}

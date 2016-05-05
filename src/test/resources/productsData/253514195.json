@@ -1,0 +1,182 @@
+{
+  "id" : "253514195",
+  "store_price" : [ {
+    "price" : 1.02,
+    "store" : 2406
+  }, {
+    "price" : 1.02,
+    "store" : 5031
+  }, {
+    "price" : 1.02,
+    "store" : 6506
+  }, {
+    "price" : 1.02,
+    "store" : 5131
+  }, {
+    "price" : 1.02,
+    "store" : 2797
+  }, {
+    "price" : 1.02,
+    "store" : 5422
+  }, {
+    "price" : 1.02,
+    "store" : 5137
+  }, {
+    "price" : 1.02,
+    "store" : 2195
+  }, {
+    "price" : 1.02,
+    "store" : 5333
+  }, {
+    "price" : 1.02,
+    "store" : 2294
+  }, {
+    "price" : 1.02,
+    "store" : 2838
+  }, {
+    "price" : 1.02,
+    "store" : 5335
+  }, {
+    "price" : 1.02,
+    "store" : 2840
+  }, {
+    "price" : 1.02,
+    "store" : 4506
+  }, {
+    "price" : 1.02,
+    "store" : 2715
+  }, {
+    "price" : 1.02,
+    "store" : 6270
+  }, {
+    "price" : 1.02,
+    "store" : 6271
+  } ],
+  "store_unitprice" : [ {
+    "store" : 2406,
+    "unitprice" : 4.5
+  }, {
+    "store" : 5031,
+    "unitprice" : 4.5
+  }, {
+    "store" : 6506,
+    "unitprice" : 4.5
+  }, {
+    "store" : 5131,
+    "unitprice" : 4.5
+  }, {
+    "store" : 2797,
+    "unitprice" : 4.5
+  }, {
+    "store" : 5422,
+    "unitprice" : 4.5
+  }, {
+    "store" : 5137,
+    "unitprice" : 4.5
+  }, {
+    "store" : 2195,
+    "unitprice" : 4.5
+  }, {
+    "store" : 5333,
+    "unitprice" : 4.5
+  }, {
+    "store" : 2294,
+    "unitprice" : 4.5
+  }, {
+    "store" : 2838,
+    "unitprice" : 4.5
+  }, {
+    "store" : 5335,
+    "unitprice" : 4.5
+  }, {
+    "store" : 2840,
+    "unitprice" : 4.5
+  }, {
+    "store" : 4506,
+    "unitprice" : 4.5
+  }, {
+    "store" : 2715,
+    "unitprice" : 4.5
+  }, {
+    "store" : 6270,
+    "unitprice" : 4.5
+  }, {
+    "store" : 6271,
+    "unitprice" : 4.5
+  } ],
+  "store_availability" : [ {
+    "store" : 2406,
+    "availability" : 1
+  }, {
+    "store" : 5031,
+    "availability" : 1
+  }, {
+    "store" : 6506,
+    "availability" : 1
+  }, {
+    "store" : 5131,
+    "availability" : 1
+  }, {
+    "store" : 2797,
+    "availability" : 1
+  }, {
+    "store" : 5422,
+    "availability" : 1
+  }, {
+    "store" : 5137,
+    "availability" : 1
+  }, {
+    "store" : 2195,
+    "availability" : 1
+  }, {
+    "store" : 5333,
+    "availability" : 1
+  }, {
+    "store" : 2294,
+    "availability" : 1
+  }, {
+    "store" : 2838,
+    "availability" : 1
+  }, {
+    "store" : 5335,
+    "availability" : 1
+  }, {
+    "store" : 2840,
+    "availability" : 1
+  }, {
+    "store" : 4506,
+    "availability" : 1
+  }, {
+    "store" : 2715,
+    "availability" : 1
+  }, {
+    "store" : 6270,
+    "availability" : 1
+  }, {
+    "store" : 6271,
+    "availability" : 1
+  } ],
+  "tpnb" : "052984512",
+  "popularity" : 0.0011849389,
+  "trialrate" : 1.5799E-5,
+  "name" : "Spelga Cottage Cheese Pineapple 227G",
+  "brand" : "Local Spelga",
+  "image" : "http://img.tesco.com/Groceries/pi/029/5010386099029/IDShot_90x90.jpg",
+  "normalPrice" : 1.02,
+  "salesrank" : 34,
+  "ean" : "0000000000000",
+  "origin" : "NORTHERN IRELAND",
+  "description" : [ "Low Fat Soft Cheese" ],
+  "shelf" : "Cottage Cheese",
+  "aisle" : "Cottage & Soft Cheese",
+  "department" : "Cheese",
+  "superDepartment" : "Fresh Food",
+  "ingredients" : [ "Cottage Cheese (<strong>Milk</strong>)", "Pineapple (14%)", "Sugar", "Modified Maize Starch", "Salt", "Preservative: Potassium Sorbate", "Flavouring", "Acidity Regulator: Citric Acid ", "Colour: Lutein" ],
+  "UnitQuantity" : "KG",
+  "UnitOfSale" : 1,
+  "AverageSellingUnitWeight" : 0.227,
+  "ContentsMeasureType" : "G",
+  "ContentsQuantity" : 227.0,
+  "Messages" : "<Messages>      <Message TypeCode=\"ShortShelfLife\" PageReference=\"http://www.tesco.com/groceries/zones/default.aspx?name=quality-and-freshness&amp;ICID=MM_freshness\" Description=\"Delivering the freshest food to your door- Find out more &gt;\">        <Stores all=\"true\" />      </Message>      <Message TypeCode=\"BulkBuyLimit\" TriggerQuantity=\"99\" GroupId=\"NOT_MAPPED\" Description=\"Sorry, there is a limit of 99 on this product\">        <Stores all=\"true\" />      </Message>    </Messages>",
+  "BulkBuyLimit" : 99
+}
