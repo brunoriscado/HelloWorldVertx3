@@ -26,10 +26,7 @@ import org.slf4j.MarkerFactory;
 import rx.Observable;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by bruno on 20/04/16.
@@ -88,7 +85,7 @@ public class BrowseControllerImpl implements BrowseController {
         validateFields(context, query);
         validateSort(context, query);
         validateStore(context, query);
-
+        validateBrand(context, query);
 
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("superDepartment"))) {
             query.put("superDepartment", context.<Map<String, String>>get("decodedParams").get("superDepartment"));
@@ -255,6 +252,15 @@ public class BrowseControllerImpl implements BrowseController {
             }
         } else {
             query.put("store", String.valueOf(3060));
+        }
+    }
+
+    private void validateBrand(RoutingContext context, JsonObject query) {
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("brand"))) {
+            List<String> brandList = Arrays.asList(context.<Map<String, String>>get("decodedParams").get("brand").split(","));
+            brandList.forEach(brand -> {
+                query.put("brands", brand);
+            });
         }
     }
 

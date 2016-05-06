@@ -10,6 +10,7 @@ public enum ResponseSetEnum {
 				TOTALS("totals"),
 				// SUGGESTIONS are not required for browse, since it doesn't perform a specific query
   		//	SUGGESTIONS("suggestions"),
+				BRAND("brands"),
 				TAXONOMY("taxonomy"),
 				FILTERS("filters");
 

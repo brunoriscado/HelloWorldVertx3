@@ -31,7 +31,8 @@ public enum FieldsEnum {
 				UNIT_OF_SALE("UnitOfSale", "UnitOfSale"),
 				AVAILABILITY("availability", "store_availability"),
 				NEW("new", "new"),
-				OFFER("offer", "offer");
+				OFFER("offer", "offer"),
+				BRAND("brand", "brand");
 
 				private String name;
 				private String remapName;
