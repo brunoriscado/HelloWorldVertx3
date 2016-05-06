@@ -205,7 +205,7 @@ public class BrowseControllerImpl implements BrowseController {
         } else {
             query.put(ResponseSetEnum.RESULTS.getSetName(), String.valueOf(true));
             query.put(ResponseSetEnum.TOTALS.getSetName(), String.valueOf(true));
-            query.put(ResponseSetEnum.SUGGESTIONS.getSetName(), String.valueOf(true));
+//            query.put(ResponseSetEnum.SUGGESTIONS.getSetName(), String.valueOf(true));
         }
     }
 

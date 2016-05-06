@@ -1,6 +1,8 @@
 package com.tesco.disco.browse.service.impl;
 
 import com.tesco.disco.browse.exceptions.ServiceException;
+import com.tesco.disco.browse.model.Brand;
+import com.tesco.disco.browse.model.Filters;
 import com.tesco.disco.browse.model.enumerations.FieldsEnum;
 import com.tesco.disco.browse.model.enumerations.IndicesEnum;
 import com.tesco.disco.browse.model.enumerations.ResponseTypesEnum;
@@ -28,10 +30,7 @@ import org.slf4j.MarkerFactory;
 import rx.Observable;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by bruno on 20/04/16.
@@ -133,6 +132,9 @@ public class BrowseServiceImpl implements BrowseService {
                         if (Boolean.valueOf(params.getString("suggestions", "false"))) {
                             resType.put("suggestions", parseDidYouMeanResults(elasticsearchResponse));
                         }
+                        if (Boolean.valueOf(params.getString("filters", "false"))) {
+                            resType.put("filters", getFilters(elasticsearchResponse, params));
+                        }
                     }
                     JsonObject distChannel = new JsonObject();
                     distChannel.put(params.getString("resType"), resType);
@@ -162,6 +164,23 @@ public class BrowseServiceImpl implements BrowseService {
                         return Observable.just(apiResult);
                     }
                 });
+    }
+
+    protected JsonObject getFilters(JsonObject elasticResponse, JsonObject params) {
+        Filters filters = new Filters();
+        //Add brands if exists
+        if (elasticResponse.containsKey("aggregations") &&
+                elasticResponse.getJsonObject("aggregations").containsKey("brands") &&
+                elasticResponse.getJsonObject("aggregations").getJsonObject("brands").size() > 0) {
+            JsonArray brandBuckets = elasticResponse.getJsonObject("aggregations").getJsonObject("brands").getJsonArray("buckets");
+            List<Brand> brands = new ArrayList<Brand>();
+            brandBuckets.forEach(brand -> {
+                JsonObject brandBucketEntry = new JsonObject(Json.encode(brand));
+                brands.add(new Brand(brandBucketEntry.getString("key"), brandBucketEntry.getInteger("doc_count")));
+            });
+            filters.setBrands(brands);
+        }
+        return filters.toJson();
     }
 
     protected JsonObject getResultsSet(JsonObject elasticResponse) {

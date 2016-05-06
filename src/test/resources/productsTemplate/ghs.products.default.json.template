@@ -25,22 +25,26 @@
               "aggs": {
                 "shelves": {
                   "terms": {
-                    "field": "shelf.raw"
+                    "field": "shelf.raw",
+                    "size": 0
                   }
                 }
               },
               "terms": {
-                "field": "aisle.raw"
+                "field": "aisle.raw",
+                "size": 0
               }
             }
           },
           "terms": {
-            "field": "department.raw"
+            "field": "department.raw",
+            "size": 0
           }
         }
       },
       "terms": {
-        "field": "superDepartment.raw"
+        "field": "superDepartment.raw",
+        "size": 0
       }
     }
     {{/taxonomy}}

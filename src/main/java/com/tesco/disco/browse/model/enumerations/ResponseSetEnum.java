@@ -8,8 +8,10 @@ import org.elasticsearch.common.lang3.StringUtils;
 public enum ResponseSetEnum {
 				RESULTS("results"),
 				TOTALS("totals"),
-				SUGGESTIONS("suggestions"),
-				TAXONOMY("taxonomy");
+				// SUGGESTIONS are not required for browse, since it doesn't perform a specific query
+  		//	SUGGESTIONS("suggestions"),
+				TAXONOMY("taxonomy"),
+				FILTERS("filters");
 
 				private String setName;
 
