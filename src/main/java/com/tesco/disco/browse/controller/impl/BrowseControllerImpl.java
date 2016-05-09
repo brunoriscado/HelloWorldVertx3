@@ -49,8 +49,8 @@ public class BrowseControllerImpl implements BrowseController {
         Router subRouter = Router.router(vertx);
         subRouter.route().handler(this::queryStringDecoder);
 
-        subRouter.get("/browse/products").handler(this::browseProductsHandler);
-        subRouter.get("/browse/*").handler(this::browseHandler);
+        subRouter.get("/browse/*").handler(this::browseProductsHandler);
+        subRouter.get("/taxonomy/*").handler(this::browseHandler);
         subRouter.get("/_status").handler(this::statusHandler);
 
         router.mountSubRouter("/", subRouter);

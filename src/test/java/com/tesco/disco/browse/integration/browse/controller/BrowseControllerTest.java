@@ -88,7 +88,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testGenericBrowse(TestContext testContext) {
         given().port(9003)
-                .when().get("/browse/")
+                .when().get("/taxonomy/")
                 .then()
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
                         hasItems("Anti Dandruff Shampoo", "Kids Shampoo", "Professional Shampoo"))
@@ -109,7 +109,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testBrowseWithSuperDeparmentFilter(TestContext testContext) {
         given().port(9003)
-                .when().get("/browse/?superDepartment=Health%20%26%20Beauty")
+                .when().get("/taxonomy/?superDepartment=Health%20%26%20Beauty")
                 .then()
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
                         hasItems("Anti Dandruff Shampoo", "Kids Shampoo", "Professional Shampoo"))
@@ -130,7 +130,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testBrowseWithDeparmentFilter(TestContext testContext) {
         given().port(9003)
-                .when().get("/browse/?department=Haircare")
+                .when().get("/taxonomy/?department=Haircare")
                 .then()
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
                         hasItems("Anti Dandruff Shampoo", "Kids Shampoo", "Professional Shampoo"))
@@ -145,7 +145,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testBrowseWithAisleFilter(TestContext testContext) {
         given().port(9003)
-                .when().get("/browse/?aisle=Gift%20Sets")
+                .when().get("/taxonomy/?aisle=Gift%20Sets")
                 .then()
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
                         hasItems("Womens Gift Sets"));
@@ -154,7 +154,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testBrowseWithShelfFilter(TestContext testContext) {
         given().port(9003)
-                .when().get("/browse/?shelf=Womens%20Gift%20Sets")
+                .when().get("/taxonomy/?shelf=Womens%20Gift%20Sets")
                 .then()
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
                         hasItems("Womens Gift Sets"));
@@ -171,7 +171,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testEmptyTaxonomyResponse(TestContext testContext) {
         given().port(9003)
-                .when().get("/browse?superDepartment=NonExistent")
+                .when().get("/taxonomy/?superDepartment=NonExistent")
                 .then()
                 .body("uk.ghs.taxonomy.keySet()", Matchers.emptyIterable());
     }
@@ -179,7 +179,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testNonExistentFilter(TestContext testContext) {
         given().port(9003)
-                .when().get("/browse/?nonExistentFilter=something")
+                .when().get("/taxonomy/?nonExistentFilter=something")
                 .then()
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
                         hasItems("Anti Dandruff Shampoo", "Kids Shampoo", "Professional Shampoo"))
@@ -198,19 +198,19 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     }
 
     @Test
-    public void testBrowseWithProductsResultsDefaultQuery(TestContext testContext) {
-        String body = given().port(9003)
-                .when().get("/browse/products/?fields=name&responseSet=results,taxonomy").andReturn().body().prettyPrint();
-        testContext.assertTrue(!new JsonObject(body)
-                .getJsonObject("uk")
-                .getJsonObject("ghs")
-                .getJsonObject("products").getJsonArray("results").isEmpty());
+    public void testBrowseWithProductsResultsDefaultQuery() {
+        given().port(9003)
+                .when().get("/browse/")
+                .then()
+                .statusCode(200)
+                .body("uk.ghs.products.totals.all", is(369))
+                .body("uk.ghs.products.results.size()", is(10));
     }
 
     @Test
     public void testDefaultRequestWithFullResponseSet() {
         given().port(9003)
-                .when().get("/browse/products/?fields=name,price&limit=10&responseSet=results,totals,suggestions,taxonomy")
+                .when().get("/browse/?fields=name,price&limit=10&responseSet=results,totals,suggestions,taxonomy")
                 .then()
                 .statusCode(200)
                 .body("uk.ghs.products.totals.all", is(369))
@@ -220,7 +220,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testRequestFilteringNonMatchingSuperDepartment() {
         given().port(9003)
-                .when().get("/browse/products/?fields=name,price&limit=10&superDepartment=Some+String&responseSet=results,totals,taxonomy")
+                .when().get("/browse/?fields=name,price&limit=10&superDepartment=Some+String&responseSet=results,totals,taxonomy")
                 .then()
                 .statusCode(200)
                 .body("uk.ghs.products.totals.all", is(0))
@@ -230,7 +230,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testRequestFilteringMatchingSuperDepartment() {
         given().port(9003)
-                .when().get("/browse/products/?fields=name,price&limit=10&superDepartment=Fresh+Food&responseSet=results,totals,taxonomy")
+                .when().get("/browse/?fields=name,price&limit=10&superDepartment=Fresh+Food&responseSet=results,totals,taxonomy")
                 .then()
                 .statusCode(200)
                 .body("uk.ghs.products.taxonomy.superDepartments.size()", is(1));
@@ -239,7 +239,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testRequestFilteringMatchingShelf() {
         given().port(9003)
-                .when().get("/browse/products/?fields=name,price&limit=10&shelf=Whole+Milk&responseSet=results,totals,taxonomy")
+                .when().get("/browse/?fields=name,price&limit=10&shelf=Whole+Milk&responseSet=results,totals,taxonomy")
                 .then()
                 .statusCode(200)
                 .body("uk.ghs.products.totals.all", is(2))
@@ -249,7 +249,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testRequestWithoutTaxonomy() {
         given().port(9003)
-                .when().get("/browse/products/?fields=name,price&limit=10&shelf=stuff&responseSet=results,totals")
+                .when().get("/browse/?fields=name,price&limit=10&shelf=stuff&responseSet=results,totals")
                 .then()
                 .statusCode(200)
                 .body("uk.ghs.products.taxonomy", Matchers.nullValue());
@@ -258,26 +258,16 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testRequestWithoutTotals() {
         given().port(9003)
-                .when().get("/browse/products/?fields=name,price&limit=10&shelf=stuff&responseSet=results,taxonomy")
+                .when().get("/browse/?fields=name,price&limit=10&shelf=stuff&responseSet=results,taxonomy")
                 .then()
                 .statusCode(200)
                 .body("uk.ghs.products.totals", Matchers.nullValue());
     }
 
     @Test
-    public void testRequestNoQueryNoFilter() {
-        given().port(9003)
-                .when().get("/browse/products/")
-                .then()
-                .statusCode(200)
-                .body("uk.ghs.products.totals.all", is(369))
-                .body("uk.ghs.products.results.size()", is(10));
-    }
-
-    @Test
     public void testRequestBrandFilter() {
         given().port(9003)
-                .when().get("/browse/products/?fields=name,brand&brand=Tesco&responseSet=results,totals,filters")
+                .when().get("/browse/?fields=name,brand&brand=Tesco&responseSet=results,totals,filters")
                 .then()
                 .statusCode(200)
                 .body("uk.ghs.products.totals.all", is(83))
@@ -287,7 +277,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testRequestBrandResponseSet() {
         given().port(9003)
-                .when().get("/browse/products/?fields=name,brand&responseSet=results,totals,filters")
+                .when().get("/browse/?fields=name,brand&responseSet=results,totals,filters")
                 .then()
                 .statusCode(200)
                 .body("uk.ghs.products.totals.all", is(369))
