@@ -3,7 +3,6 @@ package com.tesco.disco.browse.integration.browse.service;
 import com.tesco.disco.browse.integration.AbstractElasticsearchTestVerticle;
 import com.tesco.disco.browse.integration.browse.BrowseTest;
 import com.tesco.disco.browse.model.enumerations.DistributionChannelsEnum;
-import com.tesco.disco.browse.model.enumerations.FieldsEnum;
 import com.tesco.disco.browse.model.enumerations.IndicesEnum;
 import com.tesco.disco.browse.model.enumerations.ResponseTypesEnum;
 import com.tesco.disco.browse.service.BrowseService;
@@ -17,7 +16,10 @@ import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
 import io.vertx.rxjava.core.Vertx;
 import org.apache.commons.io.IOUtils;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,10 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.jayway.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Created by bruno on 21/04/16.
@@ -372,7 +378,6 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
 
     @Test
     public void testBrowseWithProductsResultsDefaultQuery(TestContext testContext) {
-        List<String> shelves = new ArrayList<String>();
         Async async = testContext.async();
         browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(),
                 TEMPLATE_ID,
@@ -386,6 +391,235 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                             .getJsonObject("ghs").getJsonObject("products")
                             .getJsonObject("totals")
                             .getInteger("all"), 369);
+                    async.complete();
+                });
+    }
+
+    @Test
+    public void testDefaultRequestWithFullResponseSet(TestContext testContext) {
+        defaults.put("fields", "\"" + "name" + "\"," + "\"" + "price" + "\"")
+                .put("limit", "10")
+                .put("results", "true")
+                .put("totals", "true")
+                .put("suggestions", "true")
+                .put("taxonomy", "true");
+        Async async = testContext.async();
+        browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(),
+                TEMPLATE_ID,
+                GEO,
+                DistributionChannelsEnum.GHS.getChannelName(),
+                ResponseTypesEnum.PRODUCTS.getType(),
+                defaults,
+                handle -> {
+                    JsonObject response = handle.result();
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs").getJsonObject("products")
+                            .getJsonObject("totals")
+                            .getInteger("all"), 369);
+                    testContext.assertEquals(response.getJsonObject("uk")
+                                    .getJsonObject("ghs").getJsonObject("products")
+                                    .getJsonArray("results").size(), 10);
+                    async.complete();
+                });
+    }
+
+    @Test
+    public void testRequestFilteringNonMatchingSuperDepartment(TestContext testContext) {
+        defaults.put("fields", "\"" + "name" + "\"," + "\"" + "price" + "\"")
+                .put("superDepartment", "Some String")
+                .put("limit", "10")
+                .put("results", "true")
+                .put("totals", "true")
+                .put("taxonomy", "true");
+        Async async = testContext.async();
+        browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(),
+                TEMPLATE_ID,
+                GEO,
+                DistributionChannelsEnum.GHS.getChannelName(),
+                ResponseTypesEnum.PRODUCTS.getType(),
+                defaults,
+                handle -> {
+                    JsonObject response = handle.result();
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs").getJsonObject("products")
+                            .getJsonObject("totals")
+                            .getInteger("all"), 0);
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs").getJsonObject("products")
+                            .getJsonArray("results").size(), 0);
+                    async.complete();
+                });
+    }
+
+    @Test
+    public void testRequestFilteringMatchingSuperDepartment(TestContext testContext) {
+        defaults.put("fields", "\"" + "name" + "\"," + "\"" + "price" + "\"")
+                .put("superDepartment", "Fresh Food")
+                .put("limit", "10")
+                .put("results", "true")
+                .put("totals", "true")
+                .put("taxonomy", "true");
+        Async async = testContext.async();
+        browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(),
+                TEMPLATE_ID,
+                GEO,
+                DistributionChannelsEnum.GHS.getChannelName(),
+                ResponseTypesEnum.PRODUCTS.getType(),
+                defaults,
+                handle -> {
+                    JsonObject response = handle.result();
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs")
+                            .getJsonObject("products")
+                            .getJsonObject("taxonomy")
+                            .getJsonArray("superDepartments").size(), 1);
+                    async.complete();
+                });
+    }
+
+    @Test
+    public void testRequestFilteringMatchingShelf(TestContext testContext) {
+        defaults.put("fields", "\"" + "name" + "\"," + "\"" + "price" + "\"")
+                .put("shelf", "Whole Milk")
+                .put("limit", "10")
+                .put("results", "true")
+                .put("totals", "true")
+                .put("taxonomy", "true");
+        Async async = testContext.async();
+        browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(),
+                TEMPLATE_ID,
+                GEO,
+                DistributionChannelsEnum.GHS.getChannelName(),
+                ResponseTypesEnum.PRODUCTS.getType(),
+                defaults,
+                handle -> {
+                    JsonObject response = handle.result();
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs")
+                            .getJsonObject("products")
+                            .getJsonObject("totals")
+                            .getInteger("all"), 2);
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs")
+                            .getJsonObject("products")
+                            .getJsonObject("taxonomy")
+                            .getJsonArray("superDepartments").getJsonObject(0)
+                            .getJsonArray("departments").getJsonObject(0)
+                            .getJsonArray("aisles").getJsonObject(0)
+                            .getJsonArray("shelves").getJsonObject(0)
+                            .getString("name"), "Whole Milk");
+                    async.complete();
+                });
+    }
+
+    @Test
+    public void testRequestWithoutTaxonomy(TestContext testContext) {
+        defaults.put("fields", "\"" + "name" + "\"," + "\"" + "price" + "\"")
+                .put("shelf", "stuff")
+                .put("limit", "10")
+                .put("results", "true")
+                .put("totals", "true");
+        Async async = testContext.async();
+        browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(),
+                TEMPLATE_ID,
+                GEO,
+                DistributionChannelsEnum.GHS.getChannelName(),
+                ResponseTypesEnum.PRODUCTS.getType(),
+                defaults,
+                handle -> {
+                    JsonObject response = handle.result();
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs")
+                            .getJsonObject("products")
+                            .getJsonObject("taxonomy"), null);
+                    async.complete();
+                });
+    }
+
+    @Test
+    public void testRequestWithoutTotals(TestContext testContext) {
+        defaults.put("fields", "\"" + "name" + "\"," + "\"" + "price" + "\"")
+                .put("shelf", "stuff")
+                .put("limit", "10")
+                .put("results", "true")
+                .put("taxonomy", "true");
+        defaults.remove("totals");
+        Async async = testContext.async();
+        browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(),
+                TEMPLATE_ID,
+                GEO,
+                DistributionChannelsEnum.GHS.getChannelName(),
+                ResponseTypesEnum.PRODUCTS.getType(),
+                defaults,
+                handle -> {
+                    JsonObject response = handle.result();
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs")
+                            .getJsonObject("products")
+                            .getJsonObject("totals"), null);
+                    async.complete();
+                });
+    }
+
+    @Test
+    public void testRequestBrandFilter(TestContext testContext) {
+        defaults.put("fields", "\"" + "name" + "\"," + "\"" + "brand" + "\"")
+                .put("brands", "Tesco")
+                .put("limit", "10")
+                .put("results", "true")
+                .put("filters", "true")
+                .put("totals", "true");
+        Async async = testContext.async();
+        browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(),
+                TEMPLATE_ID,
+                GEO,
+                DistributionChannelsEnum.GHS.getChannelName(),
+                ResponseTypesEnum.PRODUCTS.getType(),
+                defaults,
+                handle -> {
+                    JsonObject response = handle.result();
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs")
+                            .getJsonObject("products")
+                            .getJsonObject("totals")
+                            .getInteger("all"), 83);
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs")
+                            .getJsonObject("products")
+                            .getJsonObject("filters")
+                            .getJsonArray("brands").getJsonObject(0)
+                            .getString("name"), "Tesco");
+                    async.complete();
+                });
+    }
+
+    @Test
+    public void testRequestBrandResponseSet(TestContext testContext) {
+        defaults.put("fields", "\"" + "name" + "\"," + "\"" + "brand" + "\"")
+                .put("limit", "10")
+                .put("results", "true")
+                .put("filters", "true")
+                .put("totals", "true");
+        Async async = testContext.async();
+        browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(),
+                TEMPLATE_ID,
+                GEO,
+                DistributionChannelsEnum.GHS.getChannelName(),
+                ResponseTypesEnum.PRODUCTS.getType(),
+                defaults,
+                handle -> {
+                    JsonObject response = handle.result();
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs")
+                            .getJsonObject("products")
+                            .getJsonObject("totals")
+                            .getInteger("all"), 369);
+                    testContext.assertEquals(response.getJsonObject("uk")
+                            .getJsonObject("ghs")
+                            .getJsonObject("products")
+                            .getJsonObject("filters")
+                            .getJsonArray("brands").getJsonObject(0)
+                            .getString("name"), "Tesco");
                     async.complete();
                 });
     }

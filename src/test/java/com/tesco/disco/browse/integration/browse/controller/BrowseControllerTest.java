@@ -14,6 +14,7 @@ import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.http.HttpClient;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -282,5 +283,10 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
                 .statusCode(200)
                 .body("uk.ghs.products.totals.all", is(369))
                 .body("uk.ghs.products.filters.brands[0].name", is("Tesco"));
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        shutdownEmbeddedElasticsearchServer();
     }
 }

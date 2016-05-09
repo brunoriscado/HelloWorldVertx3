@@ -69,13 +69,13 @@ public class Utils {
         return files;
     }
 
-//    public Observable<String> getFiles(String path) {
-//        return vertx.fileSystem().readDirObservable(path)
-//                .flatMap(files -> {
-//                    return Observable.from(files);
-//                })
-//                .filter(file-> {
-//                    return new File(file).isFile();
-//                });
-//    }
+    public Observable<String> getFilesRx(String path) {
+        return vertx.fileSystem().readDirObservable(path)
+                .flatMap(files -> {
+                    return Observable.from(files);
+                })
+                .filter(file-> {
+                    return new File(file).isFile();
+                });
+    }
 }
