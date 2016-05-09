@@ -270,22 +270,27 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
                 .when().get("/browse/products/")
                 .then()
                 .statusCode(200)
-                .body("uk.ghs.products.totals", is(369))
+                .body("uk.ghs.products.totals.all", is(369))
                 .body("uk.ghs.products.results.size()", is(10));
     }
 
     @Test
     public void testRequestBrandFilter() {
         given().port(9003)
-                .when().get("/browse/products/?fields=name,brand&brand=Goodfella%27s").thenReturn().body().prettyPrint();
-//                .then()
-//                .statusCode(200)
-//                .body("uk.ghs.products.totals", is(369))
-//                .body("uk.ghs.products.results.size()", is(10));
+                .when().get("/browse/products/?fields=name,brand&brand=Tesco&responseSet=results,totals,filters")
+                .then()
+                .statusCode(200)
+                .body("uk.ghs.products.totals.all", is(83))
+                .body("uk.ghs.products.filters.brands.name", hasItems("Tesco"));
     }
 
     @Test
     public void testRequestBrandResponseSet() {
-
+        given().port(9003)
+                .when().get("/browse/products/?fields=name,brand&responseSet=results,totals,filters")
+                .then()
+                .statusCode(200)
+                .body("uk.ghs.products.totals.all", is(369))
+                .body("uk.ghs.products.filters.brands[0].name", is("Tesco"));
     }
 }
