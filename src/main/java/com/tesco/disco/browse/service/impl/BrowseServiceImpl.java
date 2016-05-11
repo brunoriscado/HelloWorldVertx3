@@ -72,6 +72,7 @@ public class BrowseServiceImpl implements BrowseService {
             params.mergeIn(query);
         }
         vertx.<JsonObject>executeBlockingObservable(handleBlocking -> {
+            LOGGER.debug(MARKER, "Executing elastic templated query - {}", params.encode());
             JsonObject result = null;
             SearchResponse res = client.prepareSearch()
                     .setIndices(index)
@@ -86,6 +87,7 @@ public class BrowseServiceImpl implements BrowseService {
                 builder.endObject();
                 result = new JsonObject(builder.string());
             } catch (IOException e) {
+                LOGGER.warn(MARKER, "error parsing elastic query response - {}", e.getMessage());
                 handleBlocking.fail(new ServiceException(e.getMessage()));
             }
             handleBlocking.complete(result);
@@ -106,7 +108,8 @@ public class BrowseServiceImpl implements BrowseService {
                 });
     }
 
-    public Observable<JsonObject> getApiResponse(JsonObject elasticResponse, JsonObject params){
+    public Observable<JsonObject> getApiResponse(JsonObject elasticResponse, JsonObject params) {
+        LOGGER.info(MARKER, "Mapping elastic responto to API response");
         Observable<JsonObject> apiResponse = null;
         ResponseTypesEnum type = ResponseTypesEnum.getByType(params.getString("resType"));
         if (elasticResponse.getString("status") == "error") {
@@ -119,6 +122,7 @@ public class BrowseServiceImpl implements BrowseService {
     }
 
     protected Observable<JsonObject> getApiResponseBody(JsonObject elasticsearchResponse, JsonObject params, ResponseTypesEnum type) {
+        LOGGER.debug(MARKER, "getApiResponseBody - Mapping elastic responto to API response");
         return Observable.just(new JsonObject())
                 .map(apiResult -> {
                     JsonObject resType = new JsonObject();
@@ -129,6 +133,7 @@ public class BrowseServiceImpl implements BrowseService {
                         if (Boolean.valueOf(params.getString("results", "false"))) {
                             resType.put("results", parseResults(elasticsearchResponse, params));
                         }
+                        //TODO - remove suggestions, due to no query on browse
                         if (Boolean.valueOf(params.getString("suggestions", "false"))) {
                             resType.put("suggestions", parseDidYouMeanResults(elasticsearchResponse));
                         }
@@ -167,6 +172,7 @@ public class BrowseServiceImpl implements BrowseService {
     }
 
     protected JsonObject getFilters(JsonObject elasticResponse, JsonObject params) {
+        LOGGER.debug(MARKER, "Get Filters from elastic response");
         Filters filters = new Filters();
         //Add brands if exists
         if (elasticResponse.containsKey("aggregations") &&
@@ -180,20 +186,24 @@ public class BrowseServiceImpl implements BrowseService {
             });
             filters.setBrands(brands);
         }
+        LOGGER.debug(MARKER, "Get Filters - {}", filters.toJson());
         return filters.toJson();
     }
 
     protected JsonObject getResultsSet(JsonObject elasticResponse) {
+        LOGGER.debug(MARKER, "Get Result set from elastic response");
         JsonObject total = new JsonObject();
         total.put("all", elasticResponse.getJsonObject("hits").getLong("total"));
         // TODO not yet sent from elastic.
         // total.put("IsFavourite", ESResponse.getObject("hits").getLong("IsFavourite"));
         // total.put("IsNewlyRangedInStore", ESResponse.getObject("hits").getLong("IsNew"));
         // total.put("IsOnPromotion", ESResponse.getObject("hits").getLong("IsSpecialOffer"));
+        LOGGER.debug(MARKER, "Get Result set - {}", total.encode());
         return total;
     }
 
     protected JsonArray parseResults(JsonObject elasticsearchResponse, JsonObject params) {
+        LOGGER.debug(MARKER, "Parse results");
         JsonArray hits = elasticsearchResponse.getJsonObject("hits").getJsonArray("hits");
         Iterator<Object> i = hits.iterator() ;
         JsonArray entries = new JsonArray();
@@ -231,6 +241,7 @@ public class BrowseServiceImpl implements BrowseService {
             }
             entries.add(properties);
         }
+        LOGGER.debug(MARKER, "Parse results - {}", entries.encode());
         return entries;
     }
 
@@ -266,6 +277,7 @@ public class BrowseServiceImpl implements BrowseService {
         return properties;
     }
 
+    //TODO - this might be removed, the lack of query on browse means, no suggestions will be needed
     protected JsonArray parseDidYouMeanResults(JsonObject elasticsearchResponse) {
         JsonArray entries = new JsonArray();
         if (elasticsearchResponse.getJsonObject("suggest").getJsonArray("check").size() == 0) {
@@ -372,6 +384,7 @@ public class BrowseServiceImpl implements BrowseService {
      * a bit of a hack to keep the elastic client happy with lists rather then jsonArrays
      */
     private Map<String, Object> convertJsonArrays(JsonObject query) {
+        LOGGER.debug(MARKER, "Converting JsonArrays to Maps");
         Map<String, Object> resultingQuery = null;
         if (query != null && !query.isEmpty()) {
             resultingQuery = new HashMap<String, Object>(query.size());

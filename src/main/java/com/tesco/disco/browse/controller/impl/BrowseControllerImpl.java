@@ -10,6 +10,7 @@ import com.tesco.disco.browse.service.BrowseService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.impl.MimeMapping;
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rx.java.ObservableHandler;
 import io.vertx.rx.java.RxHelper;
@@ -26,7 +27,10 @@ import org.slf4j.MarkerFactory;
 import rx.Observable;
 
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by bruno on 20/04/16.
@@ -61,11 +65,13 @@ public class BrowseControllerImpl implements BrowseController {
         context.request().params().names().forEach(param -> {
             decoded.put(param, QueryStringDecoder.decodeComponent(context.request().params().get(param), Charset.forName("UTF-8")));
         });
+        LOGGER.debug(MARKER, "Decoded params: {}", Json.encode(decoded));
         context.put("decodedParams", decoded);
         context.next();
     };
 
     private void statusHandler(RoutingContext context) {
+        LOGGER.debug(MARKER, "Handling status request");
         context.response().setStatusCode(200);
         context.response().headers().set(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("txt"));
         context.response().end("keepalive");
@@ -106,6 +112,7 @@ public class BrowseControllerImpl implements BrowseController {
     }
 
     private void browseHandler(RoutingContext context) {
+        LOGGER.debug(MARKER, "Handling taxonomy request - {}", context.request().absoluteURI());
         browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("index")) ?
                         context.<Map<String, String>>get("decodedParams").get("index") : IndicesEnum.GHS_TAXONOMY.getIndex(),
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("config")) ?
@@ -120,6 +127,7 @@ public class BrowseControllerImpl implements BrowseController {
     }
 
     private void browseProductsHandler(RoutingContext context) {
+        LOGGER.debug(MARKER, "Handling browse request - {}", context.request().absoluteURI());
         browse(StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("index")) ?
                         context.<Map<String, String>>get("decodedParams").get("index") : IndicesEnum.GHS_PRODUCTS.getIndex(),
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("config")) ?
@@ -163,6 +171,7 @@ public class BrowseControllerImpl implements BrowseController {
     }
 
     private String validateResponseType(RoutingContext context, String defaultResponseType) {
+        LOGGER.debug(MARKER, "Validating Response Type");
         String responseType = null;
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("resType"))) {
             String resType = context.<Map<String, String>>get("decodedParams").get("resType");
@@ -174,10 +183,12 @@ public class BrowseControllerImpl implements BrowseController {
         } else {
             responseType = defaultResponseType;
         }
+        LOGGER.debug(MARKER, "Response Type - {}", responseType);
         return responseType;
     }
 
     private void validateFields(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating Fields");
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("fields"))) {
             StringBuffer csvFields = new StringBuffer();
             List<String> fields = Arrays.asList(context.<Map<String, String>>get("decodedParams").get("fields").split(","));
@@ -190,9 +201,11 @@ public class BrowseControllerImpl implements BrowseController {
         } else {
             query.put("fields", "\"" + FieldsEnum.TPNB.getName() + "\"");
         }
+        LOGGER.debug(MARKER, "Validating Fields - {}", query.encode());
     }
 
     private void validateResponseSet(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating Response Set");
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("responseSet"))) {
             Arrays.asList(context.<Map<String, String>>get("decodedParams").get("responseSet").split(",")).forEach(res -> {
                 if (ResponseSetEnum.getBySetName(res) != null) {
@@ -203,9 +216,11 @@ public class BrowseControllerImpl implements BrowseController {
             query.put(ResponseSetEnum.RESULTS.getSetName(), String.valueOf(true));
             query.put(ResponseSetEnum.TOTALS.getSetName(), String.valueOf(true));
         }
+        LOGGER.debug(MARKER, "Validating Response Set - {}", query.encode());
     }
 
     private void validateOffset(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating Offset");
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("offset"))) {
             try {
                 int offset = Integer.valueOf(context.<Map<String, String>>get("decodedParams").get("offset"));
@@ -221,9 +236,11 @@ public class BrowseControllerImpl implements BrowseController {
         } else {
             query.put("offset", String.valueOf(0));
         }
+        LOGGER.debug(MARKER, "Validating Offset - {}", query.encode());
     }
 
     private void validateLimit(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating limit");
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("limit"))) {
             try {
                 int limit = Integer.valueOf(context.<Map<String, String>>get("decodedParams").get("limit"));
@@ -239,9 +256,11 @@ public class BrowseControllerImpl implements BrowseController {
         } else {
             query.put("limit", String.valueOf(10));
         }
+        LOGGER.debug(MARKER, "Validating limit - {}", query);
     }
 
     private void validateStore(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating store");
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("store"))) {
             try {
                 int store = Integer.valueOf(context.<Map<String, String>>get("decodedParams").get("store"));
@@ -252,46 +271,58 @@ public class BrowseControllerImpl implements BrowseController {
         } else {
             query.put("store", String.valueOf(3060));
         }
+        LOGGER.debug(MARKER, "Validating store - {}", query.encode());
     }
 
     private void validateBrand(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating brand");
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("brand"))) {
             List<String> brandList = Arrays.asList(context.<Map<String, String>>get("decodedParams").get("brand").split(","));
             brandList.forEach(brand -> {
                 query.put("brands", brand);
             });
         }
+        LOGGER.debug(MARKER, "Validating brand - {}", query);
     }
 
     private void validateSort(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating sort");
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("sort"))) {
             String sort = context.<Map<String, String>>get("decodedParams").get("sort");
             if (sort.equals("price") || sort.equals("price:desc") || sort.equals("name") || sort.equals("name:desc")) {
                 query.put("sort", sort);
             }
         }
+        LOGGER.debug(MARKER, "Validating sort - {}", query.encode());
     }
 
     private void validateExplain(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating explain");
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("explain"))) {
             boolean explain = Boolean.valueOf(context.<Map<String, String>>get("decodedParams").get("explain"));
             query.put("explain", explain);
         }
+        LOGGER.debug(MARKER, "Validating explain - {}", query.encode());
     }
 
     private void validatePretty(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating pretty");
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("pretty"))) {
             boolean pretty = Boolean.valueOf(context.<Map<String, String>>get("decodedParams").get("pretty"));
             query.put("pretty", pretty);
         }
+        LOGGER.debug(MARKER, "Validating pretty - {}", query.encode());
     }
 
     private void handlerError(Throwable error,  HttpServerResponse response) {
         if (error instanceof ClientException) {
+            LOGGER.warn(MARKER, "bad request error occurred - {}", error.getMessage());
             response.setStatusCode(400);
         } else if (error instanceof ClientException) {
+            LOGGER.error(MARKER, "error occurred - {}", error.getMessage());
             response.setStatusCode(500);
         } else {
+            LOGGER.error(MARKER, "error occurred - {}", error.getMessage());
             response.setStatusCode(500);
         }
         response.end(new JsonObject().put("error", error.getMessage()).encode());
