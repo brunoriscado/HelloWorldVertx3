@@ -1,39 +1,65 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
+import java.util.regex.Matcher
 
-apply from: "gradle/dependencies.gradle"
-
-sourceCompatibility = 1.8
-version = '1.0'
-jar {
-    manifest {
-        attributes 'Implementation-Title': 'Gradle Quickstart',
-                   'Implementation-Version': version
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
     }
 }
 
-// Turn off Javadoc linting for those of us using Java
-// because it fails the build
-if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-        tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none', '-quiet')
-        }
+plugins{
+    id "java"
+    id "idea"
+    id "maven"
+    id 'base'
+    id 'signing'
+    id 'jacoco'
+    id "net.researchgate.release" version "2.1.2"
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+        excludeDirs = [file('.gradle'), file('.idea'), file('build')]
     }
 }
 
-repositories {
-    mavenCentral()
-}
+apply from: 'gradle/dependencies.gradle'
+apply from: 'gradle/tasks.gradle'
+
+group = this.properties['group']
+version = this.properties['version']
 
 test {
     systemProperties 'property': 'value'
 }
 
-uploadArchives {
-    repositories {
-       flatDir {
-           dirs 'repos'
-       }
+release {
+    failOnCommitNeeded = true
+    failOnPublishNeeded = true
+    failOnSnapshotDependencies = true
+    failOnUnversionedFiles = true
+    failOnUpdateNeeded = true
+    revertOnFail = true
+    preCommitText = ''
+    preTagCommitMessage = '[Gradle Release Plugin] - pre tag commit: '
+    tagCommitMessage = '[Gradle Release Plugin] - creating tag: '
+    newVersionCommitMessage = '[Gradle Release Plugin] - new version commit: '
+    tagTemplate = '${version}'
+    versionPropertyFile = 'gradle.properties'
+    versionProperties = []
+    versionPatterns = [
+            /(\d+)([^\d]*$)/: { Matcher m, Project p -> m.replaceAll("${(m[0][1] as int) + 1}${m[0][2]}") }
+    ]
+    scmAdapters = [net.researchgate.release.GitAdapter]
+    git {
+        requireBranch = 'master'
+        pushToRemote = 'origin'
+        pushToCurrentBranch = false
     }
+
 }
+
+compileJava.dependsOn generateServiceProxy
+afterReleaseBuild.dependsOn uploadArchives

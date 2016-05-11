@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+<jmxConfigurator/>
+
+<appender name="FILESERVER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>./logs/browse-api.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>./logs/browse-api_%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+        <timeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>100MB</maxFileSize>
+        </timeBasedFileNamingAndTriggeringPolicy>
+        <maxHistory>15</maxHistory>
+    </rollingPolicy>
+
+    <append>true</append>
+    <encoder>
+        <pattern>%d{HH:mm:ss.SSS} [%marker] [%t] %-5level %logger{36}:%L - %msg%n</pattern>
+    </encoder>
+</appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%marker] [%t] %-5level %logger{36}:%L - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+<appender name="FILEHZ" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>./logs/hazelcast_browse_api.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>./logs/hazelcast_browse_api._%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+        <timeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>100MB</maxFileSize>
+        </timeBasedFileNamingAndTriggeringPolicy>
+        <maxHistory>15</maxHistory>
+    </rollingPolicy>
+    <append>true</append>
+    <encoder>
+        <pattern>%d{HH:mm:ss.SSS} [%marker] [%t] %-5level %logger{36}:%L - %msg%n</pattern>
+    </encoder>
+</appender>
+
+<logger name="com.tesco.disco.browse" level="INFO" additivity="false">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="FILESERVER" />
+</logger>
+
+<logger name="com.hazelcast" level="DEBUG" additivity="false">
+    <appender-ref ref="FILEHZ" />
+</logger>
+
+<logger name="io.vertx" level="DEBUG">
+    <appender-ref ref="FILESERVER" />
+</logger>
+
+<logger name="io.netty.util.internal.PlatformDependent" level="ERROR">
+    <appender-ref ref="STDOUT" />
+</logger>
+
+<root level="INFO">
+    <appender-ref ref="FILESERVER" />
+    <appender-ref ref="FILEHZ" />
+    <appender-ref ref="STDOUT" />
+</root>
+
+</configuration>

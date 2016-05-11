@@ -1,0 +1,48 @@
+{
+  "verticles":
+  [
+    {
+      "main": "service:com.tesco.disco.browse.service.vertx.BrowseServiceVerticle",
+      "options": {
+        "config": {
+          "context": "com.tesco.disco.browse.service.context.BrowseServiceContextImpl",
+          "elasticsearch": {
+            "transport.addresses": [
+              {
+                "hostname": "ess-elas-client1-prod",
+                "port": 9300
+              },
+              {
+                "hostname": "ess-elas-client2-prod",
+                "port": 9300
+              }
+            ],
+            "cluster.name": "elasticsearch",
+            "client.transport.sniff": true
+          }
+        }
+      }
+    },
+    {
+      "main": "service:com.tesco.disco.browse.controller.vertx.BrowseAPIVerticle",
+      "options": {
+        "config": {
+          "context": "com.tesco.disco.browse.controller.context.BrowseAPIContextImpl",
+          "port": 9003,
+          "host": "0.0.0.0",
+          "apiDocsResourcePackages": ["com.tesco.disco.browse.controller.impl"]
+        }
+      }
+    },
+    {
+      "main": "service:com.tesco.disco.browse.controller.vertx.ProbeVerticle",
+      "options": {
+        "config": {
+          "port": 8091,
+          "host": "0.0.0.0",
+          "jenkins.address": "10.0.1.5"
+        }
+      }
+    }
+  ]
+}

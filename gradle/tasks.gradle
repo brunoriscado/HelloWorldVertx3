@@ -1,0 +1,149 @@
+import java.util.regex.Matcher
+
+def generateSrcPath="src/main/java/generated-src"
+def generatedSrcDir = file("src/main/java/generated-src")
+
+sourceSets {
+    main {
+        java.srcDirs += generatedSrcDir
+        output.dir(builtBy: 'generateServiceProxy', generateSrcPath)
+    }
+}
+
+task generateServiceProxy(type: JavaCompile, description: 'Generates EBServiceProxies') {
+    source = sourceSets.main.java
+    classpath = configurations.compile
+    destinationDir = generatedSrcDir
+    options.compilerArgs = [
+
+            "-proc:only",
+            "-processor", "io.vertx.codegen.CodeGenProcessor",
+
+            "-AoutputDirectory=$generateSrcPath"
+    ]
+}
+
+def generatedSources = ['com/tesco/**']
+
+test {
+    jacoco {
+        includes = generatedSources
+    }
+}
+
+jacoco {
+    toolVersion = "0.7.5.201505241946"
+}
+
+jacocoTestReport {
+    doFirst {
+        classDirectories = fileTree(dir: "${buildDir}/classes/main/").include(generatedSources)
+    }
+}
+
+tasks.withType(JavaCompile){
+    options.compilerArgs << "-parameters"
+}
+
+test {
+    afterTest { desc, result ->
+        def time = result.endTime - result.startTime
+        println "Test [${desc.className}] ${desc.name}: ${result.resultType} in ${time}ms"
+    }
+    testLogging {
+        afterSuite { desc, result ->
+            if (!desc.parent) { // will match the outermost suite
+                println "Results: ${result.resultType} -->  ${result.testCount} tests ( ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped ) "
+            }
+        }
+    }
+}
+
+jar {
+    from sourceSets.main.allSource
+    baseName = this.properties['mavenArtifactId']
+    group = this.properties['group']
+    version = this.properties['version']
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes('Main-Class': 'io.vertx.core.Launcher',
+                'Main-Verticle': 'com.tesco.disco.browse.Starter')
+    }
+    baseName = this.properties['mavenArtifactId']
+    group = this.properties['group']
+    version = this.properties['version']
+    classifier = 'all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    baseName = this.properties['mavenArtifactId']
+    group = this.properties['group']
+    version = this.properties['version']
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives fatJar, sourcesJar
+}
+
+task generatePom << {
+    pom {
+    }.writeTo("$buildDir/libs/" + this.properties['mavenArtifactId'] + "-$project.version" + ".pom")
+}
+
+compileJava() {
+    dependsOn generatePom
+}
+
+if (!hasProperty('userName')) {
+    ext.userName = ''
+}
+if (!hasProperty('password')) {
+    ext.password = ''
+}
+if (!hasProperty('nexusReleaseRepo')) {
+    ext.nexusReleaseRepo = "http://ess-nexus.westeurope.cloudapp.azure.com:8080/nexus/content/repositories/releases/"
+}
+
+if (!hasProperty('nexusSnapshotsRepo')) {
+    ext.nexusSnapshotsRepo = "http://ess-nexus.westeurope.cloudapp.azure.com:8080/nexus/content/repositories/snapshots/"
+}
+
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+repositories {
+    flatDir {
+        name "fileRepo"
+        dirs "repo"
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            pom.version = this.properties['version']
+            pom.artifactId = this.properties['mavenArtifactId']
+            pom.groupId = this.properties['group']
+
+            repository(url: "$nexusReleaseRepo") {
+                authentication(userName: userName, password: password)
+            }
+
+            snapshotRepository(url: "$nexusSnapshotsRepo") {
+                authentication(userName: userName, password: password)
+            }
+        }
+    }
+}
