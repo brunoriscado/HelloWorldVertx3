@@ -9,12 +9,12 @@
                     "elasticsearch": {
                         "transport.addresses": [
                             {
-                                "hostname": "0.0.0.0",
+                                "hostname": "127.0.0.1",
                                 "port": 9350
                             }
                         ],
                         "cluster.name": "embedded",
-                        "client.transport.sniff": false
+                        "client.transport.sniff": true
                     }
                 }
             }

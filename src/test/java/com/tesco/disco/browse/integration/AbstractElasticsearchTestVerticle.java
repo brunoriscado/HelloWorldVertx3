@@ -2,6 +2,7 @@ package com.tesco.disco.browse.integration;
 
 import com.tesco.disco.browse.integration.utils.TestingUtilities;
 import com.tesco.disco.browse.integration.utils.Utils;
+import com.tesco.disco.browse.model.enumerations.IndicesEnum;
 import com.tesco.disco.browse.utis.ConfigurationUtils;
 import com.tesco.search.commons.util.EmbeddedElasticsearchServer;
 import io.vertx.core.Future;
@@ -11,15 +12,16 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.AbstractVerticle;
 import org.apache.commons.io.IOUtils;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
-import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.script.ScriptService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
@@ -29,7 +31,7 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
         embeddedElasticsearchServer = new EmbeddedElasticsearchServer();
     }
 
-    public void shutdownEmbeddedElasticsearchServer() {
+    public static void shutdownEmbeddedElasticsearchServer() {
         embeddedElasticsearchServer.shutdown();
     }
 
@@ -49,16 +51,13 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
     public void start(Future<Void> startedResult) {
         System.setProperty("CONFIG_ENV", "local");
         System.setProperty("es.local", "false");
-//        startEmbeddedElasticsearchServer();
-        // use embedded elasticsearch test config for tests
         System.setProperty(ConfigurationUtils.ENV_PROPERTY_NAME, "test");
         try {
-//            createIndexes();
             vertx.executeBlockingObservable(handle -> {
                 try {
                     startEmbeddedElasticsearchServer();
                     createIndexes();
-                    //new IndexRequestBuilder(getClient(), "ghs.taxonomy").setRefresh(true).get();
+                    getClient().prepareSearch().setIndices("ghs.products").execute().get().toString();
                 } catch (IOException | InterruptedException | ExecutionException e) {
                     handle.fail(e);
                 }
@@ -73,31 +72,52 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
         }
     }
 
-
     public void createIndexes() throws IOException, InterruptedException, ExecutionException {
-        createIndex("ghs.taxonomy");
+        Utils.touch("synonyms/synonyms.txt");
 
-        // load data
+        createIndex("src/test/resources/taxonomyMapping/taxonomyMapping.json", "ghs.taxonomy", "taxonomy");
+        createIndex("src/test/resources/productsMapping/productsMapping.json", "ghs.products", "product");
+
+        // load data - no need to separate bulk requests
         BulkRequest bulkRequest = new BulkRequest();
         bulkRequest.refresh(true);
-        loadData(bulkRequest, "ghs.taxonomy");
+        loadData(bulkRequest, "ghs.taxonomy", "taxonomy", "taxonomyData/taxonomy.json");
 
-        // load query
-        bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.taxonomy.default").source(TestingUtilities.buildQuery("ghs.taxonomy.default")));
+        bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.taxonomy.default").source(
+                TestingUtilities.buildQuery("src/test/resources/taxonomyTemplate/", "ghs.taxonomy.default")));
+
+        getClient().bulk(bulkRequest).get();
+
+        bulkRequest = new BulkRequest();
+        bulkRequest.refresh(true);
+        loadData(bulkRequest, "ghs.products", "product", "productsData/products.json");
+
+        bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.products.default").source(
+                TestingUtilities.buildQuery("src/test/resources/productsTemplate/", "ghs.products.default")));
 
         getClient().bulk(bulkRequest).get();
         logger.info("Loaded data into Elasticsearch");
     }
 
-    public void createIndex(String indexName) throws IOException {
+    public void createIndex(String mappingPath, String indexName, String indexType) throws IOException {
         final CreateIndexRequestBuilder createIndexRequestBuilder = getClient().admin().indices().prepareCreate(indexName);
 
-        JsonObject schema = Utils.getJsonFile("src/test/resources/taxonomyMapping/taxonomyMapping.json");
+        JsonObject schema = Utils.getJsonFile(mappingPath);
+
+        if (schema.containsKey("indexers") && schema.getJsonObject("indexers").containsKey("settings")) {
+            JsonObject settings = schema.getJsonObject("indexers").getJsonObject("settings");
+            createIndexRequestBuilder.setSettings(settings.encodePrettily());
+        }
 
         // apply mappings
         if (schema.containsKey("mappings")) {
             JsonObject mappings = new JsonObject().put("mappings", schema.getJsonObject("mappings"));
-            createIndexRequestBuilder.addMapping("taxonomy", mappings.getJsonObject("mappings").getJsonObject("taxonomy").encode());
+            createIndexRequestBuilder.addMapping(indexType, mappings.getJsonObject("mappings").getJsonObject(indexType).encode());
+        } else if (schema.getJsonObject("indexers").containsKey("mappings") && schema.getJsonObject("indexers")
+                .getJsonObject("mappings").containsKey(schema.getJsonObject("indexers").getString("type"))) {
+            JsonObject mappings = new JsonObject().put("mappings", schema.getJsonObject("indexers").getJsonObject("mappings"));
+            String type = schema.getJsonObject("indexers").getString("type");
+            createIndexRequestBuilder.addMapping(type, mappings.getJsonObject("mappings").getJsonObject(type).encode());
         }
 
         try {
@@ -108,13 +128,13 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
         }
     }
 
-    public BulkRequest loadData(BulkRequest bulkRequest, String index) throws IOException, InterruptedException, ExecutionException {
-        JsonArray taxonomy = new JsonArray(IOUtils.toString(Thread.currentThread().getContextClassLoader().getResource("taxonomyData/taxonomy.json")));
-        taxonomy.forEach(entry -> {
+    public BulkRequest loadData(BulkRequest bulkRequest, String index, String indexType, String productsDataPath) throws IOException, InterruptedException, ExecutionException {
+        JsonArray data = new JsonArray(IOUtils.toString(Thread.currentThread().getContextClassLoader().getResource(productsDataPath)));
+        data.forEach(entry -> {
             JsonObject doc = new JsonObject(Json.encode(entry));
             String id = doc.getString("id");
             doc.remove("id");
-            bulkRequest.add(new IndexRequest(index, "taxonomy", id).source(doc.encode()));
+            bulkRequest.add(new IndexRequest(index, indexType, id).source(doc.encode()));
         });
         return bulkRequest;
     }

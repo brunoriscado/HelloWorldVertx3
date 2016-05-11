@@ -16,7 +16,6 @@ plugins{
     id 'jacoco'
     id "net.researchgate.release" version "2.1.2"
 }
-//apply plugin: "net.researchgate.release"
 
 idea {
     module {

@@ -7,5 +7,5 @@ import io.vertx.rxjava.core.http.HttpServerResponse;
  * Created by bruno on 20/04/16.
  */
 public interface BrowseController {
-    void browse(String index, String templateId, String geo, String distChannel, JsonObject payload, HttpServerResponse response);
+    void browse(String index, String templateId, String geo, String distChannel, String responseType, JsonObject payload, HttpServerResponse response);
 }
