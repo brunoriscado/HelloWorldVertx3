@@ -17,7 +17,7 @@ ext {
     logbackVersion = '1.1.2'
     moustacheVersion = '0.8.15'
     elasticsearchVersion = '1.7.2'
-    searchCommonsVersion = '1.5-SNAPSHOT'
+    searchCommonsVersion = '1.3'
     restAssuredVersion = '2.9.0'
     junitVersion = '4.+'
     mockitoVersion = '1.10.19'
