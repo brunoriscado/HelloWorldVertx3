@@ -2,6 +2,7 @@ package com.tesco.disco.browse.controller.impl;
 
 import com.tesco.disco.browse.controller.BrowseController;
 import com.tesco.disco.browse.exceptions.ClientException;
+import com.tesco.disco.browse.exceptions.ServiceException;
 import com.tesco.disco.browse.model.enumerations.FieldsEnum;
 import com.tesco.disco.browse.model.enumerations.IndicesEnum;
 import com.tesco.disco.browse.model.enumerations.ResponseSetEnum;
@@ -318,7 +319,7 @@ public class BrowseControllerImpl implements BrowseController {
         if (error instanceof ClientException) {
             LOGGER.warn(MARKER, "bad request error occurred - {}", error.getMessage());
             response.setStatusCode(400);
-        } else if (error instanceof ClientException) {
+        } else if (error instanceof ServiceException) {
             LOGGER.error(MARKER, "error occurred - {}", error.getMessage());
             response.setStatusCode(500);
         } else {
