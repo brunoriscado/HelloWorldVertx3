@@ -278,7 +278,7 @@ public class BrowseControllerImpl implements BrowseController {
 
     private void validateTPNB(RoutingContext context, JsonObject query) {
         LOGGER.debug(MARKER, "Validating TPNB");
-        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("store"))) {
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("tpnb"))) {
             String[] tpnbs = context.<Map<String, String>>get("decodedParams").get("tpnb").split(",");
             String arrStr =  "\"" + StringUtils.join(tpnbs, "\",\"") + "\"";
             query.put("tpnb", String.valueOf(arrStr));
