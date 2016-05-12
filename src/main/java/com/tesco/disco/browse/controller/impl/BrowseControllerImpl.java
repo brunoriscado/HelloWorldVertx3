@@ -93,6 +93,7 @@ public class BrowseControllerImpl implements BrowseController {
         validateSort(context, query);
         validateStore(context, query);
         validateBrand(context, query);
+        validateTPNB(context, query);
 
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("superDepartment"))) {
             query.put("superDepartment", context.<Map<String, String>>get("decodedParams").get("superDepartment"));
@@ -271,6 +272,16 @@ public class BrowseControllerImpl implements BrowseController {
             }
         } else {
             query.put("store", String.valueOf(3060));
+        }
+        LOGGER.debug(MARKER, "Validating store - {}", query.encode());
+    }
+
+    private void validateTPNB(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating TPNB");
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("store"))) {
+            String[] tpnbs = context.<Map<String, String>>get("decodedParams").get("tpnb").split(",");
+            String arrStr =  "\"" + StringUtils.join(tpnbs, "\",\"") + "\"";
+            query.put("tpnb", String.valueOf(arrStr));
         }
         LOGGER.debug(MARKER, "Validating store - {}", query.encode());
     }
