@@ -194,10 +194,18 @@ public class BrowseServiceImpl implements BrowseService {
         LOGGER.debug(MARKER, "Get Result set from elastic response");
         JsonObject total = new JsonObject();
         total.put("all", elasticResponse.getJsonObject("hits").getLong("total"));
-        // TODO not yet sent from elastic.
-        // total.put("IsFavourite", ESResponse.getObject("hits").getLong("IsFavourite"));
-        // total.put("IsNewlyRangedInStore", ESResponse.getObject("hits").getLong("IsNew"));
-        // total.put("IsOnPromotion", ESResponse.getObject("hits").getLong("IsSpecialOffer"));
+        if(elasticResponse.containsKey("aggregations")) {
+            Integer newTotal = elasticResponse
+                    .getJsonObject("aggregations")
+                    .getJsonObject("new")
+                    .getInteger("doc_count");
+            total.put("new", newTotal);
+            Integer isSpecialOfferTotal = elasticResponse
+                    .getJsonObject("aggregations")
+                    .getJsonObject("offer")
+                    .getInteger("doc_count");
+            total.put("offer", isSpecialOfferTotal);
+        }
         LOGGER.debug(MARKER, "Get Result set - {}", total.encode());
         return total;
     }
