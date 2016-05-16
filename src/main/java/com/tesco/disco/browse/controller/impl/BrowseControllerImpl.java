@@ -163,7 +163,11 @@ public class BrowseControllerImpl implements BrowseController {
                         next -> {
                             LOGGER.debug(MARKER, "response from elastic browse service: {}", next.encode());
                             response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
-                            response.write(next.encode());
+                            if (payload != null && payload.containsKey("pretty") && payload.getBoolean("pretty")) {
+                                response.write(next.encodePrettily());
+                            } else {
+                                response.write(next.encode());
+                            }
                         },
                         error -> {
                             LOGGER.error(MARKER, "error obtaining response from elastic browse service verticle: {}", error.getMessage());
@@ -311,7 +315,12 @@ public class BrowseControllerImpl implements BrowseController {
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("sort"))) {
             String sort = context.<Map<String, String>>get("decodedParams").get("sort");
             if (sort.equals("price") || sort.equals("price:desc") || sort.equals("name") || sort.equals("name:desc")) {
-                query.put("sort", sort);
+                String[] keyVal = sort.split(":");
+                if (keyVal.length == 2) {
+                    query.put(keyVal[0], keyVal[1]);
+                } else {
+                    query.put(keyVal[0], "asc");
+                }
             }
         }
         LOGGER.debug(MARKER, "Validating sort - {}", query.encode());
