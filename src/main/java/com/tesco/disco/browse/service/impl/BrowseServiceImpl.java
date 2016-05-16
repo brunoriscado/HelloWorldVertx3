@@ -194,7 +194,9 @@ public class BrowseServiceImpl implements BrowseService {
         LOGGER.debug(MARKER, "Get Result set from elastic response");
         JsonObject total = new JsonObject();
         total.put("all", elasticResponse.getJsonObject("hits").getLong("total"));
-        if(elasticResponse.containsKey("aggregations")) {
+        if(elasticResponse.containsKey("aggregations") &&
+                elasticResponse.getJsonObject("aggregations").containsKey("new") &&
+                elasticResponse.getJsonObject("aggregations").containsKey("offer")) {
             Integer newTotal = elasticResponse
                     .getJsonObject("aggregations")
                     .getJsonObject("new")

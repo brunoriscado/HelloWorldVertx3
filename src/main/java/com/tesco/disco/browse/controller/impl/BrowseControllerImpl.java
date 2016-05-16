@@ -3,10 +3,7 @@ package com.tesco.disco.browse.controller.impl;
 import com.tesco.disco.browse.controller.BrowseController;
 import com.tesco.disco.browse.exceptions.ClientException;
 import com.tesco.disco.browse.exceptions.ServiceException;
-import com.tesco.disco.browse.model.enumerations.FieldsEnum;
-import com.tesco.disco.browse.model.enumerations.IndicesEnum;
-import com.tesco.disco.browse.model.enumerations.ResponseSetEnum;
-import com.tesco.disco.browse.model.enumerations.ResponseTypesEnum;
+import com.tesco.disco.browse.model.enumerations.*;
 import com.tesco.disco.browse.service.BrowseService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.http.HttpHeaders;
@@ -93,7 +90,13 @@ public class BrowseControllerImpl implements BrowseController {
         validateSort(context, query);
         validateStore(context, query);
         validateBrand(context, query);
+
+        //If tpnb, new or offer as explicitly passed in the query string (outside filters),
+        //then the initial filters are overriden
+        validatePipedFilters(context, query);
         validateTPNB(context, query);
+        validateNew(context, query);
+        validateOffer(context, query);
 
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("superDepartment"))) {
             query.put("superDepartment", context.<Map<String, String>>get("decodedParams").get("superDepartment"));
@@ -121,7 +124,7 @@ public class BrowseControllerImpl implements BrowseController {
                         context.<Map<String, String>>get("decodedParams").get("config") : TEMPLATE_ID_SUFIX,
                 StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("geo")) ?
                         context.<Map<String, String>>get("decodedParams").get("geo") : "uk",
-                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChannel")) ?
+                StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("distChanwl")) ?
                         context.<Map<String, String>>get("decodedParams").get("distChannel") : "ghs",
                 validateResponseType(context,  ResponseTypesEnum.TAXONOMY.getType()),
                 handleParameters(context),
@@ -279,11 +282,17 @@ public class BrowseControllerImpl implements BrowseController {
     private void validateTPNB(RoutingContext context, JsonObject query) {
         LOGGER.debug(MARKER, "Validating TPNB");
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("tpnb"))) {
-            String[] tpnbs = context.<Map<String, String>>get("decodedParams").get("tpnb").split(",");
-            String arrStr =  "\"" + StringUtils.join(tpnbs, "\",\"") + "\"";
+            validateTPNBArray(context.<Map<String, String>>get("decodedParams").get("tpnb"), query);
+        }
+        LOGGER.debug(MARKER, "Validating tpnb - {}", query.encode());
+    }
+
+    private void validateTPNBArray(String tpnbs, JsonObject query) {
+        if (StringUtils.isNotBlank(tpnbs)) {
+            String[] tpnbArray = tpnbs.split(",");
+            String arrStr =  "\"" + StringUtils.join(tpnbArray, "\",\"") + "\"";
             query.put("tpnb", String.valueOf(arrStr));
         }
-        LOGGER.debug(MARKER, "Validating store - {}", query.encode());
     }
 
     private void validateBrand(RoutingContext context, JsonObject query) {
@@ -324,6 +333,44 @@ public class BrowseControllerImpl implements BrowseController {
             query.put("pretty", pretty);
         }
         LOGGER.debug(MARKER, "Validating pretty - {}", query.encode());
+    }
+
+			 // Converts a pipe separated list of properties into boolean parameters
+    // eg. filter=a:true|b:false => a=true; b=true
+    private void validatePipedFilters(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating piped filters");
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("filter"))) {
+            String filters = context.<Map<String, String>>get("decodedParams").get("filter").replaceAll("\\%7C","|").replaceAll("\\%7c","|");
+            String[] multiBoolEnumValues = filters.split("\\|");
+            for (int i = 0; i < multiBoolEnumValues.length; i++) {
+                String[] keyVal = multiBoolEnumValues[i].split(":");
+                if (keyVal.length == 2 && PipedFilters.getByFilterName(keyVal[0]) != null) {
+                    if (keyVal[1].equals("true")) {
+                        query.put(keyVal[0], keyVal[1]);
+                    }
+                } else if (keyVal.length == 2 && PipedFilters.getByFilterName(keyVal[0]).equals(PipedFilters.TPNB)) {
+                    validateTPNBArray(keyVal[1], query);
+                } else {
+                    throw new ClientException("Piped filters contain have been incorrectly specified");
+                }
+            }
+        }
+    }
+
+    private void validateNew(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating new filter");
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("new"))) {
+            boolean newFilter = Boolean.valueOf(context.<Map<String, String>>get("decodedParams").get("new"));
+            query.put("new", String.valueOf(newFilter));
+        }
+    }
+
+    private void validateOffer(RoutingContext context, JsonObject query) {
+        LOGGER.debug(MARKER, "Validating offer filter");
+        if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("offer"))) {
+            boolean offerFilter = Boolean.valueOf(context.<Map<String, String>>get("decodedParams").get("offer"));
+            query.put("offer", String.valueOf(offerFilter));
+        }
     }
 
     private void handlerError(Throwable error,  HttpServerResponse response) {
