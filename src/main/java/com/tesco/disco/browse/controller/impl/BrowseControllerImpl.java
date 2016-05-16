@@ -345,13 +345,13 @@ public class BrowseControllerImpl implements BrowseController {
             for (int i = 0; i < multiBoolEnumValues.length; i++) {
                 String[] keyVal = multiBoolEnumValues[i].split(":");
                 if (keyVal.length == 2 && PipedFilters.getByFilterName(keyVal[0]) != null) {
-                    if (keyVal[1] == "true") {
+                    if (keyVal[1].equals("true")) {
                         query.put(keyVal[0], keyVal[1]);
                     }
                 } else if (keyVal.length == 2 && PipedFilters.getByFilterName(keyVal[0]).equals(PipedFilters.TPNB)) {
                     validateTPNBArray(keyVal[1], query);
                 } else {
-                    throw new ClientException();
+                    throw new ClientException("Piped filters contain have been incorrectly specified");
                 }
             }
         }
@@ -361,7 +361,7 @@ public class BrowseControllerImpl implements BrowseController {
         LOGGER.debug(MARKER, "Validating new filter");
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("new"))) {
             boolean newFilter = Boolean.valueOf(context.<Map<String, String>>get("decodedParams").get("new"));
-            query.put("new", newFilter);
+            query.put("new", String.valueOf(newFilter));
         }
     }
 
@@ -369,7 +369,7 @@ public class BrowseControllerImpl implements BrowseController {
         LOGGER.debug(MARKER, "Validating offer filter");
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("offer"))) {
             boolean offerFilter = Boolean.valueOf(context.<Map<String, String>>get("decodedParams").get("offer"));
-            query.put("offer", offerFilter);
+            query.put("offer", String.valueOf(offerFilter));
         }
     }
 
