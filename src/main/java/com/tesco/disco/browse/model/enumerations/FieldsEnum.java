@@ -7,8 +7,8 @@ import org.elasticsearch.common.lang3.StringUtils;
 	*/
 public enum FieldsEnum {
 				TPNB("tpnb", "tpnb"),
-				UNIT_PRICE("unitprice", "store_unitprice"),
-				PRICE("price", "store_price"),
+				UNIT_PRICE("unitprice", "store_unitprice", Double.class),
+				PRICE("price", "store_price", Double.class),
 				PRODUCT_NAME("name", "name"),
 				DESCRIPTION("description", "description"),
 				IS_NEW("IsNew", "IsNew"),
@@ -29,17 +29,24 @@ public enum FieldsEnum {
 				UNIT_QUANTITY("UnitQuantity", "UnitQuantity"),
 				AVERAGE_SELLING_UNIT_WEIGHT("AverageSellingUnitWeight", "AverageSellingUnitWeight"),
 				UNIT_OF_SALE("UnitOfSale", "UnitOfSale"),
-				AVAILABILITY("availability", "store_availability"),
+				AVAILABILITY("availability", "store_availability", Long.class),
 				NEW("new", "new"),
 				OFFER("offer", "offer"),
 				BRAND("brand", "brand");
 
 				private String name;
 				private String remapName;
+				private Class type;
 
 				private FieldsEnum(String name, String remapName) {
 								this.name = name;
 								this.remapName = remapName;
+				}
+
+				private FieldsEnum(String name, String remapName, Class type) {
+								this.name = name;
+								this.remapName = remapName;
+								this.type = type;
 				}
 
 				public String getName() {
@@ -48,6 +55,10 @@ public enum FieldsEnum {
 
 				public String getRemapName() {
 								return remapName;
+				}
+
+				public Class getType() {
+								return type;
 				}
 
 				public static FieldsEnum getByName(String name, String remapName) {

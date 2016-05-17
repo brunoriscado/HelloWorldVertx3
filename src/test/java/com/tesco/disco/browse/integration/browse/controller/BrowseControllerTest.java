@@ -6,6 +6,7 @@ import com.tesco.disco.browse.integration.browse.BrowseTest;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
@@ -283,6 +284,20 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
                 .statusCode(200)
                 .body("uk.ghs.products.totals.all", is(369))
                 .body("uk.ghs.products.filters.brands[0].name", is("Tesco"));
+    }
+
+    @Test
+    public void testRequestWithAllFields(TestContext context) {
+        JsonObject body = new JsonObject(given().port(9003)
+                .when().get("/browse/?fields=tpnb,unitprice,price,name,availability&responseSet=results")
+                .thenReturn().body().print());
+        JsonArray results = body.getJsonObject("uk").getJsonObject("ghs").getJsonObject("products").getJsonArray("results");
+        results.stream().forEach(product -> {
+            JsonObject prod = new JsonObject(Json.encode(product));
+            context.assertNotNull(prod.getLong("availability"));
+            context.assertNotNull(prod.getDouble("unitprice"));
+            context.assertNotNull(prod.getDouble("price"));
+        });
     }
 
     @AfterClass
