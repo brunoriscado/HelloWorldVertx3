@@ -227,13 +227,13 @@ public class BrowseServiceImpl implements BrowseService {
             }
             // augment availability, price and unit price properties if they exists
             if (properties.containsKey(FieldsEnum.PRICE.getRemapName())) {
-                properties = extractProperty(FieldsEnum.PRICE.getRemapName(),  properties, params);
+                properties = extractProperty(FieldsEnum.PRICE,  properties, params);
             }
             if (properties.containsKey(FieldsEnum.UNIT_PRICE.getRemapName())) {
-                properties = extractProperty(FieldsEnum.UNIT_PRICE.getRemapName(), properties, params);
+                properties = extractProperty(FieldsEnum.UNIT_PRICE, properties, params);
             }
             if (properties.containsKey(FieldsEnum.AVAILABILITY.getRemapName())) {
-                properties = extractProperty(FieldsEnum.AVAILABILITY.getRemapName(), properties, params);
+                properties = extractProperty(FieldsEnum.AVAILABILITY, properties, params);
             }
             //TODO: REMOVE WHEN MAPI CONSUMER THE NEW FILTERS FROM QUERY PARAMETER
             if (properties.containsKey(FieldsEnum.IS_NEW.getName())) {
@@ -255,19 +255,23 @@ public class BrowseServiceImpl implements BrowseService {
         return entries;
     }
 
-    private JsonObject extractProperty(String property, JsonObject properties, JsonObject params) {
-        JsonArray numbers = properties.getJsonArray(property);
+    private JsonObject extractProperty(FieldsEnum property, JsonObject properties, JsonObject params) {
+        JsonArray numbers = properties.getJsonArray(property.getRemapName());
         Iterator<Object> p = numbers.iterator() ;
         Number value = null;
 
         while (p.hasNext() ) {
             JsonObject storeNumber = (JsonObject) p.next();
             if (storeNumber.getLong("store").toString().equals(params.getString("store"))) {
-                value = storeNumber.getLong(property);
+                if (property.getType() != null && property.getType().equals(Double.class)) {
+                    value = storeNumber.getDouble(property.getName());
+                } else if (property.getType() != null && property.getType().equals(Long.class)) {
+                    value = storeNumber.getLong(property.getName());
+                }
             }
         }
-        properties.put(property, value);
-        properties.remove("store_" + property);
+        properties.put(property.getName(), value);
+        properties.remove(property.getRemapName());
         return properties;
     }
 

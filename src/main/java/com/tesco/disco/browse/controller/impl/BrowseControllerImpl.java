@@ -202,8 +202,9 @@ public class BrowseControllerImpl implements BrowseController {
             StringBuffer csvFields = new StringBuffer();
             List<String> fields = Arrays.asList(context.<Map<String, String>>get("decodedParams").get("fields").split(","));
             fields.forEach(field -> {
-                if (FieldsEnum.getByName(field, null) != null) {
-                    csvFields.append("\"").append(field).append("\"").append(",");
+                FieldsEnum fieldEnum = FieldsEnum.getByName(field, null);
+                if (fieldEnum != null) {
+                    csvFields.append("\"").append(fieldEnum.getRemapName()).append("\"").append(",");
                 }
             });
             query.put("fields", StringUtils.substring(csvFields.toString(), 0, csvFields.length()-1));
