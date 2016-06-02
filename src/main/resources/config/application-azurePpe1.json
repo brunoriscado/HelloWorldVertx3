@@ -9,15 +9,15 @@
           "elasticsearch": {
             "transport.addresses": [
               {
-                "hostname": "ess-elas-client1-ppe",
+                "hostname": "ess-elas-client1-ppe1",
                 "port": 9300
               },
               {
-                "hostname": "ess-elas-client2-ppe",
+                "hostname": "ess-elas-client2-ppe1",
                 "port": 9300
               },
               {
-                "hostname": "ess-elas-client3-ppe",
+                "hostname": "ess-elas-client3-ppe1",
                 "port": 9300
               }
             ],
