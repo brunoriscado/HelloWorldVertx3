@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 import static com.jayway.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 
@@ -92,6 +93,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
         given().port(9003)
                 .when().get("/taxonomy/")
                 .then()
+                .body("uk.ghs.taxonomy.superDepartments.size()", greaterThan(1))
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[0].shelves.name",
                         hasItems("Anti Dandruff Shampoo", "Kids Shampoo", "Professional Shampoo"))
                 .body("uk.ghs.taxonomy.superDepartments[0].departments[0].aisles[1].shelves.name",
