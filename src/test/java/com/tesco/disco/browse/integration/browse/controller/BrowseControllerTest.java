@@ -302,13 +302,23 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
 
     @Test
     public void testRequestFieldsWithNonExistentFieldValue(TestContext context) {
-        JsonObject body = new JsonObject(given().port(9003)
+        given().port(9003)
                 .when().get("/browse/?fields=fasfasfasf")
+                .then()
+                .statusCode(400)
+                .body("error", is("Incorrect Fields specified!"));
+    }
+
+    @Test
+    public void testRequestEmptyFields(TestContext context) {
+        JsonObject body = new JsonObject(given().port(9003)
+                .when().get("/browse/?fields=")
                 .thenReturn().body().print());
         JsonArray results = body.getJsonObject("uk").getJsonObject("ghs").getJsonObject("products").getJsonArray("results");
         results.stream().forEach(product -> {
             JsonObject prod = new JsonObject(Json.encode(product));
-            context.assertNull(prod.getLong("BulkBuyLimit"));
+            context.assertNotNull(prod.getString("tpnb"));
+            context.assertNull(prod.getDouble("BulkBuyLimit"));
             context.assertNull(prod.getDouble("popularity"));
         });
     }
