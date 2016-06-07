@@ -207,7 +207,12 @@ public class BrowseControllerImpl implements BrowseController {
                     csvFields.append("\"").append(fieldEnum.getRemapName()).append("\"").append(",");
                 }
             });
-            query.put("fields", StringUtils.substring(csvFields.toString(), 0, csvFields.length()-1));
+            String resultingFields = StringUtils.substring(csvFields.toString(), 0, csvFields.length()-1);
+            if (StringUtils.isNotBlank(resultingFields)) {
+                query.put("fields", resultingFields);
+            } else {
+                query.put("fields", "\"" + FieldsEnum.TPNB.getName() + "\"");
+            }
         } else {
             query.put("fields", "\"" + FieldsEnum.TPNB.getName() + "\"");
         }
