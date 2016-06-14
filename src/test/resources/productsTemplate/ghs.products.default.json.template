@@ -1,79 +1,1056 @@
 {
-    "from": "{{offset}}", 
-    "explain": false,
-    "_source": [{{{fields}}}],
-    {{#results}}
-    "size": "{{limit}}",
-    {{/results}}
-    {{^results}}
-    "size": "0",
-    {{/results}}
-    {{#price}} "sort":[{"price":{"order": "{{price}}", "mode": "min"}} ], {{/price}}
-    "aggs": {
-        "new": {
-          "filter" : { "term": { "new": "{{store}}" } }
-        },
-        "offer": {
-          "filter" : { "term": { "offer": "{{store}}" } }
-        }
-        {{#taxonomy}}
-        ,"superDepartments": {
+  "from": "{{offset}}",
+  "explain": false,
+  "_source": [{{{fields}}}],
+  {{#results}}
+  "size": "{{limit}}",
+  {{/results}}
+  {{^results}}
+  "size": "0",
+  {{/results}}
+  {{#price}} "sort": [{"price": {"order": "{{price}}", "mode": "min"} }], {{/price}}
+  "aggs": {
+    "new": {
+      "filter" : { "term": { "new": "{{store}}" } }
+    },
+    "offer": {
+      "filter" : { "term": { "offer": "{{store}}" } }
+    }
+    {{#taxonomy}}
+    ,"superDepartments": {
+      "aggs": {
+        "departments": {
           "aggs": {
-            "departments": {
+            "aisles": {
               "aggs": {
-                "aisles": {
-                  "aggs": {
-                    "shelves": {
-                      "terms": {
-                        "field": "shelf.raw",
-                        "size": 0
-                      }
-                    }
-                  },
+                "shelves": {
                   "terms": {
-                    "field": "aisle.raw",
+                    "field": "shelf.raw",
                     "size": 0
                   }
                 }
               },
               "terms": {
-                "field": "department.raw",
+                "field": "aisle.raw",
                 "size": 0
               }
             }
           },
           "terms": {
-            "field": "superDepartment.raw",
+            "field": "department.raw",
             "size": 0
           }
         }
-        {{/taxonomy}}
-        {{#filters}}
-        ,"brands": {
-          "terms": {
-            "field": "brand.raw",
-            "size": 0
-          }
-        }
-        {{/filters}}
-    },
-    {{#suggestions}}
-    "suggest": {
-      "text": "{{{query}}}",
-      "check": {
-        "term": {
-          "suggest_mode": "popular",
-          "field": "name"
-        }
+      },
+      "terms": {
+        "field": "superDepartment.raw",
+        "size": 0
       }
-    },
-    {{/suggestions}}
-    "query" : {"function_score": {
-        "query": { "filtered": {
-            "query": {
-                "match_all" : {} 
-            },
-            "filter": {"and": [
+    }
+    {{/taxonomy}}
+    {{#filters}}
+    ,"brands": {
+      "terms": {
+        "field": "brand.raw",
+        "size": 0
+      }
+    }
+    {{/filters}}
+  },
+  {{#suggestions}}
+  "suggest": {
+    "text": "{{{query}}}",
+    "check": {
+      "term": {
+        "suggest_mode": "popular",
+        "field": "name"
+      }
+    }
+  },
+  {{/suggestions}}
+  "query": {
+    "function_score": {
+      "min_score": 0.0000000000001,
+      "query": {
+        "filtered": {
+          "query": {
+            "bool": {
+              "should": [{
+                "bool": {
+                  "should": [{
+                    "bool": {
+                      "should": [{
+                        "match": {
+                          "keywords": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }],
+                      "minimum_should_match": 1
+                    }
+                  }, {
+                    "bool": {
+                      "should": [{
+                        "match": {
+                          "id": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }],
+                      "minimum_should_match": 1
+                    }
+                  }, {
+                    "bool": {
+                      "should": [{
+                        "match": {
+                          "name.bi_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.uni_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_concat"
+                          }
+                        }
+                      }],
+                      "minimum_should_match": 1
+                    }
+                  }, {
+                    "bool": {
+                      "should": [{
+                        "match": {
+                          "shelf.bi_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.uni_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_concat"
+                          }
+                        }
+                      }],
+                      "minimum_should_match": 1
+                    }
+                  }, {
+                    "bool": {
+                      "should": [{
+                        "match": {
+                          "aisle.bi_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.uni_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_concat"
+                          }
+                        }
+                      }],
+                      "minimum_should_match": 1
+                    }
+                  }, {
+                    "bool": {
+                      "should": [{
+                        "match": {
+                          "department.bi_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "department.uni_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "department.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "department.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "department.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "department.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "department.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "department.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "department.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "department.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "department.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "department.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_concat"
+                          }
+                        }
+                      }],
+                      "minimum_should_match": 1
+                    }
+                  }, {
+                    "bool": {
+                      "should": [{
+                        "match": {
+                          "brand.bi_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.uni_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_concat"
+                          }
+                        }
+                      }],
+                      "minimum_should_match": 1
+                    }
+                  }, {
+                    "bool": {
+                      "should": [{
+                        "match": {
+                          "description.bi_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "description.uni_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "description.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "description.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "description.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "description.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "description.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "description.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "description.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "description.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "description.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "description.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "description.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_concat"
+                          }
+                        }
+                      }],
+                      "minimum_should_match": 1
+                    }
+                  }, {
+                    "bool": {
+                      "should": [{
+                        "match": {
+                          "common_search_1.bi_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.uni_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.bi_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_sym"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.bi_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "uni_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.uni_str_sym": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.uni_str": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "minimum_should_match": "-20%",
+                            "analyzer": "bi_str_concat"
+                          }
+                        }
+                      }],
+                      "minimum_should_match": 1
+                    }
+                  }]
+                }
+              }, {
+                "bool": {
+                  "should": [{
+                    "bool": {
+                      "should": [{
+                        "prefix": {
+                          "name.bi_noStem": {
+                            "value": "{{query}}",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "prefix": {
+                          "name.uni_noStem": {
+                            "value": "{{query}}",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "prefix": {
+                          "common_search_1.bi_noStem": {
+                            "value": "{{query}}",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "prefix": {
+                          "common_search_1.uni_noStem": {
+                            "value": "{{query}}",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "prefix": {
+                          "brand.bi_noStem": {
+                            "value": "{{query}}",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "prefix": {
+                          "brand.uni_noStem": {
+                            "value": "{{query}}",
+                            "minimum_should_match": "-20%"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.bi_noStem": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "fuzziness": "1"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "name.uni_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and",
+                            "fuzziness": "1"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.bi_noStem": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "fuzziness": "1"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "common_search_1.uni_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and",
+                            "fuzziness": "1"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.bi_noStem": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "fuzziness": "1"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "brand.uni_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and",
+                            "fuzziness": "1"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.bi_noStem": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "fuzziness": "1"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "shelf.uni_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and",
+                            "fuzziness": "1"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.bi_noStem": {
+                            "query": "{{query}}",
+                            "operator": "or",
+                            "fuzziness": "1"
+                          }
+                        }
+                      }, {
+                        "match": {
+                          "aisle.uni_noStem": {
+                            "query": "{{query}}",
+                            "operator": "and",
+                            "fuzziness": "1"
+                          }
+                        }
+                      }],
+                      "minimum_should_match": 1
+                    }
+                  }]
+                }
+              }]
+            }
+          },
+          "filter": {
+            "and": [
                 {
                 "or": {
                   "filters": [
@@ -193,14 +1170,22 @@
                 }
               },
               {{/offer}}
-                {"term": {"store_price.store": "{{store}}"}},
-                {"term": {"store_availability.availability": "1"}},
-                {"term": {"store_availability.store": "{{store}}"}},
-                {"exists": {"field":"normalPrice"}}
-            ]}
-        }},
-        "functions": [
-            {"script_score": {"script": "doc['popularity'].value"}}
-        ]
-    }}
+              {
+                "term": {
+                  "store_price.store": "{{store}}"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "functions": [
+        {
+          "script_score": {
+            "script": "if (_score>=0.001) {return Math.max(doc['popularity'].value, 0.0000001);} else {return 0;}"
+          }
+        }
+      ]
+    }
+  }
 }
