@@ -249,6 +249,10 @@ public class BrowseServiceImpl implements BrowseService {
             if (properties.containsKey(FieldsEnum.OFFER.getName())) {
                 parseFilter(properties, FieldsEnum.OFFER.getName(), params);
             }
+
+            if (properties.containsKey(FieldsEnum.DELIVERYRESTRICTIONS.getName())) {
+                properties = extractRDGProperty(FieldsEnum.DELIVERYRESTRICTIONS.getName(), properties, params);
+            }
             entries.add(properties);
         }
         LOGGER.debug(MARKER, "Parse results - {}", entries.encode());
@@ -413,6 +417,43 @@ public class BrowseServiceImpl implements BrowseService {
         }
         return resultingQuery;
     }
+
+    private JsonObject extractRDGProperty(String property, JsonObject properties, JsonObject params) {
+        if (properties.getJsonObject(property).containsKey("restrictedDetails")) {
+            JsonArray rDetails = properties.getJsonObject(property).getJsonArray("restrictedDetails");
+            Iterator<Object> p = rDetails.iterator();
+            JsonObject resObject = new JsonObject();
+            while (p.hasNext()) {
+                Object u = p.next();
+                JsonObject obj = (JsonObject) u;
+                if (obj.containsKey("Stores")) {
+                    JsonObject st = obj.getJsonObject("Stores");
+                    if (st.containsKey("all") && Boolean.valueOf(st.getString("all"))) {
+                        obj.remove("Stores");
+                        resObject = obj;
+                        break;
+                    } else {
+                        if (st.containsKey("Stores")) {
+                            JsonArray a = st.getJsonArray("Stores");
+                            Iterator<Object> o = a.iterator();
+                            while (o.hasNext()) {
+                                String s = (String) o.next();
+                                if (s.equals(params.getMap().get("store"))) {
+                                    obj.remove("Stores");
+                                    resObject = obj;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            properties.remove(property);
+            properties.put(property, resObject);
+        }
+        return properties;
+    }
+
 
     public void unregister() {
         LOGGER.info(MARKER, "Unregistering verticle address: {} from the eventbus", BrowseService.class.getName());
