@@ -61,5 +61,19 @@
         "aisle": "Colour Haircare",
         "department": "Haircare",
         "superDepartment": "Health & Beauty"
+    },
+    {
+        "id": "Cat00005948",
+        "shelf": "Pink Lady Apples",
+        "aisle": "Apples",
+        "department": "Apples",
+        "superDepartment": "Apples"
+    },
+    {
+        "id": "TO_0571614429",
+        "shelf": "Huggies Little Walkers",
+        "aisle": "Stay Dry Pants",
+        "department": "Nappies",
+        "superDepartment": "Baby"
     }
 ]

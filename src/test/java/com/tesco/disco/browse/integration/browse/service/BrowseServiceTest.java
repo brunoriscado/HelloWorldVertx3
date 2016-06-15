@@ -10,6 +10,7 @@ import com.tesco.disco.browse.service.context.BrowseServiceContext;
 import com.tesco.search.commons.context.ContextDelegator;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
@@ -99,24 +100,29 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                 handle -> {
                     if (handle.succeeded()) {
                         JsonObject response = handle.result();
-                        response.getJsonObject("uk")
+                        JsonArray superDepartments = response.getJsonObject("uk")
                                 .getJsonObject("ghs")
                                 .getJsonObject("taxonomy")
-                                .getJsonArray("superDepartments")
+                                .getJsonArray("superDepartments");
+                        testContext.assertTrue(superDepartments.size() > 1);
+                        superDepartments
                                 .forEach(superDepartment -> {
-                                    JsonObject superDep = new JsonObject(Json.encode(superDepartment));
-                                    superDep.getJsonArray("departments")
-                                            .forEach(department -> {
-                                                JsonObject jsonDep = new JsonObject(Json.encode(department));
-                                                jsonDep.getJsonArray("aisles")
-                                                        .forEach(aisle -> {
-                                                            JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
-                                                            jsonAisle.getJsonArray("shelves")
-                                                                    .forEach(shelf -> {
-                                                                        shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
-                                                                    });
-                                                        });
-                                            });
+                                    JsonObject sd = new JsonObject(Json.encode(superDepartment));
+                                    if (sd.getString("name").equals("Health & Beauty")) {
+                                        JsonObject superDep = new JsonObject(Json.encode(superDepartment));
+                                        superDep.getJsonArray("departments")
+                                                .forEach(department -> {
+                                                    JsonObject jsonDep = new JsonObject(Json.encode(department));
+                                                    jsonDep.getJsonArray("aisles")
+                                                            .forEach(aisle -> {
+                                                                JsonObject jsonAisle = new JsonObject(Json.encode(aisle));
+                                                                jsonAisle.getJsonArray("shelves")
+                                                                        .forEach(shelf -> {
+                                                                            shelves.add(new JsonObject(Json.encode(shelf)).getString("name"));
+                                                                        });
+                                                            });
+                                                });
+                                    }
                                 });
                         testContext.assertEquals(shelves.size(), 9);
                         List<String> expected = new ArrayList<String>();
@@ -347,8 +353,10 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                             .getJsonArray("superDepartments")
                             .forEach(superDepartment -> {
                                 JsonObject superDep = new JsonObject(Json.encode(superDepartment));
+                                if (superDep.getString("name").equals("Health & Beauty")) {
                                 superDep.getJsonArray("departments")
                                         .forEach(department -> {
+
                                             JsonObject jsonDep = new JsonObject(Json.encode(department));
                                             jsonDep.getJsonArray("aisles")
                                                     .forEach(aisle -> {
@@ -359,6 +367,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                                                                 });
                                                     });
                                         });
+                                }
                             });
                     testContext.assertEquals(shelves.size(), 9);
                     List<String> expected = new ArrayList<String>();

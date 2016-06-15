@@ -384,12 +384,12 @@ public class BrowseServiceImpl implements BrowseService {
                                 } else {
                                     return new SuperDepartment(sd.getString("key"), sd.getLong("doc_count")).addDepartments(departments);
                                 }
-                            })
-                            .collect(() -> new ArrayList<SuperDepartment>(),
-                                    (superDeps, superDep) -> superDeps.add(superDep))
-                            .map(supeDeps -> {
-                                return taxonomy.addSuperDepartments(supeDeps).toJson();
                             });
+                })
+                .collect(() -> new ArrayList<SuperDepartment>(),
+                        (superDeps, superDep) -> superDeps.add(superDep))
+                .map(supeDeps -> {
+                    return taxonomy.addSuperDepartments(supeDeps).toJson();
                 })
                 .onErrorResumeNext(Observable.just(taxonomy.toJson()));
     }

@@ -10,6 +10,7 @@ buildscript {
 plugins{
     id "java"
     id "idea"
+    id "eclipse" //run "./gradlew cleanEclipse eclipse" after importing to eclipse
     id "maven"
     id 'base'
     id 'signing'
