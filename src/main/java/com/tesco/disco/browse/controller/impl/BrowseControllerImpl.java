@@ -149,34 +149,36 @@ public class BrowseControllerImpl implements BrowseController {
     //TODO - Annotate this method so that swagger definitions can be generated
     public void browse(String index, String templateId, String geo, String distChannel, String responseType, JsonObject payload, HttpServerResponse response) {
         LOGGER.info(MARKER, "Handling browse request using query params: {}", payload != null ? payload.encode() : "");
-        ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
-        browseService.getBrowseResults(index, templateId, geo, distChannel, responseType, payload, handler.toHandler());
-        response.setChunked(true);
-        handler.flatMap(esResponse -> {
-                    if (esResponse.succeeded()) {
-                        return Observable.just(esResponse.result());
-                    } else {
-                        return Observable.error(esResponse.cause());
-                    }
-                })
-                .subscribe(
-                        next -> {
-                            LOGGER.debug(MARKER, "response from elastic browse service: {}", next.encode());
-                            response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
-                            if (payload != null && payload.containsKey("pretty") && payload.getBoolean("pretty")) {
-                                response.write(next.encodePrettily());
-                            } else {
-                                response.write(next.encode());
-                            }
-                        },
-                        error -> {
-                            LOGGER.error(MARKER, "error obtaining response from elastic browse service verticle: {}", error.getMessage());
-                            handlerError(error, response);
-                        },
-                        () -> {
-                            response.setStatusCode(200);
-                            response.end();
-                        });
+        if(!response.ended()) {
+            ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
+            browseService.getBrowseResults(index, templateId, geo, distChannel, responseType, payload, handler.toHandler());
+            response.setChunked(true);
+            handler.flatMap(esResponse -> {
+                if (esResponse.succeeded()) {
+                    return Observable.just(esResponse.result());
+                } else {
+                    return Observable.error(esResponse.cause());
+                }
+            })
+                    .subscribe(
+                            next -> {
+                                LOGGER.debug(MARKER, "response from elastic browse service: {}", next.encode());
+                                response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
+                                if (payload != null && payload.containsKey("pretty") && payload.getBoolean("pretty")) {
+                                    response.write(next.encodePrettily());
+                                } else {
+                                    response.write(next.encode());
+                                }
+                            },
+                            error -> {
+                                LOGGER.error(MARKER, "error obtaining response from elastic browse service verticle: {}", error.getMessage());
+                                handlerError(error, response);
+                            },
+                            () -> {
+                                response.setStatusCode(200);
+                                response.end();
+                            });
+        }
     }
 
     private String validateResponseType(RoutingContext context, String defaultResponseType) {
@@ -187,7 +189,8 @@ public class BrowseControllerImpl implements BrowseController {
             if (resType.equals("products") || resType.equals("terms") || resType.equals("taxonomy")) {
                 responseType = context.<Map<String, String>>get("decodedParams").get("resType");
             } else {
-                throw new ClientException("Incorrect resType type!");
+                handlerError(new ClientException("Incorrect resType type!"), context.response());
+                return null;
             }
         } else {
             responseType = defaultResponseType;
@@ -203,11 +206,19 @@ public class BrowseControllerImpl implements BrowseController {
             List<String> fields = Arrays.asList(context.<Map<String, String>>get("decodedParams").get("fields").split(","));
             fields.forEach(field -> {
                 FieldsEnum fieldEnum = FieldsEnum.getByName(field, null);
-                if (fieldEnum != null) {
-                    csvFields.append("\"").append(fieldEnum.getRemapName()).append("\"").append(",");
+                if (fieldEnum == null) {
+                    handlerError(new ClientException("Incorrect Fields specified!"), context.response());
+                    return;
                 }
+                csvFields.append("\"").append(fieldEnum.getRemapName()).append("\"").append(",");
             });
-            query.put("fields", StringUtils.substring(csvFields.toString(), 0, csvFields.length()-1));
+            String resultingFields = StringUtils.substring(csvFields.toString(), 0, csvFields.length()-1);
+            if (StringUtils.isNotBlank(resultingFields)) {
+                query.put("fields", resultingFields);
+            } else {
+                //Should never fall into this condition as a 400 will be returned if none of the fields match
+                query.put("fields", "\"" + FieldsEnum.TPNB.getName() + "\"");
+            }
         } else {
             query.put("fields", "\"" + FieldsEnum.TPNB.getName() + "\"");
         }
@@ -237,11 +248,13 @@ public class BrowseControllerImpl implements BrowseController {
                 if (offset <= 0 && offset <= 100000) {
                     query.put("offset", String.valueOf(offset));
                 } else {
-                    throw new ClientException("Incorrect offset type!");
+                    handlerError(new ClientException("Incorrect offset type!"), context.response());
+                    return;
                 }
 
             } catch (NumberFormatException e) {
-                throw new ClientException("Incorrect offset type!");
+                handlerError(new ClientException("Incorrect offset type!"), context.response());
+                return;
             }
         } else {
             query.put("offset", String.valueOf(0));
@@ -257,11 +270,13 @@ public class BrowseControllerImpl implements BrowseController {
                 if (limit >= 0 && limit <= 100) {
                     query.put("limit", String.valueOf(limit));
                 } else {
-                    throw new ClientException("Incorrect limit type!");
+                    handlerError(new ClientException("Incorrect limit type!"), context.response());
+                    return;
                 }
 
             } catch (NumberFormatException e) {
-                throw new ClientException("Incorrect limit type!");
+                handlerError(new ClientException("Incorrect limit type!"), context.response());
+                return;
             }
         } else {
             query.put("limit", String.valueOf(10));
@@ -276,7 +291,8 @@ public class BrowseControllerImpl implements BrowseController {
                 int store = Integer.valueOf(context.<Map<String, String>>get("decodedParams").get("store"));
                 query.put("store", String.valueOf(store));
             } catch (NumberFormatException e) {
-                throw new ClientException("Incorrect store type!");
+                handlerError(new ClientException("Incorrect store type!"), context.response());
+                return;
             }
         } else {
             query.put("store", String.valueOf(3060));
@@ -361,7 +377,8 @@ public class BrowseControllerImpl implements BrowseController {
                 } else if (keyVal.length == 2 && PipedFilters.getByFilterName(keyVal[0]).equals(PipedFilters.TPNB)) {
                     validateTPNBArray(keyVal[1], query);
                 } else {
-                    throw new ClientException("Piped filters contain have been incorrectly specified");
+                    handlerError(new ClientException("Piped filters contain have been incorrectly specified"), context.response());
+                    return;
                 }
             }
         }
@@ -394,6 +411,7 @@ public class BrowseControllerImpl implements BrowseController {
             LOGGER.error(MARKER, "error occurred - {}", error.getMessage());
             response.setStatusCode(500);
         }
+        response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
         response.end(new JsonObject().put("error", error.getMessage()).encode());
     }
 }
