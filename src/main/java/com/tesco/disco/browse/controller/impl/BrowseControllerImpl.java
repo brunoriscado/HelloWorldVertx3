@@ -245,7 +245,7 @@ public class BrowseControllerImpl implements BrowseController {
         if (StringUtils.isNotBlank(context.<Map<String, String>>get("decodedParams").get("offset"))) {
             try {
                 int offset = Integer.valueOf(context.<Map<String, String>>get("decodedParams").get("offset"));
-                if (offset <= 0 && offset <= 100000) {
+                if (offset > 0 && offset < 100000) {
                     query.put("offset", String.valueOf(offset));
                 } else {
                     handlerError(new ClientException("Incorrect offset type!"), context.response());
