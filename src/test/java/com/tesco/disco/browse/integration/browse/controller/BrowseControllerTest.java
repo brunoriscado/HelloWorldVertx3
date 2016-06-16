@@ -337,7 +337,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testRequestFieldsWithZeroOffsetValue(TestContext context) {
         given().port(9003)
-                .when().get("/browse/?offset=0")
+                .when().get("/browse/?offset=-1")
                 .then()
                 .statusCode(400)
                 .body("error", is("Incorrect offset type!"));
@@ -356,6 +356,14 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     public void testRequestFieldsWithValidoffsetValue(TestContext context) {
         given().port(9003)
                 .when().get("/browse/?offset=14")
+                .then()
+                .statusCode(200);               
+    }
+
+    @Test
+    public void testRequestFieldsWithZerooffsetValue(TestContext context) {
+        given().port(9003)
+                .when().get("/browse/?offset=0")
                 .then()
                 .statusCode(200);               
     }
