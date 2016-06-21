@@ -32,7 +32,9 @@ public enum FieldsEnum {
 				AVAILABILITY("availability", "store_availability", Long.class),
 				NEW("new", "new"),
 				OFFER("offer", "offer"),
-				BRAND("brand", "brand");
+				BRAND("brand", "brand"),
+				DELIVERYRESTRICTIONS("DeliveryRestrictions","DeliveryRestrictions"),
+				BULKBUYLIMIT("BulkBuyLimit", "Messages", Object.class);
 
 				private String name;
 				private String remapName;

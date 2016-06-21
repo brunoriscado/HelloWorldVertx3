@@ -633,6 +633,74 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                 });
     }
 
+    @Test
+    public void testRequestRDGResponseSet(final TestContext testContext) {
+        JsonObject defaults1 = new JsonObject("{\"limit\":\"10\",\"store\":\"2007\",\"offset\":\"0\"," +
+                "\"results\":\"true\",\"totals\":\"true\"," +
+                "\"suggestions\":\"true\",\"geo\":\"uk\",\"distChannel\":\"ghs\",\"index\":\"ghs.products\"," +
+                "\"resType\":\"products\",\"config\":\"default\"}");
+        defaults1.put("fields", "\"" + "name" + "\"," + "\"" + "DeliveryRestrictions" + "\"")
+                .put("superDepartment", "Drinks")
+                .put("department", "Wine")
+                .put("aisle", "Red Wine")
+                .put("shelf", "Other Red Wines")
+                .put("brand", "Tesco");
+        Async async = testContext.async();
+        browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(),
+                TEMPLATE_ID,
+                GEO,
+                DistributionChannelsEnum.GHS.getChannelName(),
+                ResponseTypesEnum.PRODUCTS.getType(),
+                defaults1,
+                handle -> {
+                    JsonObject response = handle.result();
+                    JsonArray results = response.getJsonObject("uk").getJsonObject("ghs").getJsonObject("products").getJsonArray("results");
+                    results.stream().forEach(product -> {
+                        JsonObject prod = new JsonObject(Json.encode(product));
+                        testContext.assertNotNull(prod.getString("name"));
+                        testContext.assertNotNull(prod.getJsonObject("DeliveryRestrictions"));
+                         JsonArray arr = prod.getJsonObject("DeliveryRestrictions").getJsonArray("TimeRestricted");
+                         
+                         arr.forEach(rdg-> {
+                             JsonObject pr = new JsonObject(Json.encode(rdg));
+                             testContext.assertNotNull(pr.getString("Day"));
+                             testContext.assertNotNull(pr.getString("StartTime"));
+                             testContext.assertNotNull(pr.getString("EndTime"));
+                         });
+
+                    });
+                    async.complete();
+                });
+    }
+    
+    @Test
+    public void testRequestNULLRDGResponseSet(final TestContext testContext) {
+        JsonObject defaults1 = new JsonObject("{\"limit\":\"10\",\"store\":\"2077\",\"offset\":\"0\"," +
+                "\"results\":\"true\",\"totals\":\"true\"," +
+                "\"suggestions\":\"true\",\"geo\":\"uk\",\"distChannel\":\"ghs\",\"index\":\"ghs.products\"," +
+                "\"resType\":\"products\",\"config\":\"default\"}");
+        defaults1.put("fields", "\"" + "name" + "\"," + "\"" + "DeliveryRestrictions" + "\"")
+                .put("superDepartment", "Drinks")
+                .put("department", "Wine")
+                .put("aisle", "Red Wine")
+                .put("shelf", "Other Red Wines")
+                .put("brand", "Tesco");
+        Async async = testContext.async();
+        browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(),
+                TEMPLATE_ID,
+                GEO,
+                DistributionChannelsEnum.GHS.getChannelName(),
+                ResponseTypesEnum.PRODUCTS.getType(),
+                defaults1,
+                handle -> {
+                    JsonObject response = handle.result();
+                    JsonArray results = response.getJsonObject("uk").getJsonObject("ghs").getJsonObject("products").getJsonArray("results");
+                    testContext.assertEquals(results.size(), 0);
+                    async.complete();
+                });
+    }
+
+
     @AfterClass
     public static void tearDown() {
         shutdownEmbeddedElasticsearchServer();

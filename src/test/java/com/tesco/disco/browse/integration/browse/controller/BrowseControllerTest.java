@@ -289,6 +289,29 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     }
 
     @Test
+    public void testRequestRDGResponseTest() {
+        given().port(9003)
+                .when().get("/browse/?superDepartment=Drinks&department=Wine&aisle=Red+Wine&sh\n" +
+                "\n" +
+                "elf=Other+Red+Wines&fields=name,DeliveryRestrictions&pretty=true&store=2007&responseSet=results&brand=Tesco")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    public void testRequestValidateRDGResponseTest(TestContext context) {
+        JsonObject body = new JsonObject(given().port(9003)
+                .when().get("/browse/?superDepartment=Drinks&department=Wine&aisle=Red+Wine&shelf=Other+Red+Wines&fields=name,DeliveryRestrictions&pretty=true&store=2007&responseSet=results&brand=Tesco")
+                .thenReturn().body().print());
+        JsonArray results = body.getJsonObject("uk").getJsonObject("ghs").getJsonObject("products").getJsonArray("results");
+        results.stream().forEach(product -> {
+            JsonObject prod = new JsonObject(Json.encode(product));
+            context.assertNotNull(prod.getString("name"));
+            context.assertNotNull(prod.getJsonObject("DeliveryRestrictions"));
+        });
+    }
+
+    @Test
     public void testRequestWithAllFields(TestContext context) {
         JsonObject body = new JsonObject(given().port(9003)
                 .when().get("/browse/?fields=tpnb,unitprice,price,name,availability&responseSet=results")
@@ -310,7 +333,42 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
                 .statusCode(400)
                 .body("error", is("Incorrect Fields specified!"));
     }
+    
+    @Test
+    public void testRequestFieldsWithZeroOffsetValue(TestContext context) {
+        given().port(9003)
+                .when().get("/browse/?offset=-1")
+                .then()
+                .statusCode(400)
+                .body("error", is("Incorrect offset type!"));
+    }
 
+    @Test
+    public void testRequestFieldsWithInvalidoffsetValue(TestContext context) {
+        given().port(9003)
+                .when().get("/browse/?offset=1000000")
+                .then()
+                .statusCode(400)
+                .body("error", is("Incorrect offset type!"));
+    }
+    
+    @Test
+    public void testRequestFieldsWithValidoffsetValue(TestContext context) {
+        given().port(9003)
+                .when().get("/browse/?offset=14")
+                .then()
+                .statusCode(200);               
+    }
+
+    @Test
+    public void testRequestFieldsWithZerooffsetValue(TestContext context) {
+        given().port(9003)
+                .when().get("/browse/?offset=0")
+                .then()
+                .statusCode(200);               
+    }
+
+    
     @Test
     public void testRequestEmptyFields(TestContext context) {
         JsonObject body = new JsonObject(given().port(9003)
