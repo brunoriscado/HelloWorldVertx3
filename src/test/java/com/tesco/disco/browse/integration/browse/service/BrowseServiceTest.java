@@ -719,7 +719,6 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
 						testContext.assertNotNull(prod.getBoolean("IsSpecialOffer"));
 						testContext.assertNotNull(prod.getBoolean("IsNew"));
 						testContext.assertNotNull(prod.getBoolean("offer"));
-						//testContext.assertNotNull(prod.getString("store_availability"));
 					});
 					async.complete();
 				});     
