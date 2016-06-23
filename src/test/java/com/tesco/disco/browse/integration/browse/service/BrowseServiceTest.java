@@ -635,15 +635,11 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
 
     @Test
     public void testRequestRDGResponseSet(final TestContext testContext) {
-        JsonObject defaults1 = new JsonObject("{\"limit\":\"10\",\"store\":\"2007\",\"offset\":\"0\"," +
-                "\"results\":\"true\",\"totals\":\"true\"," +
-                "\"suggestions\":\"true\",\"geo\":\"uk\",\"distChannel\":\"ghs\",\"index\":\"ghs.products\"," +
-                "\"resType\":\"products\",\"config\":\"default\"}");
-        defaults1.put("fields", "\"" + "name" + "\"," + "\"" + "DeliveryRestrictions" + "\"")
+        defaults.put("fields", "\"" + "name" + "\"," + "\"" + "DeliveryRestrictions" + "\"")
                 .put("superDepartment", "Drinks")
-                .put("department", "Wine")
-                .put("aisle", "Red Wine")
-                .put("shelf", "Other Red Wines")
+                .put("department", "Bottled Water")
+                .put("aisle", "Flavoured Water")
+                .put("shelf", "Flavoured Water")  
                 .put("brand", "Tesco");
         Async async = testContext.async();
         browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(),
@@ -651,7 +647,7 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                 GEO,
                 DistributionChannelsEnum.GHS.getChannelName(),
                 ResponseTypesEnum.PRODUCTS.getType(),
-                defaults1,
+                defaults,
                 handle -> {
                     JsonObject response = handle.result();
                     JsonArray results = response.getJsonObject("uk").getJsonObject("ghs").getJsonObject("products").getJsonArray("results");
