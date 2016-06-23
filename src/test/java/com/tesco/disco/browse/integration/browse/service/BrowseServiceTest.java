@@ -695,6 +695,35 @@ public class BrowseServiceTest extends AbstractElasticsearchTestVerticle impleme
                     async.complete();
                 });
     }
+    
+	@Test
+	public void testRequestForAllPosibleFields(final TestContext testContext) {
+		defaults.put("fields",
+				"\"" + "name" + "\"," + "\"" + "IsSpecialOffer" + "\"," + "\"" + "price" + "\"," + "\"" + "IsNew"
+						+ "\"," + "\"" + "offer" + "\"," + "\"" + "store_availability" + "\"")
+				.put("superDepartment", "Drinks").put("department", "Bottled Water").put("aisle", "Flavoured Water")
+				.put("shelf", "Flavoured Water").put("brand", "Tesco");
+		Async async = testContext.async();
+		browseService.getBrowseResults(IndicesEnum.GHS_PRODUCTS.getIndex(), TEMPLATE_ID, GEO,
+				DistributionChannelsEnum.GHS.getChannelName(), ResponseTypesEnum.PRODUCTS.getType(), defaults,
+				handle -> {
+					JsonObject response = handle.result();
+
+					JsonArray results = response.getJsonObject("uk").getJsonObject("ghs").getJsonObject("products")
+							.getJsonArray("results");
+					results.stream().forEach(product -> {
+						JsonObject prod = new JsonObject(Json.encode(product));
+						
+						testContext.assertNotNull(prod.getString("name"));
+						testContext.assertNotNull(prod.getString("price"));
+						testContext.assertNotNull(prod.getBoolean("IsSpecialOffer"));
+						testContext.assertNotNull(prod.getBoolean("IsNew"));
+						testContext.assertNotNull(prod.getBoolean("offer"));
+						//testContext.assertNotNull(prod.getString("store_availability"));
+					});
+					async.complete();
+				});     
+	}
 
 
     @AfterClass
