@@ -167,7 +167,7 @@ public class BrowseControllerTest extends AbstractElasticsearchTestVerticle impl
     @Test
     public void testIncorrectBrowseEndpoint(TestContext testContext) {
         given().port(9003)
-                .when().get("/browse/?superDepartment=Something")
+                .when().get("/browsy/?superDepartment=Something")
                 .then()
                 .statusCode(404);
     }
