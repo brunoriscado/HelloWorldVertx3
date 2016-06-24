@@ -83,8 +83,8 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
         bulkRequest.refresh(true);
         loadData(bulkRequest, "ghs.taxonomy", "taxonomy", "taxonomyData/taxonomy.json");
 
-        bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.taxonomy.default").source(
-                TestingUtilities.buildQuery("src/test/resources/taxonomyTemplate/", "ghs.taxonomy.default")));
+        bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.taxonomy.browse.default").source(
+                TestingUtilities.buildQuery("src/test/resources/taxonomyTemplate/", "ghs.taxonomy.browse.default")));
 
         getClient().bulk(bulkRequest).get();
 
