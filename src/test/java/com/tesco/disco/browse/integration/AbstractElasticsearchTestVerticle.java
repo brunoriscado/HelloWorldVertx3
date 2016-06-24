@@ -92,8 +92,8 @@ public class AbstractElasticsearchTestVerticle extends AbstractVerticle {
         bulkRequest.refresh(true);
         loadData(bulkRequest, "ghs.products", "product", "productsData/products.json");
 
-        bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.products.default").source(
-                TestingUtilities.buildQuery("src/test/resources/productsTemplate/", "ghs.products.default")));
+        bulkRequest.add(new IndexRequest(".scripts", "mustache", "ghs.products.browse.default").source(
+                TestingUtilities.buildQuery("src/test/resources/productsTemplate/", "ghs.products.browse.default")));
 
         getClient().bulk(bulkRequest).get();
         logger.info("Loaded data into Elasticsearch");
