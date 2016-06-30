@@ -154,30 +154,34 @@ public class BrowseControllerImpl implements BrowseController {
             browseService.getBrowseResults(index, templateId, geo, distChannel, responseType, payload, handler.toHandler());
             response.setChunked(true);
             handler.flatMap(esResponse -> {
-                if (esResponse.succeeded()) {
-                    return Observable.just(esResponse.result());
-                } else {
-                    return Observable.error(esResponse.cause());
-                }
+                return validateResponseSuccess(esResponse);
             })
-                    .subscribe(
-                            next -> {
-                                LOGGER.debug(MARKER, "response from elastic browse service: {}", next.encode());
-                                response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
-                                if (payload != null && payload.containsKey("pretty") && payload.getBoolean("pretty")) {
-                                    response.write(next.encodePrettily());
-                                } else {
-                                    response.write(next.encode());
-                                }
-                            },
-                            error -> {
-                                LOGGER.error(MARKER, "error obtaining response from elastic browse service verticle: {}", error.getMessage());
-                                handlerError(error, response);
-                            },
-                            () -> {
-                                response.setStatusCode(200);
-                                response.end();
-                            });
+            .subscribe(
+                    next -> {
+                        LOGGER.debug(MARKER, "response from elastic browse service: {}", next.encode());
+                        response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
+                        if (payload != null && payload.containsKey("pretty") && payload.getBoolean("pretty")) {
+                            response.write(next.encodePrettily());
+                        } else {
+                            response.write(next.encode());
+                        }
+                    },
+                    error -> {
+                        LOGGER.error(MARKER, "error obtaining response from elastic browse service verticle: {}", error.getMessage());
+                        handlerError(error, response);
+                    },
+                    () -> {
+                        response.setStatusCode(200);
+                        response.end();
+                    });
+        }
+    }
+
+    private Observable<JsonObject> validateResponseSuccess(AsyncResult<JsonObject> esResponse) {
+        if (esResponse.succeeded()) {
+            return Observable.just(esResponse.result());
+        } else {
+            return Observable.error(esResponse.cause());
         }
     }
 
