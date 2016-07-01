@@ -10,12 +10,12 @@ import com.tesco.disco.browse.model.taxonomy.*;
 import com.tesco.disco.browse.service.BrowseService;
 import com.tesco.disco.browse.service.elasticsearch.ElasticSearchClientFactory;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.rxjava.core.Future;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.serviceproxy.ProxyHelper;
 import org.elasticsearch.action.search.SearchResponse;
@@ -54,12 +54,12 @@ public class BrowseServiceImpl implements BrowseService {
 
     @Override
     public void getBrowseResults(String index,
-            String templateId,
-            String geo,
-            String distChannel,
-            String responseType,
-            JsonObject query,
-            Handler<AsyncResult<JsonObject>> response) {
+                                 String templateId,
+                                 String geo,
+                                 String distChannel,
+                                 String responseType,
+                                 JsonObject query,
+                                 Handler<AsyncResult<JsonObject>> response) {
         LOGGER.info(MARKER, "Fetching browse results for index: {}, templateId: {} - using query params: {} ",
                 index, templateId, query != null ? query.encode() : "");
         JsonObject params = new JsonObject()
@@ -71,41 +71,49 @@ public class BrowseServiceImpl implements BrowseService {
         if (query != null) {
             params.mergeIn(query);
         }
-        vertx.<JsonObject>executeBlockingObservable(handleBlocking -> {
-            LOGGER.debug(MARKER, "Executing elastic templated query - {}", params.encode());
-            JsonObject result = null;
-            SearchResponse res = client.prepareSearch()
-                    .setIndices(index)
-                    .setTemplateName(IndicesEnum.getByIndexName(index).getIndex() + "." + templateId)
-                    .setTemplateType(ScriptService.ScriptType.INDEXED)
-                    .setTemplateParams(query == null ? new HashMap<String, Object>() : convertJsonArrays(params))
-                    .execute().actionGet();
-            try {
-                XContentBuilder builder = XContentFactory.jsonBuilder();
-                builder.startObject();
-                res.toXContent(builder, SearchResponse.EMPTY_PARAMS);
-                builder.endObject();
-                result = new JsonObject(builder.string());
-            } catch (IOException e) {
-                LOGGER.warn(MARKER, "error parsing elastic query response - {}", e.getMessage());
-                handleBlocking.fail(new ServiceException(e.getMessage()));
-            }
-            handleBlocking.complete(result);
-        })
-        .flatMap(elasticResponse -> {
-            return getApiResponse(elasticResponse, params);
-        })
-        .subscribe(
-                next -> {
-                    response.handle(Future.succeededFuture(next));
-                },
-                error -> {
-                    LOGGER.error(MARKER, "Error obtaining/mapping elasticsearch response");
-                    response.handle(Future.failedFuture(error));
-                },
-                () -> {
-                    LOGGER.debug(MARKER, "Finished sending elasticsearch browse request to controller verticle");
-                });
+        blockingContext(params, index, templateId, query)
+                .flatMap(elasticResponse -> {
+                    return getApiResponse(elasticResponse, params);
+                })
+                .subscribe(
+                        next -> {
+                            response.handle(io.vertx.core.Future.succeededFuture(next));
+                        },
+                        error -> {
+                            LOGGER.error(MARKER, "Error obtaining/mapping elasticsearch response");
+                            response.handle(io.vertx.core.Future.failedFuture(error));
+                        },
+                        () -> {
+                            LOGGER.debug(MARKER, "Finished sending elasticsearch browse request to controller verticle");
+                        });
+    }
+
+    private Observable<JsonObject> blockingContext(JsonObject params, String index, String templateId, JsonObject query) {
+        return vertx.<JsonObject>executeBlockingObservable(handleBlocking -> {
+            executeSearchQueryRequest(params, index, templateId, query, handleBlocking);
+        });
+    }
+
+    private void executeSearchQueryRequest(JsonObject params, String index, String templateId, JsonObject query, Future<JsonObject> handleBlocking) {
+        LOGGER.debug(MARKER, "Executing elastic templated query - {}", params.encode());
+        JsonObject result = null;
+        SearchResponse res = client.prepareSearch()
+                .setIndices(index)
+                .setTemplateName(IndicesEnum.getByIndexName(index).getIndex() + "." + templateId)
+                .setTemplateType(ScriptService.ScriptType.INDEXED)
+                .setTemplateParams(query == null ? new HashMap<String, Object>() : convertJsonArrays(params))
+                .execute().actionGet();
+        try {
+            XContentBuilder builder = XContentFactory.jsonBuilder();
+            builder.startObject();
+            res.toXContent(builder, SearchResponse.EMPTY_PARAMS);
+            builder.endObject();
+            result = new JsonObject(builder.string());
+        } catch (IOException e) {
+            LOGGER.warn(MARKER, "error parsing elastic query response - {}", e.getMessage());
+            handleBlocking.fail(new ServiceException(e.getMessage()));
+        }
+        handleBlocking.complete(result);
     }
 
     public Observable<JsonObject> getApiResponse(JsonObject elasticResponse, JsonObject params) {
@@ -398,7 +406,7 @@ public class BrowseServiceImpl implements BrowseService {
                 .onErrorResumeNext(Observable.just(taxonomy.toJson()));
     }
 
-				/**
+    /**
      * a bit of a hack to keep the elastic client happy with lists rather then jsonArrays
      */
     private Map<String, Object> convertJsonArrays(JsonObject query) {
@@ -453,7 +461,6 @@ public class BrowseServiceImpl implements BrowseService {
         }
         return properties;
     }
-
 
     public void unregister() {
         LOGGER.info(MARKER, "Unregistering verticle address: {} from the eventbus", BrowseService.class.getName());
