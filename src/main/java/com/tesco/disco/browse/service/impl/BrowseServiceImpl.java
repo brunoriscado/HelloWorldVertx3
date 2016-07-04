@@ -99,7 +99,7 @@ public class BrowseServiceImpl implements BrowseService {
         JsonObject result = null;
         SearchResponse res = client.prepareSearch()
                 .setIndices(index)
-                .setTemplateName(IndicesEnum.getByIndexName(index).getIndex() + "." + templateId)
+                .setTemplateName(IndicesEnum.getByIndexName(index).getIndex() + ".browse." + templateId)
                 .setTemplateType(ScriptService.ScriptType.INDEXED)
                 .setTemplateParams(query == null ? new HashMap<String, Object>() : convertJsonArrays(params))
                 .execute().actionGet();
