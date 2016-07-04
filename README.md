@@ -5,4 +5,4 @@ HelloWorld vertx3 app
 
 -Run execute: java -jar build/libs/helloworld-1.0.0-SNAPSHOT-all.jar
 
--Test request to push some load into the app: curl localhost:9003/test
+-Test request to push some load into the app (2s thread sleep paced requests): curl localhost:9003/test
