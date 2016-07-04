@@ -1,11 +1,10 @@
 package com.tesco.disco.browse.service.context;
 
 import com.tesco.disco.browse.service.BrowseService;
-import com.tesco.disco.browse.service.elasticsearch.ElasticSearchClientFactory;
 import com.tesco.disco.browse.service.impl.BrowseServiceImpl;
+import com.tesco.disco.browse.utils.Context;
 import io.vertx.core.json.JsonObject;
 import io.vertx.rxjava.core.Vertx;
-import com.tesco.search.commons.context.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -22,8 +21,6 @@ public class BrowseServiceContextImpl implements BrowseServiceContext {
     private JsonObject config;
     private BrowseService browseService;
 
-    private ElasticSearchClientFactory elasticSearchClientFactory;
-
     public BrowseServiceContextImpl(Vertx vertx, JsonObject config) {
         LOGGER.info(MARKER, "Initializing context container for browse service verticle");
         this.vertx = vertx;
@@ -32,8 +29,7 @@ public class BrowseServiceContextImpl implements BrowseServiceContext {
     }
 
     public void init() {
-        elasticSearchClientFactory = ElasticSearchClientFactory.getINSTANCE(config.getJsonObject("elasticsearch"));
-        browseService = new BrowseServiceImpl(vertx, elasticSearchClientFactory);
+        browseService = new BrowseServiceImpl(vertx);
     }
 
     public BrowseService getBrowseService() {
@@ -42,13 +38,5 @@ public class BrowseServiceContextImpl implements BrowseServiceContext {
 
     public void setBrowseService(BrowseService browseService) {
         this.browseService = browseService;
-    }
-
-    public ElasticSearchClientFactory getElasticSearchClientFactory() {
-        return elasticSearchClientFactory;
-    }
-
-    public void setElasticSearchClientFactory(ElasticSearchClientFactory elasticSearchClientFactory) {
-        this.elasticSearchClientFactory = elasticSearchClientFactory;
     }
 }

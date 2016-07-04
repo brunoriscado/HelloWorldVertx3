@@ -25,50 +25,9 @@
         </encoder>
     </appender>
 
-    <appender name="FILEHZ" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/discoBrowseAPI/hazelcast_browse_api.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/var/log/discoBrowseAPI/hazelcast_browse_api._%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>10</maxHistory>
-        </rollingPolicy>
-        <append>true</append>
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%marker] [%t] %-5level %logger{36}:%L - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <appender name="PROBE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/discoBrowseAPI/probeServer.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/var/log/discoBrowseAPI/probeServer._%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>10MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>10</maxHistory>
-        </rollingPolicy>
-        <append>true</append>
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%marker] [%t] %-5level %logger{36}:%L - %msg%n</pattern>
-        </encoder>
-    </appender>
-
     <logger name="com.tesco.disco.browse" level="INFO" additivity="false">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILESERVER" />
-    </logger>
-
-    <logger name="com.tesco.disco.browse.controller.vertx.ProbeVerticle" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT" />
-        <appender-ref ref="PROBE" />
-    </logger>
-
-    <logger name="com.hazelcast" level="DEBUG" additivity="false">
-        <appender-ref ref="FILEHZ" />
     </logger>
 
     <logger name="io.vertx" level="DEBUG">

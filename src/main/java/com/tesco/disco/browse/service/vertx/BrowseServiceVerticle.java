@@ -1,9 +1,7 @@
 package com.tesco.disco.browse.service.vertx;
 
-import com.tesco.disco.browse.controller.context.BrowseAPIContext;
 import com.tesco.disco.browse.service.context.BrowseServiceContext;
-import com.tesco.disco.browse.service.context.BrowseServiceContextImpl;
-import com.tesco.search.commons.context.ContextDelegator;
+import com.tesco.disco.browse.utils.ContextDelegator;
 import io.vertx.rxjava.core.AbstractVerticle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

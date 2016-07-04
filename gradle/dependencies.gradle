@@ -1,6 +1,4 @@
 repositories {
-    maven { url 'http://ess-nexus.westeurope.cloudapp.azure.com:8080/nexus/content/repositories/releases/' }
-    maven { url 'http://ess-nexus.westeurope.cloudapp.azure.com:8080/nexus/content/repositories/snapshots/' }
     mavenCentral()
     maven {
         url = 'http://oss.sonatype.org/content/repositories/snapshots/'
@@ -25,9 +23,6 @@ ext {
 }
 
 dependencies {
-    //Tesco
-    compile "com.tesco.search:search-commons:$searchCommonsVersion"
-
     //Commons
     compile group: "commons-collections", name: "commons-collections", version: "$commonsCollectionsVersion"
     compile group: "commons-lang", name: "commons-lang", version: "$commonsLangVersion"
@@ -48,28 +43,4 @@ dependencies {
     //Logging
     compile "org.slf4j:slf4j-api:$slf4jVersion"
     compile "ch.qos.logback:logback-classic:$logbackVersion"
-
-    compile group: "com.github.spullara.mustache.java", name: "compiler", version:"$moustacheVersion"
-    compile group: 'org.elasticsearch', name: 'elasticsearch', version:"$elasticsearchVersion"
-
-    //Test
-    testCompile "org.hamcrest:hamcrest-all:$hamcrestVersion"
-    testCompile (group: "junit", name: "junit", version: "$junitVersion") {
-        exclude group: 'org.hamcrest', module: 'hamcrest-all'
-    }
-    testCompile ("org.mockito:mockito-all:$mockitoVersion") {
-        exclude group: 'org.hamcrest', module: 'hamcrest-all'
-    }
-    testCompile ("io.vertx:vertx-unit:$vertxVersion") {
-        exclude group: 'org.hamcrest', module: 'hamcrest-all'
-    }
-    testCompile ("io.vertx:vertx-core:test-jar$vertxVersion") {
-        exclude group: 'org.hamcrest', module: 'hamcrest-all'
-    }
-    testCompile ("com.jayway.restassured:rest-assured:$restAssuredVersion") {
-        exclude group: 'org.hamcrest', module: 'hamcrest-all'
-    }
-    testCompile ("com.jayway.restassured:json-path:$restAssuredVersion") {
-        exclude group: 'org.hamcrest', module: 'hamcrest-all'
-    }
 }

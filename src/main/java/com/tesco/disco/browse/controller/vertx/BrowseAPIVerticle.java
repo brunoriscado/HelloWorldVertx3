@@ -2,7 +2,7 @@ package com.tesco.disco.browse.controller.vertx;
 
 
 import com.tesco.disco.browse.controller.context.BrowseAPIContext;
-import com.tesco.search.commons.context.ContextDelegator;
+import com.tesco.disco.browse.utils.ContextDelegator;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;

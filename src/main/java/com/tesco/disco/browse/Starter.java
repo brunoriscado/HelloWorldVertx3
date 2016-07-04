@@ -1,19 +1,15 @@
 package com.tesco.disco.browse;
 
-import com.tesco.disco.browse.utis.ConfigurationUtils;
+import com.tesco.disco.browse.utils.ConfigurationUtils;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.json.Json;
 import io.vertx.rxjava.core.AbstractVerticle;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import rx.Observable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by bruno on 21/04/16.

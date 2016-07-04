@@ -25,38 +25,9 @@ task generateServiceProxy(type: JavaCompile, description: 'Generates EBServicePr
 
 def generatedSources = ['com/tesco/**']
 
-test {
-    jacoco {
-        includes = generatedSources
-    }
-}
-
-jacoco {
-    toolVersion = "0.7.5.201505241946"
-}
-
-jacocoTestReport {
-    doFirst {
-        classDirectories = fileTree(dir: "${buildDir}/classes/main/").include(generatedSources)
-    }
-}
 
 tasks.withType(JavaCompile){
     options.compilerArgs << "-parameters"
-}
-
-test {
-    afterTest { desc, result ->
-        def time = result.endTime - result.startTime
-        println "Test [${desc.className}] ${desc.name}: ${result.resultType} in ${time}ms"
-    }
-    testLogging {
-        afterSuite { desc, result ->
-            if (!desc.parent) { // will match the outermost suite
-                println "Results: ${result.resultType} -->  ${result.testCount} tests ( ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped ) "
-            }
-        }
-    }
 }
 
 jar {
@@ -100,50 +71,9 @@ compileJava() {
     dependsOn generatePom
 }
 
-if (!hasProperty('userName')) {
-    ext.userName = ''
-}
-if (!hasProperty('password')) {
-    ext.password = ''
-}
-if (!hasProperty('nexusReleaseRepo')) {
-    ext.nexusReleaseRepo = "http://ess-nexus.westeurope.cloudapp.azure.com:8080/nexus/content/repositories/releases/"
-}
-
-if (!hasProperty('nexusSnapshotsRepo')) {
-    ext.nexusSnapshotsRepo = "http://ess-nexus.westeurope.cloudapp.azure.com:8080/nexus/content/repositories/snapshots/"
-}
-
-ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-
-signing {
-    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
-}
-
 repositories {
     flatDir {
         name "fileRepo"
         dirs "repo"
-    }
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            pom.version = this.properties['version']
-            pom.artifactId = this.properties['mavenArtifactId']
-            pom.groupId = this.properties['group']
-
-            repository(url: "$nexusReleaseRepo") {
-                authentication(userName: userName, password: password)
-            }
-
-            snapshotRepository(url: "$nexusSnapshotsRepo") {
-                authentication(userName: userName, password: password)
-            }
-        }
     }
 }
