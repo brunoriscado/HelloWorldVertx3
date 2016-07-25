@@ -64,7 +64,7 @@ public class BrowseServiceImpl implements BrowseService {
             LOGGER.warn(MARKER, "error doing some blocking stuff - {}", e.getMessage());
             handleBlocking.fail(new ServiceException(e.getMessage()));
         }
-        handleBlocking.complete(new JsonObject().put("test", "payload response"));
+        handleBlocking.complete(payload);
     }
 
     public void unregister() {
