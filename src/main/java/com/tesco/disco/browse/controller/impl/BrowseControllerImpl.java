@@ -3,7 +3,7 @@ package com.tesco.disco.browse.controller.impl;
 import com.tesco.disco.browse.controller.BrowseController;
 import com.tesco.disco.browse.exceptions.ClientException;
 import com.tesco.disco.browse.exceptions.ServiceException;
-import com.tesco.disco.browse.service.BrowseService;
+import com.tesco.disco.browse.service.rxjava.BrowseService;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.http.HttpHeaders;
@@ -68,38 +68,26 @@ public class BrowseControllerImpl implements BrowseController {
     public void browse(JsonObject payload, HttpServerResponse response) {
         LOGGER.info(MARKER, "Handling browse request using query params: {}", payload != null ? payload.encode() : "");
         if(!response.ended()) {
-            ObservableHandler<AsyncResult<JsonObject>> handler = RxHelper.observableHandler();
-            browseService.getBrowseResults(payload, handler.toHandler());
             response.setChunked(true);
-            handler.flatMap(esResponse -> {
-                return validateResponseSuccess(esResponse);
-            })
-            .subscribe(
-                    next -> {
-                        LOGGER.debug(MARKER, "response from elastic browse service: {}", next.encode());
-                        response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
-                        if (payload != null && payload.containsKey("pretty") && payload.getBoolean("pretty")) {
-                            response.write(next.encodePrettily());
-                        } else {
-                            response.write(next.encode());
-                        }
-                    },
-                    error -> {
-                        LOGGER.error(MARKER, "error obtaining response from elastic browse service verticle: {}", error.getMessage());
-                        handlerError(error, response);
-                    },
-                    () -> {
-                        response.setStatusCode(200);
-                        response.end();
-                    });
-        }
-    }
-
-    private Observable<JsonObject> validateResponseSuccess(AsyncResult<JsonObject> esResponse) {
-        if (esResponse.succeeded()) {
-            return Observable.just(esResponse.result());
-        } else {
-            return Observable.error(esResponse.cause());
+            browseService.getBrowseResultsObservable(payload)
+                .subscribe(
+                        next -> {
+                            LOGGER.debug(MARKER, "response from elastic browse service: {}", next.encode());
+                            response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
+                            if (payload != null && payload.containsKey("pretty") && payload.getBoolean("pretty")) {
+                                response.write(next.encodePrettily());
+                            } else {
+                                response.write(next.encode());
+                            }
+                        },
+                        error -> {
+                            LOGGER.error(MARKER, "error obtaining response from elastic browse service verticle: {}", error.getMessage());
+                            handlerError(error, response);
+                        },
+                        () -> {
+                            response.setStatusCode(200);
+                            response.end();
+                        });
         }
     }
 

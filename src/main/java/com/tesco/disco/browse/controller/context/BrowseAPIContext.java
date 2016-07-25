@@ -1,7 +1,7 @@
 package com.tesco.disco.browse.controller.context;
 
 import com.tesco.disco.browse.controller.BrowseController;
-import com.tesco.disco.browse.service.BrowseService;
+import com.tesco.disco.browse.service.rxjava.BrowseService;
 import io.vertx.rxjava.ext.web.Router;
 
 /**

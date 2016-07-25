@@ -23,7 +23,7 @@ public class BrowseAPIContextImpl implements BrowseAPIContext {
     private Vertx vertx;
     private JsonObject config;
     private Router router;
-    private BrowseService browseService;
+    private com.tesco.disco.browse.service.rxjava.BrowseService browseService;
     private BrowseController browseController;
 
     public BrowseAPIContextImpl(Vertx vertx, JsonObject config) {
@@ -35,15 +35,15 @@ public class BrowseAPIContextImpl implements BrowseAPIContext {
     public void init() {
         LOGGER.info(MARKER, "Initializing API context container");
         router = Router.router(vertx);
-        browseService = ProxyHelper.createProxy(BrowseService.class, ((io.vertx.core.Vertx)vertx.getDelegate()), BrowseService.class.getName());
+        browseService = new com.tesco.disco.browse.service.rxjava.BrowseService(ProxyHelper.createProxy(BrowseService.class, ((io.vertx.core.Vertx)vertx.getDelegate()), BrowseService.class.getName()));
         browseController = new BrowseControllerImpl(vertx, router, browseService);
     }
 
-    public BrowseService getBrowseService() {
+    public com.tesco.disco.browse.service.rxjava.BrowseService getBrowseService() {
         return browseService;
     }
 
-    public void setBrowseService(BrowseService browseService) {
+    public void setBrowseService(com.tesco.disco.browse.service.rxjava.BrowseService browseService) {
         this.browseService = browseService;
     }
 
