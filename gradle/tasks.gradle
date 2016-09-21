@@ -40,7 +40,7 @@ jar {
 task fatJar(type: Jar) {
     manifest {
         attributes('Main-Class': 'io.vertx.core.Launcher',
-                'Main-Verticle': 'com.tesco.disco.browse.Starter')
+                'Main-Verticle': 'com.tesco.hello.Starter')
     }
     baseName = this.properties['mavenArtifactId']
     group = this.properties['group']

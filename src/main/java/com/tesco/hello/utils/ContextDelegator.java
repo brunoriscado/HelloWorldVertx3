@@ -1,4 +1,4 @@
-package com.tesco.disco.browse.utils;
+package com.tesco.hello.utils;
 
 
 import io.vertx.core.Future;
@@ -16,17 +16,17 @@ import java.lang.reflect.InvocationTargetException;
  * Created by bruno on 21/04/16.
  */
 public class ContextDelegator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(com.tesco.disco.browse.utils.ContextDelegator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContextDelegator.class);
     private static final Marker MARKER = MarkerFactory.getMarker("COMMONS-CONTEXT");
-    private static com.tesco.disco.browse.utils.ContextDelegator INSTANCE = null;
+    private static ContextDelegator INSTANCE = null;
 
     private ContextDelegator() {
     }
 
     //Passing both the config and vertx instance separately, because it is quite useful for test contexts
-    public static com.tesco.disco.browse.utils.ContextDelegator getInstance() {
+    public static ContextDelegator getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new com.tesco.disco.browse.utils.ContextDelegator();
+            INSTANCE = new ContextDelegator();
         }
         return INSTANCE;
     }

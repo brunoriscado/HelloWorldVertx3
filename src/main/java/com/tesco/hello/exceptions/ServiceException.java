@@ -1,4 +1,4 @@
-package com.tesco.disco.browse.exceptions;
+package com.tesco.hello.exceptions;
 
 /**
 	* Created by bruno on 24/04/16.

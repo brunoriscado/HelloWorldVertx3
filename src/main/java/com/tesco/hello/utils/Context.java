@@ -1,4 +1,4 @@
-package com.tesco.disco.browse.utils;
+package com.tesco.hello.utils;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
