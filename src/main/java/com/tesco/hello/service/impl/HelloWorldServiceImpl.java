@@ -1,7 +1,7 @@
-package com.tesco.disco.browse.service.impl;
+package com.tesco.hello.service.impl;
 
-import com.tesco.disco.browse.exceptions.ServiceException;
-import com.tesco.disco.browse.service.BrowseService;
+import com.tesco.hello.exceptions.ServiceException;
+import com.tesco.hello.service.HelloWorldService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.MessageConsumer;
@@ -18,24 +18,24 @@ import rx.Observable;
 /**
  * Created by bruno on 20/04/16.
  */
-public class BrowseServiceImpl implements BrowseService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BrowseServiceImpl.class);
+public class HelloWorldServiceImpl implements HelloWorldService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloWorldServiceImpl.class);
     private static final Marker MARKER = MarkerFactory.getMarker("SERVICE");
     private MessageConsumer<JsonObject> consumer;
     private Vertx vertx;
 
-    public BrowseServiceImpl() {
+    public HelloWorldServiceImpl() {
     }
 
-    public BrowseServiceImpl(Vertx vertx) {
+    public HelloWorldServiceImpl(Vertx vertx) {
         this.vertx = vertx;
-        consumer = ProxyHelper.registerService(BrowseService.class,
-                (io.vertx.core.Vertx) vertx.getDelegate(), this, BrowseService.class.getName());
+        consumer = ProxyHelper.registerService(HelloWorldService.class,
+                (io.vertx.core.Vertx) vertx.getDelegate(), this, HelloWorldService.class.getName());
     }
 
     @Override
-    public void getBrowseResults(JsonObject payload, Handler<AsyncResult<JsonObject>> response) {
-        LOGGER.info(MARKER, "Fetching browse results using payload: {} ", payload != null ? payload.encode() : "");
+    public void getHelloWorldResults(JsonObject payload, Handler<AsyncResult<JsonObject>> response) {
+        LOGGER.info(MARKER, "Fetching test results using payload: {} ", payload != null ? payload.encode() : "");
         blockingContext(payload)
                 .subscribe(
                         next -> {
@@ -46,7 +46,7 @@ public class BrowseServiceImpl implements BrowseService {
                             response.handle(io.vertx.core.Future.failedFuture(error));
                         },
                         () -> {
-                            LOGGER.debug(MARKER, "Finished sending elasticsearch browse request to controller verticle");
+                            LOGGER.debug(MARKER, "Finished sending elasticsearch test request to controller verticle");
                         });
     }
 
@@ -68,7 +68,7 @@ public class BrowseServiceImpl implements BrowseService {
     }
 
     public void unregister() {
-        LOGGER.info(MARKER, "Unregistering verticle address: {} from the eventbus", BrowseService.class.getName());
+        LOGGER.info(MARKER, "Unregistering verticle address: {} from the eventbus", HelloWorldService.class.getName());
         ProxyHelper.unregisterService(consumer);
     }
 }

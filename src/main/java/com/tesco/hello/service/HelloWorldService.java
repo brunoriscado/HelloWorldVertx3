@@ -1,4 +1,4 @@
-package com.tesco.disco.browse.service;
+package com.tesco.hello.service;
 
 import io.vertx.codegen.annotations.ProxyGen;
 import io.vertx.codegen.annotations.VertxGen;
@@ -11,6 +11,6 @@ import io.vertx.core.json.JsonObject;
  */
 @ProxyGen
 @VertxGen
-public interface BrowseService {
-    void getBrowseResults(JsonObject payload, Handler<AsyncResult<JsonObject>> response);
+public interface HelloWorldService {
+    void getHelloWorldResults(JsonObject payload, Handler<AsyncResult<JsonObject>> response);
 }

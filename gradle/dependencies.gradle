@@ -3,6 +3,7 @@ repositories {
     maven {
         url = 'http://oss.sonatype.org/content/repositories/snapshots/'
     }
+    mavenLocal()
 }
 
 ext {
@@ -23,10 +24,14 @@ ext {
 }
 
 dependencies {
+    compile "com.tesco:disco-swagger:1.0.0-SNAPSHOT"
+
     //Commons
+
     compile group: "commons-collections", name: "commons-collections", version: "$commonsCollectionsVersion"
     compile group: "commons-lang", name: "commons-lang", version: "$commonsLangVersion"
 
+    compile "io.vertx:vertx-unit:$vertxVersion"
     //Vertx
     compile "io.vertx:vertx-core:$vertxVersion"
     compile "io.vertx:vertx-web:$vertxVersion"

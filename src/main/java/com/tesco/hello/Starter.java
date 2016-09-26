@@ -1,6 +1,6 @@
-package com.tesco.disco.browse;
+package com.tesco.hello;
 
-import com.tesco.disco.browse.utils.ConfigurationUtils;
+import com.tesco.hello.utils.ConfigurationUtils;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.json.Json;
 import io.vertx.rxjava.core.AbstractVerticle;

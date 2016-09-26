@@ -1,17 +1,14 @@
-package com.tesco.disco.browse.controller.impl;
+package com.tesco.hello.controller.impl;
 
-import com.tesco.disco.browse.controller.BrowseController;
-import com.tesco.disco.browse.exceptions.ClientException;
-import com.tesco.disco.browse.exceptions.ServiceException;
-import com.tesco.disco.browse.service.rxjava.BrowseService;
+import com.tesco.hello.controller.HelloWorldController;
+import com.tesco.hello.exceptions.ClientException;
+import com.tesco.hello.exceptions.ServiceException;
+import com.tesco.hello.service.rxjava.HelloWorldService;
 import io.netty.handler.codec.http.QueryStringDecoder;
-import io.vertx.core.AsyncResult;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.impl.MimeMapping;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
-import io.vertx.rx.java.ObservableHandler;
-import io.vertx.rx.java.RxHelper;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.core.http.HttpServerResponse;
 import io.vertx.rxjava.ext.web.Router;
@@ -20,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-import rx.Observable;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -29,15 +25,15 @@ import java.util.Map;
 /**
  * Created by bruno on 20/04/16.
  */
-public class BrowseControllerImpl implements BrowseController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BrowseControllerImpl.class.getName());
+public class HelloWorldControllerImpl implements HelloWorldController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloWorldControllerImpl.class.getName());
     private static final Marker MARKER = MarkerFactory.getMarker("CONTROLLER");
     private Vertx vertx;
-    private BrowseService browseService;
+    private HelloWorldService helloWorldService;
 
-    public BrowseControllerImpl(Vertx vertx, Router router, BrowseService browseService) {
+    public HelloWorldControllerImpl(Vertx vertx, Router router, HelloWorldService helloWorldService) {
         this.vertx = vertx;
-        this.browseService = browseService;
+        this.helloWorldService = helloWorldService;
         init(router);
     }
 
@@ -46,7 +42,7 @@ public class BrowseControllerImpl implements BrowseController {
         Router subRouter = Router.router(vertx);
         subRouter.route().handler(this::queryStringDecoder);
 
-        subRouter.get("/test/*").handler(this::browseProductsHandler);
+        subRouter.get("/test/*").handler(this::testHandler);
         router.mountSubRouter("/", subRouter);
     }
 
@@ -60,19 +56,19 @@ public class BrowseControllerImpl implements BrowseController {
         context.next();
     };
 
-    private void browseProductsHandler(RoutingContext context) {
-        LOGGER.debug(MARKER, "Handling browse request - {}", context.request().absoluteURI());
-        browse(new JsonObject().put("test", "payload"), context.response());
+    private void testHandler(RoutingContext context) {
+        LOGGER.debug(MARKER, "Handling test request - {}", context.request().absoluteURI());
+        test(new JsonObject().put("test", context.<Map<String, String>>get("decodedParams").get("q")), context.response());
     }
 
-    public void browse(JsonObject payload, HttpServerResponse response) {
-        LOGGER.info(MARKER, "Handling browse request using query params: {}", payload != null ? payload.encode() : "");
+    public void test(JsonObject payload, HttpServerResponse response) {
+        LOGGER.info(MARKER, "Handling test request using query params: {}", payload != null ? payload.encode() : "");
         if(!response.ended()) {
             response.setChunked(true);
-            browseService.getBrowseResultsObservable(payload)
+            helloWorldService.getHelloWorldResultsObservable(payload)
                 .subscribe(
                         next -> {
-                            LOGGER.debug(MARKER, "response from elastic browse service: {}", next.encode());
+                            LOGGER.debug(MARKER, "response from elastic test service: {}", next.encode());
                             response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
                             if (payload != null && payload.containsKey("pretty") && payload.getBoolean("pretty")) {
                                 response.write(next.encodePrettily());
@@ -81,7 +77,7 @@ public class BrowseControllerImpl implements BrowseController {
                             }
                         },
                         error -> {
-                            LOGGER.error(MARKER, "error obtaining response from elastic browse service verticle: {}", error.getMessage());
+                            LOGGER.error(MARKER, "error obtaining response from elastic test service verticle: {}", error.getMessage());
                             handlerError(error, response);
                         },
                         () -> {
