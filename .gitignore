@@ -7,7 +7,6 @@
 .settings
 .yardoc
 .yardopts
-.openshift
 bin
 build
 target
@@ -21,5 +20,6 @@ test-tmp
 *.class
 .vertx/
 logs/
+log/
 src/main/java/generated-src/
 
