@@ -58,23 +58,18 @@ public class HelloWorldControllerImpl implements HelloWorldController {
 
     private void testHandler(RoutingContext context) {
         LOGGER.debug(MARKER, "Handling test request - {}", context.request().absoluteURI());
-        test(new JsonObject().put("test", context.<Map<String, String>>get("decodedParams").get("q")), context.response());
+        test(context.response());
     }
 
-    public void test(JsonObject payload, HttpServerResponse response) {
-        LOGGER.info(MARKER, "Handling test request using query params: {}", payload != null ? payload.encode() : "");
+    public void test(HttpServerResponse response) {
         if(!response.ended()) {
             response.setChunked(true);
-            helloWorldService.getHelloWorldResultsObservable(payload)
+            helloWorldService.getHelloWorldResultsObservable()
                 .subscribe(
                         next -> {
                             LOGGER.debug(MARKER, "response from elastic test service: {}", next.encode());
                             response.headers().add(HttpHeaders.CONTENT_TYPE.toString(), MimeMapping.getMimeTypeForExtension("json"));
-                            if (payload != null && payload.containsKey("pretty") && payload.getBoolean("pretty")) {
-                                response.write(next.encodePrettily());
-                            } else {
-                                response.write(next.encode());
-                            }
+                            response.write(next.encodePrettily());
                         },
                         error -> {
                             LOGGER.error(MARKER, "error obtaining response from elastic test service verticle: {}", error.getMessage());

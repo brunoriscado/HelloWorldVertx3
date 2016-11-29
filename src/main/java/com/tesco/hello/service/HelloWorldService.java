@@ -12,5 +12,5 @@ import io.vertx.core.json.JsonObject;
 @ProxyGen
 @VertxGen
 public interface HelloWorldService {
-    void getHelloWorldResults(JsonObject payload, Handler<AsyncResult<JsonObject>> response);
+    void getHelloWorldResults(Handler<AsyncResult<JsonObject>> response);
 }

@@ -7,5 +7,5 @@ import io.vertx.rxjava.core.http.HttpServerResponse;
  * Created by bruno on 20/04/16.
  */
 public interface HelloWorldController {
-    void test(JsonObject payload, HttpServerResponse response);
+    void test(HttpServerResponse response);
 }

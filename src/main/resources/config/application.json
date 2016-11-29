@@ -14,7 +14,7 @@
       "options": {
         "config": {
           "context": "com.tesco.hello.controller.context.HelloWorldAPIContextImpl",
-          "port": 9003,
+          "port": 9007,
           "host": "0.0.0.0"
         }
       }

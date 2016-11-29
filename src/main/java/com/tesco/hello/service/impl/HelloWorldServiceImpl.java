@@ -34,9 +34,9 @@ public class HelloWorldServiceImpl implements HelloWorldService {
     }
 
     @Override
-    public void getHelloWorldResults(JsonObject payload, Handler<AsyncResult<JsonObject>> response) {
-        LOGGER.info(MARKER, "Fetching test results using payload: {} ", payload != null ? payload.encode() : "");
-        blockingContext(payload)
+    public void getHelloWorldResults(Handler<AsyncResult<JsonObject>> response) {
+        vertx.fileSystem().readFileObservable("src/main/resources/test.json")
+                .map(fileContents -> new JsonObject(fileContents.toString()))
                 .subscribe(
                         next -> {
                             response.handle(io.vertx.core.Future.succeededFuture(next));
@@ -48,23 +48,6 @@ public class HelloWorldServiceImpl implements HelloWorldService {
                         () -> {
                             LOGGER.debug(MARKER, "Finished sending elasticsearch test request to controller verticle");
                         });
-    }
-
-    private Observable<JsonObject> blockingContext(JsonObject payload) {
-        return vertx.<JsonObject>executeBlockingObservable(handleBlocking -> {
-            executeSearchQueryRequest(payload, handleBlocking);
-        });
-    }
-
-    private void executeSearchQueryRequest(JsonObject payload, Future<JsonObject> handleBlocking) {
-        LOGGER.debug(MARKER, "Doing some blocking work - {}", payload.encode());
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            LOGGER.warn(MARKER, "error doing some blocking stuff - {}", e.getMessage());
-            handleBlocking.fail(new ServiceException(e.getMessage()));
-        }
-        handleBlocking.complete(payload);
     }
 
     public void unregister() {
