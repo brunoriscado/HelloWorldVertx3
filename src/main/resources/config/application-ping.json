@@ -18,6 +18,13 @@
           "host": "0.0.0.0"
         }
       }
+    },
+    {
+      "main": "service:com.tesco.hello.pingpong.vertx.PingVerticle",
+      "options": {
+        "config": {
+        }
+      }
     }
   ]
 }

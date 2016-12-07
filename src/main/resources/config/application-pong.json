@@ -1,0 +1,30 @@
+{
+  "verticles":
+  [
+    {
+      "main": "service:com.tesco.hello.service.vertx.HelloWorldServiceVerticle",
+      "options": {
+        "config": {
+          "context": "com.tesco.hello.service.context.HelloWorldServiceContextImpl"
+        }
+      }
+    },
+    {
+      "main": "service:com.tesco.hello.controller.vertx.HelloWorldAPIVerticle",
+      "options": {
+        "config": {
+          "context": "com.tesco.hello.controller.context.HelloWorldAPIContextImpl",
+          "port": 9003,
+          "host": "0.0.0.0"
+        }
+      }
+    },
+    {
+      "main": "service:com.tesco.hello.pingpong.vertx.PongVerticle",
+      "options": {
+        "config": {
+        }
+      }
+    }
+  ]
+}

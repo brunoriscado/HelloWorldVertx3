@@ -16,24 +16,13 @@ public class ConfigurationUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationUtils.class);
     private static final Marker MARKER = MarkerFactory.getMarker("UTIL");
 
-    public static final String ENV_PROPERTY_NAME = "CONFIG_ENV";
-    public static final String ENV_SEPARATOR_CHAR = "-";
-    public static final String APPLICATION_CONFIG_NAME = "application";
+    public static final String CONF_PROPERTY_NAME = "CONFIG";
 
     public static Observable<JsonObject> getConfig(Vertx vertx) {
-        String environment = System.getProperty(ENV_PROPERTY_NAME);
-        LOGGER.info(MARKER, "fetching configuration from json file on environment: {}", environment);
-        JsonObject config = new JsonObject();
-        LOGGER.info("Environment is : " + environment);
-        String transformedConfigName;
-        if (StringUtils.isNotBlank(environment)) {
-            transformedConfigName = APPLICATION_CONFIG_NAME + ENV_SEPARATOR_CHAR + environment;
-        } else {
-            LOGGER.info("Loading base application config.");
-            transformedConfigName = APPLICATION_CONFIG_NAME;
-        }
+        String conf = System.getProperty(CONF_PROPERTY_NAME);
+        LOGGER.info(MARKER, "fetching configuration from json file: {}", conf);
         return vertx.fileSystem()
-                .readFileObservable("config/" + transformedConfigName + ".json")
+                .readFileObservable(conf)
                 .map(fileBuffer -> {
                     return new JsonObject(fileBuffer.toString());
                 });
