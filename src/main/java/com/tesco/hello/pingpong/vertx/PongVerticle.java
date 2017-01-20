@@ -15,6 +15,10 @@ public class PongVerticle extends AbstractVerticle {
         LOGGER.info("Starting pong verticle");
         vertx.eventBus().consumer(PongVerticle.class.getName(), (message) -> {
             LOGGER.info("Ping sent an event - Pong is going to reply");
+            //TODO - call cache layer
+
+
+
             message.reply("pong");
         });
     }

@@ -19,6 +19,23 @@
         </encoder>
     </appender>
 
+    <appender name="HAZELCAST_FILESERVER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/var/log/discoBrowseAPI/hazelcast.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/var/log/discoBrowseAPI/hazelcast_%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+
+        <append>true</append>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%marker] [%t] %-5level %logger{36}:%L - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%marker] [%t] %-5level %logger{36}:%L - %msg%n</pattern>
@@ -28,6 +45,11 @@
     <logger name="com.tesco.disco.browse" level="INFO" additivity="false">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILESERVER" />
+    </logger>
+
+    <logger name="hazelcast" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="HAZELCAST_FILESERVER" />
     </logger>
 
     <logger name="io.vertx" level="DEBUG">
@@ -40,6 +62,7 @@
 
     <root level="INFO">
         <appender-ref ref="FILESERVER" />
+        <appender-ref ref="HAZELCAST_FILESERVER" />
         <appender-ref ref="FILEHZ" />
         <appender-ref ref="STDOUT" />
     </root>
